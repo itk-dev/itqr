@@ -11,6 +11,10 @@
         "doctrine/doctrine-bundle": "^2.13",
         "doctrine/doctrine-migrations-bundle": "^3.4",
         "doctrine/orm": "^3.3",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-doctrine": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-symfony": "^2.0",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
         "symfony/flex": "^2",
@@ -57,6 +61,15 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "coding-standards-apply": [
+            "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix"
+        ],
+        "coding-standards-check": [
+            "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run"
+        ],
+        "phpstan": [
+            "./vendor/bin/phpstan --no-cache"
         ]
     },
     "conflict": {
@@ -69,8 +82,6 @@
         }
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.68",
-        "phpunit/phpunit": "^11.5",
         "symfony/maker-bundle": "^1.62"
     }
 }
