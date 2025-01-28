@@ -1,4 +1,6 @@
 {
+    "name": "itk-dev/itqr",
+    "description": "A QR code generator",
     "license": "proprietary",
     "type": "project",
     "require": {
