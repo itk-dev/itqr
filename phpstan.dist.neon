@@ -10,8 +10,3 @@ parameters:
         - src/
 #        - tests/
     ignoreErrors:
-        - identifier: doctrine.associationType
-        - identifier: doctrine.columnType
-        - identifier: method.unused
-        - identifier: missingType.generics
-        - identifier: missingType.iterableValue

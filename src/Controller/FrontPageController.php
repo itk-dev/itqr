@@ -29,6 +29,7 @@ class FrontPageController extends AbstractDashboardController
                 'en' => 'English',
             ]);
     }
+
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
