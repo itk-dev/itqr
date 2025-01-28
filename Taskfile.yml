@@ -27,6 +27,11 @@ tasks:
       - task compose-exec -- phpfpm composer {{ .CLI_ARGS }}
     silent: true
 
+  console:
+    desc: "Run console command"
+    cmds:
+      - task compose-exec -- phpfpm bin/console {{ .CLI_ARGS }}
+
   start:
     desc: "Start docker compose stuff and install composer stuff"
     cmds:
@@ -52,7 +57,7 @@ tasks:
       - task composer -- normalize --dry-run
       - task composer -- code-analysis
       - task composer -- coding-standards-check
-      -
+
   coding-standards-apply:
     desc: "Apply coding standards"
     cmds:
