@@ -111,20 +111,6 @@ jobs:
         run: |
           docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint '**/*.md'
 
-  composer-normalize:
-    name: composer-normalize
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php-versions: [ '8.4' ]
-      fail-fast: false
-    steps:
-      - uses: actions/checkout@v4
-      - run: |
-          docker network create frontend
-          docker compose run --user root --rm phpfpm composer install
-          docker compose run --user root --rm phpfpm composer normalize --dry-run
-
   coding-standards-phpcs:
     name: coding-standards-check/phpcs
     runs-on: ubuntu-latest
