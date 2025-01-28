@@ -7,26 +7,36 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "doctrine/dbal": "^3",
-        "doctrine/doctrine-bundle": "^2.13",
-        "doctrine/doctrine-migrations-bundle": "^3.4",
-        "doctrine/orm": "^3.3",
-        "easycorp/easyadmin-bundle": "^4.23",
+        "doctrine/dbal": "^3.9.4",
+        "doctrine/doctrine-bundle": "^2.13.2",
+        "doctrine/doctrine-migrations-bundle": "^3.4.1",
+        "doctrine/orm": "^3.3.1",
+        "easycorp/easyadmin-bundle": "^4.23.3",
         "phpstan/phpstan": "^2.1.2",
-        "phpstan/phpstan-doctrine": "^2.0",
-        "phpstan/phpstan-phpunit": "^2.0",
-        "phpstan/phpstan-symfony": "^2.0",
+        "phpstan/phpstan-doctrine": "^2.0.1",
+        "phpstan/phpstan-phpunit": "^2.0.4",
+        "phpstan/phpstan-symfony": "^2.0.2",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
-        "symfony/flex": "^2",
+        "symfony/flex": "^2.4.7",
         "symfony/framework-bundle": "7.2.*",
         "symfony/runtime": "7.2.*",
         "symfony/twig-bundle": "7.2.*",
         "symfony/yaml": "7.2.*"
     },
+    "require-dev": {
+        "ergebnis/composer-normalize": "^2.45",
+        "friendsofphp/php-cs-fixer": "^3.68",
+        "phpstan/extension-installer": "^1.4.3",
+        "phpstan/phpstan-deprecation-rules": "^2.0.1",
+        "symfony/maker-bundle": "^1.62.1",
+        "vincentlanglet/twig-cs-fixer": "^3.5.1"
+    },
     "config": {
         "allow-plugins": {
+            "ergebnis/composer-normalize": true,
             "php-http/discovery": true,
+            "phpstan/extension-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true
         },
@@ -64,11 +74,25 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
+        "code-analysis": [
+          "@code-analysis/phpstan"
+        ],
+        "code-analysis/phpstan": [
+          "phpstan analyse --configuration=phpstan.neon"
+        ],
         "coding-standards-apply": [
-            "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix"
+          "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix",
+          "@coding-standards-apply/twig-cs-fixer"
         ],
         "coding-standards-check": [
-            "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run"
+          "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run",
+          "@coding-standards-check/twig-cs-fixer"
+        ],
+        "coding-standards-apply/twig-cs-fixer": [
+          "twig-cs-fixer lint templates --fix"
+        ],
+        "coding-standards-check/twig-cs-fixer": [
+          "twig-cs-fixer lint templates"
         ],
         "phpstan": [
             "./vendor/bin/phpstan"
@@ -82,9 +106,5 @@
             "allow-contrib": false,
             "require": "7.2.*"
         }
-    },
-    "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.68",
-        "symfony/maker-bundle": "^1.62"
     }
 }

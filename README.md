@@ -1,6 +1,7 @@
 # README
 
-This project is a Symfony application built using PHP 8.2 and utilizes Docker for environment isolation. Below are directions to set up, run, and maintain the project effectively.
+This project is a Symfony application built using PHP 8.2 and utilizes Docker for environment isolation.
+Below are directions to set up, run, and maintain the project effectively.
 
 ---
 
@@ -28,7 +29,8 @@ This project is a Symfony application built using PHP 8.2 and utilizes Docker fo
 
 ## Running Coding Standards
 
-The project uses [PHP CS Fixer](https://cs.symfony.com/) for code formatting and [PHPStan](https://phpstan.org/) for static analysis to maintain clean and robust code. Below are the commands to ensure coding standards are followed.
+The project uses [PHP CS Fixer](https://cs.symfony.com/) for code formatting and [PHPStan](https://phpstan.org/) for static
+analysis to maintain clean and robust code. Below are the commands to ensure coding standards are followed.
 
 ### Apply Coding Standards
 
