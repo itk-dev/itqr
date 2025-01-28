@@ -13,7 +13,7 @@ class FrontPageController extends AbstractDashboardController
     #[Route('/', name: 'admin')]
     public function index(): Response
     {
-        return $this->render('index.html.twig');
+        return $this->render('@EasyAdmin/page/content.html.twig');
     }
 
     public function configureDashboard(): Dashboard
