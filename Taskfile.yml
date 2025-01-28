@@ -54,6 +54,7 @@ tasks:
     desc: "Check coding standards"
     cmds:
       - docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint '**/*.md'
+      - task composer -- validate composer.json --strict
       - task composer -- normalize --dry-run
       - task composer -- code-analysis
       - task composer -- coding-standards-check
