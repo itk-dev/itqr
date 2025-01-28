@@ -29,17 +29,17 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ matrix.dependency-version }}-
           restore-keys: ${{ runner.os }}-composer-${{ matrix.dependency-version }}-
 
+      - name: Composer install with exported .env variables
+        run: |
+          set -a && source .env && set +a
+          APP_ENV=prod composer install --no-dev -o
+
       - name: Validate composer files
         run: |
           composer validate composer.json --strict
           docker network create frontend
           docker compose run --user root --rm phpfpm composer install
           docker compose run --user root --rm phpfpm composer normalize --dry-run
-
-      - name: Composer install with exported .env variables
-        run: |
-          set -a && source .env && set +a
-          APP_ENV=prod composer install --no-dev -o
 
   test-suite:
     if: false

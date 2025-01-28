@@ -20,10 +20,10 @@
         "symfony/dotenv": "~7.2.0",
         "symfony/flex": "^2.4.7",
         "symfony/framework-bundle": "~7.2.2",
+        "symfony/maker-bundle": "^1.62.1",
         "symfony/runtime": "~7.2.0",
         "symfony/twig-bundle": "~7.2.0",
-        "symfony/yaml": "~7.2.0",
-        "symfony/maker-bundle": "^1.62.1"
+        "symfony/yaml": "~7.2.0"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.45",
