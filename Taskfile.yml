@@ -49,11 +49,13 @@ tasks:
     desc: "Check coding standards"
     cmds:
       - docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint '**/*.md'
+      - task composer -- normalize --dry-run
       - task composer -- code-analysis
       - task composer -- coding-standards-check
-
+      -
   coding-standards-apply:
     desc: "Apply coding standards"
     cmds:
       - docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint '**/*.md' --fix
+      - task composer -- normalize
       - task composer -- coding-standards-apply

@@ -30,7 +30,10 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-${{ matrix.dependency-version }}-
 
       - name: Validate composer files
-        run: composer validate composer.json --strict
+        run: |
+          composer validate composer.json --strict
+          docker compose run --user root --rm phpfpm composer install
+          docker compose run --user root --rm phpfpm composer normalize --dry-run
 
       - name: Composer install with exported .env variables
         run: |
