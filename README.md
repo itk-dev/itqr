@@ -1,6 +1,7 @@
 # README
 
-This project is a Symfony application built using PHP 8.2 and utilizes Docker for environment isolation. Below are directions to set up, run, and maintain the project effectively.
+This project is a Symfony application built using PHP 8.2 and utilizes Docker for environment isolation.
+Below are directions to set up, run, and maintain the project effectively.
 
 ---
 
@@ -10,9 +11,7 @@ This project is a Symfony application built using PHP 8.2 and utilizes Docker fo
    Run the following command to install PHP dependencies using Composer in a Dockerized environment:
 
    ```bash
-   docker compose pull
-   docker compose up --detach
-   docker compose exec phpfpm composer install
+   task start
    ```
 
 2. **Environment Configuration**  
@@ -28,14 +27,15 @@ This project is a Symfony application built using PHP 8.2 and utilizes Docker fo
 
 ## Running Coding Standards
 
-The project uses [PHP CS Fixer](https://cs.symfony.com/) for code formatting and [PHPStan](https://phpstan.org/) for static analysis to maintain clean and robust code. Below are the commands to ensure coding standards are followed.
+The project uses [PHP CS Fixer](https://cs.symfony.com/) for code formatting and [PHPStan](https://phpstan.org/) for static
+analysis to maintain clean and robust code. Below are the commands to ensure coding standards are followed.
 
 ### Apply Coding Standards
 
 Fix code formatting issues:
 
 ```bash
-docker run --interactive --rm --volume ${PWD}:/app itkdev/php8.3-fpm:latest composer run-script coding-standards-apply
+task coding-standards-apply
 ```
 
 ### Check Coding Standards
@@ -43,7 +43,7 @@ docker run --interactive --rm --volume ${PWD}:/app itkdev/php8.3-fpm:latest comp
 Check formatting without making any changes:
 
 ```bash
-docker run --interactive --rm --volume ${PWD}:/app itkdev/php8.3-fpm:latest composer run-script coding-standards-check
+task composer -- coding-standards-check
 ```
 
 ### Run Static Analysis
@@ -51,7 +51,15 @@ docker run --interactive --rm --volume ${PWD}:/app itkdev/php8.3-fpm:latest comp
 Run PHPStan to check for code issues:
 
 ```bash
-docker run --interactive --rm --volume ${PWD}:/app itkdev/php8.3-fpm:latest composer run-script phpstan
+task composer -- code-analysis
+```
+
+### Run code through all available tools
+
+Markdownlint, code analysis, Code sniffer, Composer normalizer
+
+```bash
+task check-code
 ```
 
 ---
@@ -74,7 +82,7 @@ The core structure of this Symfony project follows standard conventions:
 - Always clear the cache after making any environment or configuration changes:
 
   ```bash
-  itkdev-docker-compose bin/console cache:clear
+  task console -- cache:clear
   ```
 
 ---
