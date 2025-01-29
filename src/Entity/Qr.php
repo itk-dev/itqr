@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use App\Enum\QrModeEnum;
 use App\Repository\QrRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource]
 #[ORM\Entity(repositoryClass: QrRepository::class)]
 class Qr
 {
@@ -27,8 +30,8 @@ class Qr
     #[ORM\Column(length: 2500, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $mode = null;
+    #[ORM\Column(type: 'string', enumType: QrModeEnum::class)]
+    private ?QrModeEnum $mode = null;
 
     /**
      * @var Collection<int, Url>
@@ -51,7 +54,7 @@ class Qr
         return $this->title;
     }
 
-    public function setTitle(string $title): static
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
@@ -63,7 +66,7 @@ class Qr
         return $this->author;
     }
 
-    public function setAuthor(string $author): static
+    public function setAuthor(string $author): self
     {
         $this->author = $author;
 
@@ -75,7 +78,7 @@ class Qr
         return $this->department;
     }
 
-    public function setDepartment(string $department): static
+    public function setDepartment(string $department): self
     {
         $this->department = $department;
 
@@ -87,19 +90,19 @@ class Qr
         return $this->description;
     }
 
-    public function setDescription(?string $description): static
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getMode(): ?string
+    public function getMode(): ?QrModeEnum
     {
         return $this->mode;
     }
 
-    public function setMode(string $mode): static
+    public function setMode(?QrModeEnum $mode): self
     {
         $this->mode = $mode;
 

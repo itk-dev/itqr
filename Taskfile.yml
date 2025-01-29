@@ -63,3 +63,8 @@ tasks:
     cmds:
       - task composer -- normalize
       - task composer -- coding-standards-apply
+
+  apply-fixtures:
+    desc: "Apply fixtures"
+    cmds:
+      - task console -- doctrine:fixtures:load
