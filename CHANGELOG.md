@@ -8,6 +8,9 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-3](https://github.com/itk-dev/itqr/pull/3)
+  - Added Qr entity
+  - Added Url entity
 [PR-1](https://github.com/itk-dev/itqr/pull/1)
     * Added project baseline with easy admin 4.x
 
