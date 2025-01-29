@@ -8,8 +8,10 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
-[PR-1](https://github.com/itk-dev/itqr/pull/1)
-    * Added project baseline with easy admin 4.x
+* [PR-4](https://github.com/itk-dev/itqr/pull/4)
+  Added new markdown lint container
+* [PR-1](https://github.com/itk-dev/itqr/pull/1)
+  Added project baseline with easy admin 4.x
 
 [keep a changelog]: https://keepachangelog.com/en/1.1.0/
 [unreleased]: https://github.com/itk-dev/event-database-api/compare/main...develop
