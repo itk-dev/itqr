@@ -19,19 +19,19 @@ class Qr
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private string $title = '';
 
     #[ORM\Column(length: 255)]
-    private ?string $author = null;
+    private string $author = '';
 
     #[ORM\Column(length: 255)]
-    private ?string $department = null;
+    private string $department = '';
 
     #[ORM\Column(length: 2500, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(type: 'string', enumType: QrModeEnum::class)]
-    private ?QrModeEnum $mode = null;
+    private QrModeEnum $mode;
 
     /**
      * @var Collection<int, Url>

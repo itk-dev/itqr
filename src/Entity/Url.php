@@ -16,10 +16,10 @@ class Url
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $shortUri = null;
+    private string $shortUri = '';
 
     #[ORM\Column(length: 255)]
-    private ?string $url = null;
+    private string $url = '';
 
     #[ORM\ManyToOne(inversedBy: 'urls')]
     private ?Qr $qr = null;
