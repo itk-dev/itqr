@@ -25,7 +25,7 @@ class Qr
     private string $author = '';
 
     #[ORM\Column(length: 255)]
-    private string $department = '';op
+    private string $department = '';
 
     #[ORM\Column(length: 2500, nullable: true)]
     private ?string $description = null;
