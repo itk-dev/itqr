@@ -12,6 +12,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.4.1",
         "doctrine/orm": "^3.3.1",
         "easycorp/easyadmin-bundle": "^4.23.3",
+        "endroid/qr-code-bundle": "^6.0",
         "phpstan/phpstan": "^2.1.2",
         "phpstan/phpstan-doctrine": "^2.0.1",
         "phpstan/phpstan-phpunit": "^2.0.4",
@@ -59,6 +60,7 @@
     },
     "config": {
         "allow-plugins": {
+            "endroid/installer": true,
             "ergebnis/composer-normalize": true,
             "php-http/discovery": true,
             "phpstan/extension-installer": true,
