@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\BackedEnumFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Enum\QrModeEnum;
 use App\Repository\QrRepository;
@@ -19,18 +22,21 @@ class Qr
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private string $title = '';
 
     #[ORM\Column(length: 255)]
     private string $author = '';
 
     #[ORM\Column(length: 255)]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private string $department = '';
 
     #[ORM\Column(length: 2500, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(type: 'string', enumType: QrModeEnum::class)]
+    #[ApiFilter(BackedEnumFilter::class)]
     private QrModeEnum $mode;
 
     /**
