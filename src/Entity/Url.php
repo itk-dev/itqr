@@ -6,7 +6,6 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UrlRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource]
 #[ORM\Entity(repositoryClass: UrlRepository::class)]
 class Url
 {
