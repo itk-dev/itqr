@@ -27,7 +27,6 @@ class AppFixtures extends Fixture
             $manager->persist($qr);
 
             $url = new Url();
-            $url->setShortUri('http://localhost/qr/'.$i);
             $url->setUrl('http://localhost/loremipsum/long_url/'.$i);
             $url->setQr($qr);
 
