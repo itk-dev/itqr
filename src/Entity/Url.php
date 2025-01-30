@@ -35,7 +35,8 @@ class Url
     }
 
     #[ORM\PrePersist]
-    public function setShortUri(): void {
+    public function setShortUri(): void
+    {
         $this->shortUri = Uuid::v7()->hash();
     }
 

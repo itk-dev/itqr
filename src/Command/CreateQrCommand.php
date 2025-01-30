@@ -42,7 +42,6 @@ class CreateQrCommand extends Command
         $this->entityManager->persist($qr);
 
         $url = new Url();
-        $url->setShortUri('http://localhost/qr/urlFromCommand');
         $url->setUrl($attributes['url']);
         $url->setQr($qr);
 
