@@ -141,7 +141,6 @@ jobs:
           docker compose run --user root --rm phpfpm composer coding-standards-check/twig-cs-fixer
 
   apispec:
-    if: false
     runs-on: ubuntu-latest
     name: API Specification validation
     strategy:

@@ -53,6 +53,7 @@ tasks:
   check-code:
     desc: "Check coding standards"
     cmds:
+      - docker run --rm --volume "$PWD:/md" itkdev/markdownlint markdownlint '**/*.md'
       - task composer -- validate composer.json --strict
       - task composer -- normalize --dry-run
       - task composer -- code-analysis
@@ -63,3 +64,8 @@ tasks:
     cmds:
       - task composer -- normalize
       - task composer -- coding-standards-apply
+
+  apply-fixtures:
+    desc: "Apply fixtures"
+    cmds:
+      - task console -- doctrine:fixtures:load

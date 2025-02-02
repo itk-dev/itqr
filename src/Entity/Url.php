@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\UrlRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UrlRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Url
 {
     #[ORM\Id]
@@ -14,10 +16,10 @@ class Url
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $shortUri = null;
+    private string $shortUri;
 
     #[ORM\Column(length: 255)]
-    private ?string $url = null;
+    private string $url = '';
 
     #[ORM\ManyToOne(inversedBy: 'urls')]
     private ?Qr $qr = null;
@@ -32,11 +34,10 @@ class Url
         return $this->shortUri;
     }
 
-    public function setShortUri(string $shortUri): static
+    #[ORM\PrePersist]
+    public function setShortUri(): void
     {
-        $this->shortUri = $shortUri;
-
-        return $this;
+        $this->shortUri = Uuid::v7()->hash();
     }
 
     public function getUrl(): ?string
@@ -44,7 +45,7 @@ class Url
         return $this->url;
     }
 
-    public function setUrl(string $url): static
+    public function setUrl(string $url): self
     {
         $this->url = $url;
 
@@ -56,7 +57,7 @@ class Url
         return $this->qr;
     }
 
-    public function setQr(?Qr $qr): static
+    public function setQr(?Qr $qr): self
     {
         $this->qr = $qr;
 
