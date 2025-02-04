@@ -43,12 +43,11 @@ class QrCrudController extends AbstractCrudController
         yield ChoiceField::new('mode', new TranslatableMessage('Mode'))
           ->renderAsNativeWidget();
 
-        yield CollectionField::new('urls',  new TranslatableMessage('URLs'))
+        yield CollectionField::new('urls', new TranslatableMessage('URLs'))
             ->setFormTypeOption('entry_type', UrlsType::class)
             ->allowAdd()
             ->allowDelete()
             ->renderExpanded();
-
     }
 
     /**
@@ -63,6 +62,4 @@ class QrCrudController extends AbstractCrudController
           ->add('title')
           ->add('description');
     }
-
-
 }

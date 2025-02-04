@@ -23,11 +23,11 @@ class Url
     #[Assert\NotBlank(message: new TranslatableMessage('The URL field cannot be empty.'))]
     #[Assert\Url(message: new TranslatableMessage('The value "{{ value }}" is not a valid URL.'))]
     #[ORM\Column(length: 255)]
-    private ?string $url = null;
+    private string $url = '';
 
     #[ORM\ManyToOne(targetEntity: Qr::class, inversedBy: 'urls')]
     #[ORM\JoinColumn(nullable: false)] // Prevents orphan URLs without a QR from persisting in the DB
-    private ?Qr $qr = null;
+    private Qr $qr;
 
     public function getId(): ?int
     {
