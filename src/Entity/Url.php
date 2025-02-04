@@ -4,7 +4,9 @@ namespace App\Entity;
 
 use App\Repository\UrlRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UrlRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -18,10 +20,13 @@ class Url
     #[ORM\Column(length: 255)]
     private string $shortUri;
 
+    #[Assert\NotBlank(message: new TranslatableMessage('The URL field cannot be empty.'))]
+    #[Assert\Url(message: new TranslatableMessage('The value "{{ value }}" is not a valid URL.'))]
     #[ORM\Column(length: 255)]
-    private string $url = '';
+    private ?string $url = null;
 
-    #[ORM\ManyToOne(inversedBy: 'urls')]
+    #[ORM\ManyToOne(targetEntity: Qr::class, inversedBy: 'urls')]
+    #[ORM\JoinColumn(nullable: false)] // Prevents orphan URLs without a QR from persisting in the DB
     private ?Qr $qr = null;
 
     public function getId(): ?int
