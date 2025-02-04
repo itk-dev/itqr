@@ -66,6 +66,6 @@ class Url
 
     public function __toString(): string
     {
-      return $this->url;
+        return $this->url;
     }
 }
