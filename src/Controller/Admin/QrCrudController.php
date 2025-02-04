@@ -2,8 +2,11 @@
 
 namespace App\Controller\Admin;
 
+use ApiPlatform\Doctrine\Odm\Filter\SearchFilter;
 use App\Entity\Qr;
+use App\Entity\Url;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -13,7 +16,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Grpc\Channel;
+use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -22,37 +26,57 @@ use Symfony\Component\Translation\TranslatableMessage;
 
 class QrCrudController extends AbstractCrudController
 {
-    public static function getEntityFqcn(): string
-    {
-        return Qr::class;
-    }
+  public function __construct(
+    private EntityManagerInterface $entityManager,
+  ) {
+  }
+  public static function getEntityFqcn(): string
+  {
+      return Qr::class;
+  }
 
-    public function configureFields(string $pageName): iterable
-    {
-      yield IdField::new('id', 'ID')
-        ->setDisabled();
+  public function configureFields(string $pageName): iterable
+  {
+    yield IdField::new('id', 'ID')
+      ->setDisabled();
 
-      yield TextField::new('department', new TranslatableMessage('Department'))
-        ->setDisabled();
-      yield TextField::new('title', new TranslatableMessage('Title'));
+    yield TextField::new('department', new TranslatableMessage('Department'))
+      ->setDisabled();
+    yield TextField::new('title', new TranslatableMessage('Title'));
 
-      yield TextEditorField::new('description', new TranslatableMessage('Description'));
+    yield TextEditorField::new('description', new TranslatableMessage('Description'));
 
-      yield ChoiceField::new('mode', new TranslatableMessage('Mode'))
-        ->renderAsNativeWidget();
+    yield ChoiceField::new('mode', new TranslatableMessage('Mode'))
+      ->renderAsNativeWidget();
 
-      yield AssociationField::new('urls')
-        ->setFormTypeOptions(['by_reference' => false])
-        ->setTemplatePath('fields/url/urls.html.twig');
+    yield AssociationField::new('urls')
+      ->setFormTypeOptions(['by_reference' => false])
+      ->setTemplatePath('fields/url/urls.html.twig');
 
-      yield AssociationField::new('urls', 'Urls')
-        ->hideOnIndex()
-        ->addCssClass('field-channels')
-        ->setFormTypeOption('multiple', 'true')
-        ->setFormTypeOption('attr.data-ea-autocomplete-render-items-as-html', 'true')
-        ->setFormTypeOption('attr.data-ea-autocomplete-allow-item-create', 'true')
-        ->setFormTypeOption('attr.data-ea-widget', 'ea-autocomplete');
-    }
+    yield AssociationField::new('urls', 'Urls')
+      ->hideOnIndex()
+      ->addCssClass('field-channels')
+      ->setFormTypeOption('multiple', 'true')
+      ->setFormTypeOption('attr.data-ea-autocomplete-render-items-as-html', 'true')
+      ->setFormTypeOption('attr.data-ea-autocomplete-allow-item-create', 'true');
+  }
+
+  /**
+   * @todo get department choices from somewhere.
+   *
+   * @param \EasyCorp\Bundle\EasyAdminBundle\Config\Filters $filters
+   *
+   * @return \EasyCorp\Bundle\EasyAdminBundle\Config\Filters
+   */
+  public function configureFilters(Filters $filters): Filters
+  {
+    return parent::configureFilters($filters)
+      ->add(ChoiceFilter::new('department')
+        ->setChoices(['a', 'b'])
+      )
+      ->add('title')
+      ->add('description');
+  }
 
   public function createEditForm(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormInterface {
     return $this->modifyFormBuilder($this->createEditFormBuilder($entityDto, $formOptions, $context), Crud::PAGE_EDIT)->getForm();
@@ -67,19 +91,22 @@ class QrCrudController extends AbstractCrudController
   {
     $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
       $data = $event->getData();
-      $dirty = false;
-      $channels = $data['channels'] ?? [];
-      foreach ($channels as $pos => $channelId) {
-        if (!empty(trim($channelId)) && 0 === (int) $channelId) {
-          $channel = new Channel(trim($channelId));
-          $this->em->persist($channel);
-          $this->em->flush();
-          $data['channels'][$pos] = $channel->getId();
-          $dirty = true;
+      $qr = $event->getForm()->getData();
+
+      foreach ($data['urls'] as $url) {
+        $entityFound = $this->entityManager->getRepository(Url::class)->find($url);
+        if (!$entityFound) {
+          $urlEntity = new Url();
+          $urlEntity->setUrl($url);
+          $this->persistEntity($this->entityManager, $urlEntity);
+
+          $qr->addUrl($urlEntity);
         }
-      }
-      if ($dirty) {
-        $event->setData($data);
+        else {
+          $qr->addUrl($entityFound);
+        }
+
+        $this->persistEntity($this->entityManager, $qr);
       }
     });
 
