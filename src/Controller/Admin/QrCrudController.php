@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use ApiPlatform\Doctrine\Odm\Filter\SearchFilter;
 use App\Entity\Qr;
 use App\Entity\Url;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -24,6 +23,9 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Translation\TranslatableMessage;
 
+/**
+ * @template TData of \EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\CrudControllerInterface
+ */
 class QrCrudController extends AbstractCrudController
 {
   public function __construct(
@@ -78,15 +80,35 @@ class QrCrudController extends AbstractCrudController
       ->add('description');
   }
 
+  /**
+   * @param \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto $entityDto
+   * @param \EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore $formOptions
+   * @param \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext $context
+   *
+   * @return \Symfony\Component\Form\FormInterface<TData>
+   */
   public function createEditForm(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormInterface {
     return $this->modifyFormBuilder($this->createEditFormBuilder($entityDto, $formOptions, $context), Crud::PAGE_EDIT)->getForm();
   }
 
+  /**
+   * @param \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto $entityDto
+   * @param \EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore $formOptions
+   * @param \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext $context
+   *
+   * @return \Symfony\Component\Form\FormInterface<TData>
+   */
   public function createNewForm(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormInterface
   {
     return $this->modifyFormBuilder($this->createNewFormBuilder($entityDto, $formOptions, $context), Crud::PAGE_NEW)->getForm();
   }
 
+  /**
+   * @param \Symfony\Component\Form\FormBuilderInterface<TData> $builder
+   * @param string $pageName
+   *
+   * @return \Symfony\Component\Form\FormBuilderInterface<TData>
+   */
   private function modifyFormBuilder(FormBuilderInterface $builder, string $pageName): FormBuilderInterface
   {
     $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
