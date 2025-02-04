@@ -5,9 +5,9 @@ namespace App\Controller\Admin;
 use App\Entity\Qr;
 use App\Form\Type\UrlsType;
 use App\Helper\DownloadHelper;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\CrudControllerInterface;
@@ -15,9 +15,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -39,30 +38,63 @@ class QrCrudController extends AbstractCrudController
         return Qr::class;
     }
 
+    public function createEntity(string $entityFqcn): Qr
+    {
+        $qr = new Qr();
+        $user = $this->getUser();
+        if ($user) {
+            $qr->setAuthor((string)$user->getId());
+        } else {
+            $qr->setAuthor('anonymous');
+        }
+
+        return $qr;
+    }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->setDefaultSort(['updatedAt' => 'DESC']);
+    }
+
+
     public function configureFields(string $pageName): iterable
     {
-        return [
-            IdField::new('id', 'ID')
-                ->setDisabled(),
-
-            TextField::new('title', new TranslatableMessage('Title')),
-
-            TextareaField::new('description', new TranslatableMessage('Description'))
-                ->renderAsHtml(),
-
-            ChoiceField::new('mode', new TranslatableMessage('Mode'))
-                ->renderAsNativeWidget(),
-
-            CollectionField::new('urls', new TranslatableMessage('URLs'))
+        if ($pageName === Crud::PAGE_INDEX) {
+            return [
+             TextField::new('title', new TranslatableMessage('Title')),
+             TextEditorField::new('description', new TranslatableMessage('Description')),
+             CollectionField::new('urls', new TranslatableMessage('URLs'))
                 ->setFormTypeOption('entry_type', UrlsType::class)
                 ->allowAdd()
                 ->allowDelete()
                 ->renderExpanded(),
+             ChoiceField::new('mode', new TranslatableMessage('Mode'))
+                ->renderAsNativeWidget(),
+             TextField::new('author', new TranslatableMessage('Author'))
+                ->setDisabled(),
+            ];
+        }
 
-            Field::new('customUrlButton', new TranslatableMessage('Open Resource'))
-                ->setTemplatePath('fields/link/link.html.twig')
+        if ($pageName === Crud::PAGE_EDIT || $pageName === Crud::PAGE_NEW) {
+            return [
+             IdField::new('id', 'ID')
+                ->setDisabled()
                 ->hideOnForm(),
-        ];
+             TextField::new('title', new TranslatableMessage('Title')),
+             ChoiceField::new('mode', new TranslatableMessage('Mode'))
+                ->renderAsNativeWidget(),
+             TextEditorField::new('description', new TranslatableMessage('Description')),
+             CollectionField::new('urls', new TranslatableMessage('URLs'))
+                ->setFormTypeOption('entry_type', UrlsType::class)
+                ->allowAdd()
+                ->allowDelete()
+                ->renderExpanded(),
+             TextField::new('author', new TranslatableMessage('Author'))
+                ->setDisabled()
+                ->hideOnForm(),
+            ];
+        }
     }
 
     /**
