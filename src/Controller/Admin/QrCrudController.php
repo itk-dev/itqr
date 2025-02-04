@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Qr;
 use App\Form\Type\UrlsType;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\CrudControllerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -20,8 +21,8 @@ use Symfony\Component\Translation\TranslatableMessage;
  */
 class QrCrudController extends AbstractCrudController
 {
-    public function __construct(
-    ) {
+    public function __construct()
+    {
     }
 
     public static function getEntityFqcn(): string
@@ -29,25 +30,59 @@ class QrCrudController extends AbstractCrudController
         return Qr::class;
     }
 
+    public function createEntity(string $entityFqcn): Qr
+    {
+        $qr = new Qr();
+        $user = $this->getUser();
+        if ($user) {
+            $qr->setAuthor((string)$user->getId());
+        } else {
+            $qr->setAuthor('anonymous');
+        }
+
+        return $qr;
+    }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->setDefaultSort(['updatedAt' => 'DESC']);
+    }
+
+
     public function configureFields(string $pageName): iterable
     {
-        yield IdField::new('id', 'ID')
-          ->setDisabled();
+        if ($pageName === Crud::PAGE_INDEX) {
+            yield TextField::new('title', new TranslatableMessage('Title'));
+            yield TextEditorField::new('description', new TranslatableMessage('Description'));
+            yield CollectionField::new('urls', new TranslatableMessage('URLs'))
+                ->setFormTypeOption('entry_type', UrlsType::class)
+                ->allowAdd()
+                ->allowDelete()
+                ->renderExpanded();
+            yield ChoiceField::new('mode', new TranslatableMessage('Mode'))
+                ->renderAsNativeWidget();
+            yield TextField::new('author', new TranslatableMessage('Author'))
+                ->setDisabled();
+        }
 
-        yield TextField::new('department', new TranslatableMessage('Department'))
-          ->setDisabled();
-        yield TextField::new('title', new TranslatableMessage('Title'));
-
-        yield TextEditorField::new('description', new TranslatableMessage('Description'));
-
-        yield ChoiceField::new('mode', new TranslatableMessage('Mode'))
-          ->renderAsNativeWidget();
-
-        yield CollectionField::new('urls', new TranslatableMessage('URLs'))
-            ->setFormTypeOption('entry_type', UrlsType::class)
-            ->allowAdd()
-            ->allowDelete()
-            ->renderExpanded();
+        if ($pageName === Crud::PAGE_EDIT || $pageName === Crud::PAGE_NEW) {
+            yield IdField::new('id', 'ID')
+                ->setDisabled()
+                ->hideOnForm();
+            yield TextField::new('title', new TranslatableMessage('Title'));
+            yield ChoiceField::new('mode', new TranslatableMessage('Mode'))
+                ->renderAsNativeWidget();
+            yield TextEditorField::new('description', new TranslatableMessage('Description'));
+            yield CollectionField::new('urls', new TranslatableMessage('URLs'))
+                ->setFormTypeOption('entry_type', UrlsType::class)
+                ->allowAdd()
+                ->allowDelete()
+                ->renderExpanded();
+            yield TextField::new('author', new TranslatableMessage('Author'))
+                ->setDisabled()
+                ->hideOnForm();
+        }
     }
 
     /**
@@ -56,10 +91,10 @@ class QrCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
-          ->add(ChoiceFilter::new('department')
-            ->setChoices(['a', 'b'])
-          )
-          ->add('title')
-          ->add('description');
+            ->add(ChoiceFilter::new('department')
+                ->setChoices(['a', 'b'])
+            )
+            ->add('title')
+            ->add('description');
     }
 }
