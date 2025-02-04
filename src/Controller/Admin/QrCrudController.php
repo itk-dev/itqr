@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Qr;
 use App\Entity\Url;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
@@ -15,7 +16,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -28,110 +28,98 @@ use Symfony\Component\Translation\TranslatableMessage;
  */
 class QrCrudController extends AbstractCrudController
 {
-  public function __construct(
-    private EntityManagerInterface $entityManager,
-  ) {
-  }
-  public static function getEntityFqcn(): string
-  {
-      return Qr::class;
-  }
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+    ) {
+    }
 
-  public function configureFields(string $pageName): iterable
-  {
-    yield IdField::new('id', 'ID')
-      ->setDisabled();
+    public static function getEntityFqcn(): string
+    {
+        return Qr::class;
+    }
 
-    yield TextField::new('department', new TranslatableMessage('Department'))
-      ->setDisabled();
-    yield TextField::new('title', new TranslatableMessage('Title'));
+    public function configureFields(string $pageName): iterable
+    {
+        yield IdField::new('id', 'ID')
+          ->setDisabled();
 
-    yield TextEditorField::new('description', new TranslatableMessage('Description'));
+        yield TextField::new('department', new TranslatableMessage('Department'))
+          ->setDisabled();
+        yield TextField::new('title', new TranslatableMessage('Title'));
 
-    yield ChoiceField::new('mode', new TranslatableMessage('Mode'))
-      ->renderAsNativeWidget();
+        yield TextEditorField::new('description', new TranslatableMessage('Description'));
 
-    yield AssociationField::new('urls')
-      ->setFormTypeOptions(['by_reference' => false])
-      ->setTemplatePath('fields/url/urls.html.twig');
+        yield ChoiceField::new('mode', new TranslatableMessage('Mode'))
+          ->renderAsNativeWidget();
 
-    yield AssociationField::new('urls', 'Urls')
-      ->hideOnIndex()
-      ->addCssClass('field-channels')
-      ->setFormTypeOption('multiple', 'true')
-      ->setFormTypeOption('attr.data-ea-autocomplete-render-items-as-html', 'true')
-      ->setFormTypeOption('attr.data-ea-autocomplete-allow-item-create', 'true');
-  }
+        yield AssociationField::new('urls')
+          ->setFormTypeOptions(['by_reference' => false])
+          ->setTemplatePath('fields/url/urls.html.twig');
 
-  /**
-   * @todo get department choices from somewhere.
-   *
-   * @param \EasyCorp\Bundle\EasyAdminBundle\Config\Filters $filters
-   *
-   * @return \EasyCorp\Bundle\EasyAdminBundle\Config\Filters
-   */
-  public function configureFilters(Filters $filters): Filters
-  {
-    return parent::configureFilters($filters)
-      ->add(ChoiceFilter::new('department')
-        ->setChoices(['a', 'b'])
-      )
-      ->add('title')
-      ->add('description');
-  }
+        yield AssociationField::new('urls', 'Urls')
+          ->hideOnIndex()
+          ->addCssClass('field-channels')
+          ->setFormTypeOption('multiple', 'true')
+          ->setFormTypeOption('attr.data-ea-autocomplete-render-items-as-html', 'true')
+          ->setFormTypeOption('attr.data-ea-autocomplete-allow-item-create', 'true');
+    }
 
-  /**
-   * @param \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto $entityDto
-   * @param \EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore $formOptions
-   * @param \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext $context
-   *
-   * @return \Symfony\Component\Form\FormInterface<TData>
-   */
-  public function createEditForm(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormInterface {
-    return $this->modifyFormBuilder($this->createEditFormBuilder($entityDto, $formOptions, $context), Crud::PAGE_EDIT)->getForm();
-  }
+    /**
+     * @todo get department choices from somewhere.
+     */
+    public function configureFilters(Filters $filters): Filters
+    {
+        return parent::configureFilters($filters)
+          ->add(ChoiceFilter::new('department')
+            ->setChoices(['a', 'b'])
+          )
+          ->add('title')
+          ->add('description');
+    }
 
-  /**
-   * @param \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto $entityDto
-   * @param \EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore $formOptions
-   * @param \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext $context
-   *
-   * @return \Symfony\Component\Form\FormInterface<TData>
-   */
-  public function createNewForm(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormInterface
-  {
-    return $this->modifyFormBuilder($this->createNewFormBuilder($entityDto, $formOptions, $context), Crud::PAGE_NEW)->getForm();
-  }
+    /**
+     * @return FormInterface<TData>
+     */
+    public function createEditForm(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormInterface
+    {
+        return $this->modifyFormBuilder($this->createEditFormBuilder($entityDto, $formOptions, $context), Crud::PAGE_EDIT)->getForm();
+    }
 
-  /**
-   * @param \Symfony\Component\Form\FormBuilderInterface<TData> $builder
-   * @param string $pageName
-   *
-   * @return \Symfony\Component\Form\FormBuilderInterface<TData>
-   */
-  private function modifyFormBuilder(FormBuilderInterface $builder, string $pageName): FormBuilderInterface
-  {
-    $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-      $data = $event->getData();
-      $qr = $event->getForm()->getData();
+    /**
+     * @return FormInterface<TData>
+     */
+    public function createNewForm(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormInterface
+    {
+        return $this->modifyFormBuilder($this->createNewFormBuilder($entityDto, $formOptions, $context), Crud::PAGE_NEW)->getForm();
+    }
 
-      foreach ($data['urls'] as $url) {
-        $entityFound = $this->entityManager->getRepository(Url::class)->find($url);
-        if (!$entityFound) {
-          $urlEntity = new Url();
-          $urlEntity->setUrl($url);
-          $this->persistEntity($this->entityManager, $urlEntity);
+    /**
+     * @param FormBuilderInterface<TData> $builder
+     *
+     * @return FormBuilderInterface<TData>
+     */
+    private function modifyFormBuilder(FormBuilderInterface $builder, string $pageName): FormBuilderInterface
+    {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $data = $event->getData();
+            $qr = $event->getForm()->getData();
 
-          $qr->addUrl($urlEntity);
-        }
-        else {
-          $qr->addUrl($entityFound);
-        }
+            foreach ($data['urls'] as $url) {
+                $entityFound = $this->entityManager->getRepository(Url::class)->find($url);
+                if (!$entityFound) {
+                    $urlEntity = new Url();
+                    $urlEntity->setUrl($url);
+                    $this->persistEntity($this->entityManager, $urlEntity);
 
-        $this->persistEntity($this->entityManager, $qr);
-      }
-    });
+                    $qr->addUrl($urlEntity);
+                } else {
+                    $qr->addUrl($entityFound);
+                }
 
-    return $builder;
-  }
+                $this->persistEntity($this->entityManager, $qr);
+            }
+        });
+
+        return $builder;
+    }
 }
