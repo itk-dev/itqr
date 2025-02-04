@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-6](https://github.com/itk-dev/itqr/pull/6)
+    - Setup some easyadmin stuff
 [PR-4](https://github.com/itk-dev/itqr/pull/4)
     - Added new markdown lint container
 [PR-3](https://github.com/itk-dev/itqr/pull/3)
