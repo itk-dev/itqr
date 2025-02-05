@@ -35,7 +35,7 @@ class QrCrudController extends AbstractCrudController
         $qr = new Qr();
         $user = $this->getUser();
         if ($user) {
-            $qr->setAuthor((string)$user->getId());
+            $qr->setAuthor((string) $user->getId());
         } else {
             $qr->setAuthor('anonymous');
         }
@@ -49,10 +49,9 @@ class QrCrudController extends AbstractCrudController
             ->setDefaultSort(['updatedAt' => 'DESC']);
     }
 
-
     public function configureFields(string $pageName): iterable
     {
-        if ($pageName === Crud::PAGE_INDEX) {
+        if (Crud::PAGE_INDEX === $pageName) {
             yield TextField::new('title', new TranslatableMessage('Title'));
             yield TextEditorField::new('description', new TranslatableMessage('Description'));
             yield CollectionField::new('urls', new TranslatableMessage('URLs'))
@@ -66,7 +65,7 @@ class QrCrudController extends AbstractCrudController
                 ->setDisabled();
         }
 
-        if ($pageName === Crud::PAGE_EDIT || $pageName === Crud::PAGE_NEW) {
+        if (Crud::PAGE_EDIT === $pageName || Crud::PAGE_NEW === $pageName) {
             yield IdField::new('id', 'ID')
                 ->setDisabled()
                 ->hideOnForm();
