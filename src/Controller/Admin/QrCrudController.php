@@ -3,27 +3,19 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Qr;
-
-use App\Entity\Url;
+use App\Form\Type\UrlsType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use App\Form\Type\UrlsType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\CrudControllerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Translation\TranslatableMessage;
 
@@ -82,52 +74,6 @@ class QrCrudController extends AbstractCrudController
           ->linkToCrudAction('setUrl')
           ->addCssClass('btn btn-primary')
           ->setIcon('fa fa-link'));
-    }
-
-    /**
-     * @return FormInterface<TData>
-     */
-    public function createEditForm(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormInterface
-    {
-        return $this->modifyFormBuilder($this->createEditFormBuilder($entityDto, $formOptions, $context), Crud::PAGE_EDIT)->getForm();
-    }
-
-    /**
-     * @return FormInterface<TData>
-     */
-    public function createNewForm(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormInterface
-    {
-        return $this->modifyFormBuilder($this->createNewFormBuilder($entityDto, $formOptions, $context), Crud::PAGE_NEW)->getForm();
-    }
-
-    /**
-     * @param FormBuilderInterface<TData> $builder
-     *
-     * @return FormBuilderInterface<TData>
-     */
-    private function modifyFormBuilder(FormBuilderInterface $builder, string $pageName): FormBuilderInterface
-    {
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-            $data = $event->getData();
-            $qr = $event->getForm()->getData();
-
-            foreach ($data['urls'] as $url) {
-                $entityFound = $this->entityManager->getRepository(Url::class)->find($url);
-                if (!$entityFound) {
-                    $urlEntity = new Url();
-                    $urlEntity->setUrl($url);
-                    $this->persistEntity($this->entityManager, $urlEntity);
-
-                    $qr->addUrl($urlEntity);
-                } else {
-                    $qr->addUrl($entityFound);
-                }
-
-                $this->persistEntity($this->entityManager, $qr);
-            }
-        });
-
-        return $builder;
     }
 
     public function setUrl(BatchActionDto $batchActionDto): RedirectResponse
