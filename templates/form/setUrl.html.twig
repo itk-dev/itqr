@@ -6,6 +6,12 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
+          <a class="text-right d-block text-black" href="{{ ea_url()
+            .setController('App\\Controller\\Admin\\QrCrudController')
+            .setAction('index')
+          }}">
+            <span class="fa fa-window-close"></span>
+          </a>
           {{ form(form) }}
         </div>
       </div>
