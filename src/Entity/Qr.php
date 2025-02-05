@@ -144,4 +144,11 @@ class Qr
 
         return $this;
     }
+
+    public function removeAllUrls(): void
+    {
+        foreach ($this->urls as $url) {
+            $this->removeUrl($url);
+        }
+    }
 }

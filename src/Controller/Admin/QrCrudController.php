@@ -5,11 +5,14 @@ namespace App\Controller\Admin;
 use App\Entity\Qr;
 use App\Entity\Url;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -21,6 +24,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Translation\TranslatableMessage;
 
 /**
@@ -77,6 +81,15 @@ class QrCrudController extends AbstractCrudController
           ->add('description');
     }
 
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+          ->addBatchAction(Action::new('setUrl', 'Set url')
+          ->linkToCrudAction('setUrl')
+          ->addCssClass('btn btn-primary')
+          ->setIcon('fa fa-user-check'));
+    }
+
     /**
      * @return FormInterface<TData>
      */
@@ -121,5 +134,10 @@ class QrCrudController extends AbstractCrudController
         });
 
         return $builder;
+    }
+
+    public function setUrl(BatchActionDto $batchActionDto): RedirectResponse
+    {
+        return $this->redirectToRoute('app_set_url', $batchActionDto->getEntityIds());
     }
 }
