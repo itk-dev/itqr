@@ -43,7 +43,7 @@ class QrCrudController extends AbstractCrudController
         $qr = new Qr();
         $user = $this->getUser();
         if ($user) {
-            $qr->setAuthor((string)$user->getId());
+            $qr->setAuthor((string) $user->getId());
         } else {
             $qr->setAuthor('anonymous');
         }
