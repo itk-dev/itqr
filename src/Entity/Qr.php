@@ -51,7 +51,7 @@ class Qr
     private Collection $urls;
 
     #[ORM\Column(type: 'uuid')]
-    private ?UuidV7 $uuid = null;
+    private ?Uuid $uuid = null;
 
     public function __construct()
     {
@@ -123,7 +123,7 @@ class Qr
         return $this;
     }
 
-    public function getUuid(): ?UuidV7
+    public function getUuid(): ?Uuid
     {
         return $this->uuid;
     }
