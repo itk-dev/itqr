@@ -23,7 +23,6 @@ final class SetUrlController extends FrontPageController
 
     /**
      * @todo add permission check here.
-     * @todo add some input validation to url field.
      */
     #[Route('/set/url', name: 'app_set_url')]
     public function index(): Response
