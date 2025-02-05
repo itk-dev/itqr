@@ -4,15 +4,19 @@ namespace App\Controller\Admin;
 
 use App\Entity\Qr;
 use App\Form\Type\UrlsType;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\CrudControllerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Translation\TranslatableMessage;
 
 /**
@@ -61,5 +65,19 @@ class QrCrudController extends AbstractCrudController
           )
           ->add('title')
           ->add('description');
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+          ->addBatchAction(Action::new('setUrl', 'Set url')
+          ->linkToCrudAction('setUrl')
+          ->addCssClass('btn btn-primary')
+          ->setIcon('fa fa-link'));
+    }
+
+    public function setUrl(BatchActionDto $batchActionDto): RedirectResponse
+    {
+        return $this->redirectToRoute('app_set_url', $batchActionDto->getEntityIds());
     }
 }
