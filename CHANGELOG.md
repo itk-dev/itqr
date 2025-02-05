@@ -8,6 +8,9 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-8](https://github.com/itk-dev/itqr/pull/8)
+    - Added timestamp to qr entity
+    - Specify field visibility and order in views 
 [PR-6](https://github.com/itk-dev/itqr/pull/6)
     - Setup some easyadmin stuff
 [PR-4](https://github.com/itk-dev/itqr/pull/4)
