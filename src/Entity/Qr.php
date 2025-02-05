@@ -59,7 +59,6 @@ class Qr
     #[ORM\Column(type: 'uuid')]
     private ?UuidV7 $uuid = null;
 
-
     public function __construct()
     {
         $this->urls = new ArrayCollection();
@@ -212,7 +211,7 @@ class Qr
     {
         $this->updatedAt = new \DateTimeImmutable();
     }
-      
+
     public function removeAllUrls(): void
     {
         foreach ($this->urls as $url) {
