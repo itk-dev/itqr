@@ -125,13 +125,13 @@ class Qr
 
     public function getUuid(): ?UuidV7
     {
-      return $this->uuid;
+        return $this->uuid;
     }
 
     #[ORM\PrePersist]
     public function setUuid(): void
     {
-      $this->uuid = Uuid::v7();
+        $this->uuid = Uuid::v7();
     }
 
     /**
@@ -165,9 +165,10 @@ class Qr
         return $this;
     }
 
-    public function removeAllUrls(): void {
-      foreach ($this->urls as $url) {
-        $this->removeUrl($url);
-      }
+    public function removeAllUrls(): void
+    {
+        foreach ($this->urls as $url) {
+            $this->removeUrl($url);
+        }
     }
 }

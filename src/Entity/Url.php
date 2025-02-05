@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\UrlRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Translation\TranslatableMessage;
-use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UrlRepository::class)]
