@@ -11,6 +11,7 @@ use App\Repository\QrRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: QrRepository::class)]
@@ -42,7 +43,8 @@ class Qr
     /**
      * @var Collection<int, Url>
      */
-    #[ORM\OneToMany(targetEntity: Url::class, mappedBy: 'qr', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Url::class, mappedBy: 'qr', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Assert\Valid]
     private Collection $urls;
 
     public function __construct()
@@ -123,20 +125,21 @@ class Qr
         return $this->urls;
     }
 
-    public function addUrl(Url $url): static
+    public function addUrl(Url $url): self
     {
         if (!$this->urls->contains($url)) {
-            $this->urls->add($url);
+            $this->urls[] = $url;
             $url->setQr($this);
         }
 
         return $this;
     }
 
-    public function removeUrl(Url $url): static
+    public function removeUrl(Url $url): self
     {
-        if ($this->urls->removeElement($url)) {
-            // set the owning side to null (unless already changed)
+        if ($this->urls->contains($url)) {
+            $this->urls->removeElement($url);
+
             if ($url->getQr() === $this) {
                 $url->setQr(null);
             }

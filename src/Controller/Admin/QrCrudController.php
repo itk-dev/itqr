@@ -3,19 +3,19 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Qr;
+
 use App\Entity\Url;
-use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use App\Form\Type\UrlsType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
-use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
-use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\CrudControllerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -28,12 +28,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Translation\TranslatableMessage;
 
 /**
- * @template TData of \EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\CrudControllerInterface
+ * @template TData of CrudControllerInterface
  */
 class QrCrudController extends AbstractCrudController
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -56,16 +55,11 @@ class QrCrudController extends AbstractCrudController
         yield ChoiceField::new('mode', new TranslatableMessage('Mode'))
           ->renderAsNativeWidget();
 
-        yield AssociationField::new('urls')
-          ->setFormTypeOptions(['by_reference' => false])
-          ->setTemplatePath('fields/url/urls.html.twig');
-
-        yield AssociationField::new('urls', 'Urls')
-          ->hideOnIndex()
-          ->addCssClass('field-channels')
-          ->setFormTypeOption('multiple', 'true')
-          ->setFormTypeOption('attr.data-ea-autocomplete-render-items-as-html', 'true')
-          ->setFormTypeOption('attr.data-ea-autocomplete-allow-item-create', 'true');
+        yield CollectionField::new('urls', new TranslatableMessage('URLs'))
+            ->setFormTypeOption('entry_type', UrlsType::class)
+            ->allowAdd()
+            ->allowDelete()
+            ->renderExpanded();
     }
 
     /**
