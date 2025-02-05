@@ -4,9 +4,10 @@
     "license": "proprietary",
     "type": "project",
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "api-platform/core": "^4.0.16",
         "doctrine/dbal": "^3.9.4",
         "doctrine/doctrine-bundle": "^2.13.2",
         "doctrine/doctrine-migrations-bundle": "^3.4.1",
@@ -27,6 +28,7 @@
         "symfony/yaml": "~7.2.0"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^4.0",
         "ergebnis/composer-normalize": "^2.45",
         "friendsofphp/php-cs-fixer": "^3.68.3",
         "phpstan/extension-installer": "^1.4.3",

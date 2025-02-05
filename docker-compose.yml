@@ -31,6 +31,7 @@ services:
     user: ${COMPOSE_USER:-deploy}
     networks:
       - app
+      - frontend
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
