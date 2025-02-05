@@ -11,6 +11,8 @@ use App\Repository\QrRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Uid\UuidV7;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource]
@@ -53,6 +55,10 @@ class Qr
 
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $updatedAt;
+
+    #[ORM\Column(type: 'uuid')]
+    private ?UuidV7 $uuid = null;
+
 
     public function __construct()
     {
@@ -127,6 +133,17 @@ class Qr
         return $this;
     }
 
+    public function getUuid(): ?UuidV7
+    {
+        return $this->uuid;
+    }
+
+    #[ORM\PrePersist]
+    public function setUuid(): void
+    {
+        $this->uuid = Uuid::v7();
+    }
+
     /**
      * @return Collection<int, Url>
      */
@@ -194,5 +211,12 @@ class Qr
     public function onPreUpdate(): void
     {
         $this->updatedAt = new \DateTimeImmutable();
+    }
+      
+    public function removeAllUrls(): void
+    {
+        foreach ($this->urls as $url) {
+            $this->removeUrl($url);
+        }
     }
 }
