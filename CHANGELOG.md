@@ -18,6 +18,9 @@ See [keep a changelog] for information about writing changes to this log.
     - Changed url and qr entity models
 [PR-9](https://github.com/itk-dev/itqr/pull/9)
     - Added bulk change url
+[PR-8](https://github.com/itk-dev/itqr/pull/8)
+    - Added timestamp to qr entity
+    - Specify field visibility and order in views 
 [PR-6](https://github.com/itk-dev/itqr/pull/6)
     - Setup some easyadmin stuff
 [PR-4](https://github.com/itk-dev/itqr/pull/4)
