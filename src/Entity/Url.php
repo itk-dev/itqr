@@ -26,8 +26,8 @@ class Url
     private string $url = '';
 
     #[ORM\ManyToOne(targetEntity: Qr::class, inversedBy: 'urls')]
-    #[ORM\JoinColumn(nullable: false)] // Prevents orphan URLs without a QR from persisting in the DB
-    private Qr $qr;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Qr $qr = null;
 
     public function getId(): ?int
     {
