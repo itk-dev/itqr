@@ -87,7 +87,7 @@ class QrCrudController extends AbstractCrudController
           ->addBatchAction(Action::new('setUrl', 'Set url')
           ->linkToCrudAction('setUrl')
           ->addCssClass('btn btn-primary')
-          ->setIcon('fa fa-user-check'));
+          ->setIcon('fa fa-link'));
     }
 
     /**

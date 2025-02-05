@@ -42,7 +42,7 @@ class Qr
     /**
      * @var Collection<int, Url>
      */
-    #[ORM\OneToMany(targetEntity: Url::class, mappedBy: 'qr')]
+    #[ORM\OneToMany(targetEntity: Url::class, mappedBy: 'qr', orphanRemoval: true)]
     private Collection $urls;
 
     public function __construct()
