@@ -131,7 +131,7 @@ class Qr
         return $this;
     }
 
-    public function getUuid(): ?string
+    public function getUuid(): ?UuidV7
     {
         return $this->uuid;
     }

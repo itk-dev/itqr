@@ -4,10 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\Qr;
 use App\Form\Type\UrlsType;
-use App\Helper\DownloadHelper;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\CrudControllerInterface;
@@ -43,7 +43,7 @@ class QrCrudController extends AbstractCrudController
         $qr = new Qr();
         $user = $this->getUser();
         if ($user) {
-            $qr->setAuthor((string) $user->getId());
+            $qr->setAuthor($user->getUserIdentifier());
         } else {
             $qr->setAuthor('anonymous');
         }
