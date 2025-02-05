@@ -11,10 +11,13 @@ use App\Repository\QrRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Uid\UuidV7;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: QrRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Qr
 {
     #[ORM\Id]
@@ -46,6 +49,9 @@ class Qr
     #[ORM\OneToMany(targetEntity: Url::class, mappedBy: 'qr', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
     private Collection $urls;
+
+    #[ORM\Column(type: 'uuid')]
+    private ?UuidV7 $uuid = null;
 
     public function __construct()
     {
@@ -117,6 +123,17 @@ class Qr
         return $this;
     }
 
+    public function getUuid(): ?UuidV7
+    {
+      return $this->uuid;
+    }
+
+    #[ORM\PrePersist]
+    public function setUuid(): void
+    {
+      $this->uuid = Uuid::v7();
+    }
+
     /**
      * @return Collection<int, Url>
      */
@@ -148,10 +165,9 @@ class Qr
         return $this;
     }
 
-    public function removeAllUrls(): void
-    {
-        foreach ($this->urls as $url) {
-            $this->removeUrl($url);
-        }
+    public function removeAllUrls(): void {
+      foreach ($this->urls as $url) {
+        $this->removeUrl($url);
+      }
     }
 }

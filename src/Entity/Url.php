@@ -16,10 +16,6 @@ class Url
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\Column(length: 255)]
-    private string $shortUri;
-
     #[Assert\NotBlank(message: new TranslatableMessage('The URL field cannot be empty.'))]
     #[Assert\Url(message: new TranslatableMessage('The value "{{ value }}" is not a valid URL.'))]
     #[ORM\Column(length: 255)]
@@ -32,17 +28,6 @@ class Url
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getShortUri(): ?string
-    {
-        return $this->shortUri;
-    }
-
-    #[ORM\PrePersist]
-    public function setShortUri(): void
-    {
-        $this->shortUri = Uuid::v7()->hash();
     }
 
     public function getUrl(): ?string
