@@ -1,0 +1,40 @@
+{% set generate_qr_url = app_base_generate_path ~ app_base_redirect_path ~ entity.instance.uuid %}
+
+<a href="{{ generate_qr_url }}" target="_blank" class="popover-link">
+    View
+    <span class="popover-content">
+       <img src="{{ generate_qr_url }}" alt="Generated Image" />
+   </span>
+</a>
+
+<style>
+    .popover-link {
+        position: relative;
+        display: inline-block;
+        text-decoration: underline;
+    }
+
+    .popover-content {
+        display: none;
+        position: absolute;
+        top: 120%; /* Adjusts the vertical positioning */
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 5px;
+        z-index: 1000;
+        white-space: nowrap;
+    }
+
+    .popover-content img {
+        max-width: 200px; /* Adjust image size */
+        max-height: 200px; /* Prevent oversized images */
+    }
+
+    .popover-link:hover .popover-content {
+        display: block;
+    }
+</style>
