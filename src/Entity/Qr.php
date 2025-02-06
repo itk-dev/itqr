@@ -49,7 +49,7 @@ class Qr
     #[Assert\Valid]
     private Collection $urls;
 
-    #[ORM\Column(type: 'string', length: 36, unique: true, columnDefinition: "CHAR(36)")]
+    #[ORM\Column(type: 'string', length: 36, unique: true, columnDefinition: 'CHAR(36)')]
     private ?string $uuid = null;
 
     public function __construct()
