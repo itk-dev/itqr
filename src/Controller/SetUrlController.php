@@ -24,7 +24,7 @@ final class SetUrlController extends FrontPageController
     /**
      * @todo add permission check here.
      */
-    #[Route('/set/url', name: 'app_set_url')]
+    #[Route('/batch/set_url', name: 'app_set_url')]
     public function index(): Response
     {
         $form = $this->createForm(SetUrlType::class);
