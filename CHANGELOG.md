@@ -8,6 +8,9 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-12](https://github.com/itk-dev/itqr/pull/12)
+    - Setup paths for generation and redirect
+    - Added view link on qr index
 [PR-11](https://github.com/itk-dev/itqr/pull/11)
     - Changed url and qr entity models
 [PR-9](https://github.com/itk-dev/itqr/pull/9)
