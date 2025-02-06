@@ -125,7 +125,7 @@ class Qr
 
     public function getUuid(): ?Uuid
     {
-        return $this->uuid;
+        return Uuid::fromBinary($this->uuid);
     }
 
     #[ORM\PrePersist]
