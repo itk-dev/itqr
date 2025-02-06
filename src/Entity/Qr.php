@@ -12,7 +12,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Component\Uid\UuidV7;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource]
@@ -50,8 +49,8 @@ class Qr
     #[Assert\Valid]
     private Collection $urls;
 
-    #[ORM\Column(type: 'uuid')]
-    private ?Uuid $uuid = null;
+    #[ORM\Column(type: 'string', length: 36, unique: true, columnDefinition: "CHAR(36)")]
+    private ?string $uuid = null;
 
     public function __construct()
     {
@@ -123,15 +122,17 @@ class Qr
         return $this;
     }
 
-    public function getUuid(): ?Uuid
+    public function getUuid(): ?string
     {
-        return Uuid::fromBinary($this->uuid);
+        return $this->uuid;
     }
 
     #[ORM\PrePersist]
     public function setUuid(): void
     {
-        $this->uuid = Uuid::v7();
+        if (null === $this->uuid) {
+            $this->uuid = Uuid::v7()->toRfc4122(); // Generate UUID in canonical format
+        }
     }
 
     /**
