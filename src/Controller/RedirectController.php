@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Qr;
 use App\Repository\QrRepository;
 use App\Repository\UrlRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
