@@ -1,0 +1,89 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% form_theme form '@EasyAdmin/crud/form_theme.html.twig' %}
+
+{% block main %}
+    <div id="batch-action-container">
+        <div class="form-wrapper">
+            <a class="text-right d-block text-black" href="{{ ea_url()
+                .setController('App\\Controller\\Admin\\QrCrudController')
+                .setAction('index')
+            }}">
+            </a>
+            {{ form(form) }}
+
+            <!-- QR Code Preview Section -->
+            <div class="qr-preview" style="margin-top: 20px;">
+                <h3>QR Code Preview:</h3>
+                <img id="qrCode" src="" alt="QR Code" style="margin-top: 10px;">
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .qr-preview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: #f9f9f9;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .qr-preview h3 {
+            margin-bottom: 10px;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const qrCodeImage = document.getElementById('qrCode');
+            const form = document.querySelector('.form-wrapper form');
+
+            async function updateQRCode() {
+                qrCodeImage.style.display = 'none';
+                if (!qrCodeImage.nextElementSibling) {
+                    const spinner = document.createElement('i');
+                    spinner.className = 'fas fa-refresh fa-spin';
+                    spinner.style.fontSize = '48px';
+                    spinner.style.color = '#000';
+                    qrCodeImage.parentNode.appendChild(spinner);
+                }
+
+                const formData = new FormData(form);
+                try {
+                    const response = await fetch('{{ path('generate_qr_code') }}', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        qrCodeImage.src = data.qrCode;
+                    }
+                } catch (error) {
+                    console.error('Error updating QR code:', error);
+                } finally {
+                    const spinner = qrCodeImage.nextElementSibling;
+                    if (spinner && spinner.classList.contains('fa-spin')) {
+                        spinner.remove();
+                    }
+                    qrCodeImage.style.display = '';
+                }
+            }
+
+            let typingTimer;
+
+            form.addEventListener('input', () => {
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(() => {
+                    updateQRCode();
+                }, 500);
+            });
+
+            updateQRCode();
+        });
+    </script>
+{% endblock %}
