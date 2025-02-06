@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
+use BaconQrCode\Renderer\Image\ImageRendererFormat\Png;
 use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
-use BaconQrCode\Renderer\ImageRenderer;
-use BaconQrCode\Renderer\Image\ImageRendererFormat\Png;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,7 +37,7 @@ class QrCodePreviewController
 
         // Respond with the QR code as a base64-encoded PNG
         return new JsonResponse([
-            'qrCode' => 'data:image/png;base64,' . $qrCodeBase64,
+            'qrCode' => 'data:image/png;base64,'.$qrCodeBase64,
         ]);
     }
 }

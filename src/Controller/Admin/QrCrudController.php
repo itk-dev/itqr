@@ -31,8 +31,7 @@ class QrCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly DownloadHelper $downloadHelper,
-    )
-    {
+    ) {
     }
 
     public static function getEntityFqcn(): string
@@ -110,13 +109,14 @@ class QrCrudController extends AbstractCrudController
     /**
      * Handles the quick download functionality by generating QR codes for a given entity.
      *
-     * @param AdminContext $context The context containing the entity data.
+     * @param AdminContext $context the context containing the entity data
      *
-     * @return StreamedResponse The response containing the generated QR codes.
+     * @return StreamedResponse the response containing the generated QR codes
      */
     public function quickDownload(AdminContext $context): StreamedResponse
     {
         $qrEntity = $context->getEntity()->getInstance();
+
         return $this->downloadHelper->generateQrCodes([$qrEntity], []);
     }
 
@@ -124,9 +124,9 @@ class QrCrudController extends AbstractCrudController
      * Handles batch download action, redirecting to the batch download route
      * with the provided entity IDs from the BatchActionDto object.
      *
-     * @param BatchActionDto $batchActionDto Contains the data for batch action processing.
+     * @param BatchActionDto $batchActionDto contains the data for batch action processing
      *
-     * @return RedirectResponse Redirects to the appropriate route for batch download.
+     * @return RedirectResponse redirects to the appropriate route for batch download
      */
     public function batchDownload(BatchActionDto $batchActionDto): RedirectResponse
     {

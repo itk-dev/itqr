@@ -3,9 +3,9 @@
 namespace App\Helper;
 
 use App\Entity\Qr;
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
-use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
 use BaconQrCode\Writer;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -14,25 +14,24 @@ class DownloadHelper
     /**
      * Generate and download QR Codes for multiple entities.
      *
-     * @param array $qrEntities Array of QR entities (should have UUID or equivalent identification method).
-     * @param array $settings Settings for QR code generation (e.g., size).
-     *
-     * @return StreamedResponse
+     * @param array $qrEntities array of QR entities (should have UUID or equivalent identification method)
+     * @param array $settings   Settings for QR code generation (e.g., size).
      */
     public function generateQrCodes(array $qrEntities, array $settings): StreamedResponse
     {
-// Extract or set a default size
+        // Extract or set a default size
         $size = $settings['size'] ?? 400;
 
-// Check if there's only one entity
-        if (count($qrEntities) === 1) {
-            die('f');
-// Single QR code generation
+        // Check if there's only one entity
+        if (1 === count($qrEntities)) {
+            exit('f');
+            // Single QR code generation
             $qrEntity = reset($qrEntities);
+
             return $this->generateSingleQrCode($qrEntity, $size);
         }
 
-// Generate multiple QR codes as a ZIP file
+        // Generate multiple QR codes as a ZIP file
         return $this->generateQrCodesAsZip($qrEntities, $size);
     }
 
@@ -42,7 +41,7 @@ class DownloadHelper
     private function generateSingleQrCode($qrEntity, int $size): StreamedResponse
     {
         $uuid = $qrEntity->getUuid();
-        $qrContent = $_ENV['APP_BASE_REDIRECT_PATH'] . $uuid;
+        $qrContent = $_ENV['APP_BASE_REDIRECT_PATH'].$uuid;
 
         $renderer = new ImageRenderer(
             new RendererStyle($size),
@@ -52,7 +51,7 @@ class DownloadHelper
         $writer = new Writer($renderer);
         $qrCodeData = $writer->writeString($qrContent);
 
-// Prepare response
+        // Prepare response
         $response = new StreamedResponse(function () use ($qrCodeData) {
             echo $qrCodeData;
         });
@@ -68,18 +67,18 @@ class DownloadHelper
      */
     private function generateQrCodesAsZip(array $qrEntities, int $size): StreamedResponse
     {
-        $zipFilename = tempnam(sys_get_temp_dir(), 'qrcodes') . '.zip';
+        $zipFilename = tempnam(sys_get_temp_dir(), 'qrcodes').'.zip';
         $zip = new \ZipArchive();
 
-        if ($zip->open($zipFilename, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true) {
+        if (true !== $zip->open($zipFilename, \ZipArchive::CREATE | \ZipArchive::OVERWRITE)) {
             throw new \RuntimeException('Cannot create ZIP file.');
         }
 
         foreach ($qrEntities as $qrEntity) {
             $uuid = $qrEntity->getUuid();
-            $qrContent = $_ENV['APP_BASE_REDIRECT_PATH'] . $uuid;
+            $qrContent = $_ENV['APP_BASE_REDIRECT_PATH'].$uuid;
 
-// Generate QR code image
+            // Generate QR code image
             $renderer = new ImageRenderer(
                 new RendererStyle($size),
                 new ImagickImageBackEnd('png')
@@ -87,14 +86,14 @@ class DownloadHelper
             $writer = new Writer($renderer);
             $qrCodeData = $writer->writeString($qrContent);
 
-// Add QR code to the ZIP file
+            // Add QR code to the ZIP file
             $zip->addFromString("qr_code_$uuid.png", $qrCodeData);
         }
 
-// Close the ZIP archive
+        // Close the ZIP archive
         $zip->close();
 
-// Prepare response for the ZIP
+        // Prepare response for the ZIP
         $response = new StreamedResponse(function () use ($zipFilename) {
             readfile($zipFilename);
             unlink($zipFilename); // Cleanup the temp file after download

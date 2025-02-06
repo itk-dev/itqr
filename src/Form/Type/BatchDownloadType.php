@@ -18,7 +18,7 @@ class BatchDownloadType extends AbstractType
     {
         $builder->add('size', TextType::class, [
             'label' => new TranslatableMessage('Størrelse (pixels)'),
-            'data' => '400'
+            'data' => '400',
         ]);
         $builder->add('download', SubmitType::class);
     }
