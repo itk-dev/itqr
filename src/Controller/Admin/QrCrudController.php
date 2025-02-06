@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -52,6 +53,10 @@ class QrCrudController extends AbstractCrudController
             ->allowAdd()
             ->allowDelete()
             ->renderExpanded();
+
+        yield Field::new('customUrlButton', new TranslatableMessage('Open Resource'))
+            ->setTemplatePath('fields/link/link.html.twig')
+            ->hideOnForm();
     }
 
     /**
