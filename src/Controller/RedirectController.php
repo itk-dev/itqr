@@ -20,20 +20,8 @@ final class RedirectController extends AbstractController
     }
 
     #[Route('/redirect/{uuid}', name: 'app_redirect')]
-    public function redirectToUrl(string $uuid, EntityManagerInterface $entityManager, UrlRepository $urlRepository): Response
+    public function index(string $uuid, UrlRepository $urlRepository): Response
     {
-        // Normalize UUID by removing '0x' prefix if present
-        if (str_starts_with($uuid, '0x')) {
-            $uuid = substr($uuid, 2);
-        }
-
-        // Convert hexadecimal UUID to Symfony UUID object
-        try {
-            $uuid = Uuid::fromBinary(hex2bin($uuid));
-        } catch (\Exception $e) {
-            throw $this->createNotFoundException('Invalid UUID format');
-        }
-
         // Find the QR entity by UUID
         $qr = $this->qrRepository->findOneBy(['uuid' => $uuid]);
 
@@ -43,6 +31,8 @@ final class RedirectController extends AbstractController
 
         // Retrieve URLs associated with the QR entity
         $urls = $urlRepository->findBy(['qr' => $qr->getId()]);
+
+        // @TODO: Add what happens if a qr has multiple urls with certain modes.
 
         if (!$urls) {
             throw $this->createNotFoundException('No URLs found for the given QR code');
