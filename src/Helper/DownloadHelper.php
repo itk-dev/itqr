@@ -3,10 +3,9 @@
 namespace App\Helper;
 
 use App\Entity\Qr;
-use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
-use BaconQrCode\Renderer\ImageRenderer;
-use BaconQrCode\Renderer\RendererStyle\RendererStyle;
-use BaconQrCode\Writer;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Encoding\Encoding;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class DownloadHelper
@@ -14,44 +13,54 @@ class DownloadHelper
     /**
      * Generate and download QR Codes for multiple entities.
      *
-     * @param array $qrEntities array of QR entities (should have UUID or equivalent identification method)
-     * @param array $settings   Settings for QR code generation (e.g., size).
+     * @param array $qrEntities An array of QR entities (containing UUID or identifiers)
+     * @param array $settings Settings for QR Code generation (size, margin, colors)
      */
     public function generateQrCodes(array $qrEntities, array $settings): StreamedResponse
     {
-        // Extract or set a default size
+        // Extract or set default settings
         $size = $settings['size'] ?? 400;
+        $margin = $settings['margin'] ?? 10;
+        $foregroundColor = $this->createColorFromHex($settings['foregroundColor'] ?? '#000000');
+        $backgroundColor = $this->createColorFromHex($settings['backgroundColor'] ?? '#FFFFFF');
 
         // Check if there's only one entity
         if (1 === count($qrEntities)) {
-            exit('f');
-            // Single QR code generation
             $qrEntity = reset($qrEntities);
 
-            return $this->generateSingleQrCode($qrEntity, $size);
+            return $this->generateSingleQrCode($qrEntity, $size, $margin, $foregroundColor, $backgroundColor);
         }
 
         // Generate multiple QR codes as a ZIP file
-        return $this->generateQrCodesAsZip($qrEntities, $size);
+        return $this->generateQrCodesAsZip($qrEntities, $size, $margin, $foregroundColor, $backgroundColor);
     }
 
     /**
      * Generate a single QR Code for download as PNG.
      */
-    private function generateSingleQrCode($qrEntity, int $size): StreamedResponse
-    {
+    private function generateSingleQrCode(
+        Qr $qrEntity,
+        int $size,
+        int $margin,
+        Color $foregroundColor,
+        Color $backgroundColor
+    ): StreamedResponse {
         $uuid = $qrEntity->getUuid();
-        $qrContent = $_ENV['APP_BASE_REDIRECT_PATH'].$uuid;
+        $qrContent = $_ENV['APP_BASE_REDIRECT_PATH'] . $uuid;
 
-        $renderer = new ImageRenderer(
-            new RendererStyle($size),
-            new ImagickImageBackEnd('png')
+        // Use the Endroid QR Code Builder to generate the QR Code
+        $result = Builder::create()->build(
+            data: $qrContent,
+            encoding: new Encoding('UTF-8'),
+            size: $size,
+            margin: $margin,
+            foregroundColor: $foregroundColor,
+            backgroundColor: $backgroundColor
         );
 
-        $writer = new Writer($renderer);
-        $qrCodeData = $writer->writeString($qrContent);
+        $qrCodeData = $result->getString(); // Get QR code as binary string (PNG format)
 
-        // Prepare response
+        // Prepare the HTTP response for downloading the image
         $response = new StreamedResponse(function () use ($qrCodeData) {
             echo $qrCodeData;
         });
@@ -65,9 +74,14 @@ class DownloadHelper
     /**
      * Generate multiple QR codes and download them as a ZIP file.
      */
-    private function generateQrCodesAsZip(array $qrEntities, int $size): StreamedResponse
-    {
-        $zipFilename = tempnam(sys_get_temp_dir(), 'qrcodes').'.zip';
+    private function generateQrCodesAsZip(
+        array $qrEntities,
+        int $size,
+        int $margin,
+        Color $foregroundColor,
+        Color $backgroundColor
+    ): StreamedResponse {
+        $zipFilename = tempnam(sys_get_temp_dir(), 'qrcodes') . '.zip';
         $zip = new \ZipArchive();
 
         if (true !== $zip->open($zipFilename, \ZipArchive::CREATE | \ZipArchive::OVERWRITE)) {
@@ -76,32 +90,46 @@ class DownloadHelper
 
         foreach ($qrEntities as $qrEntity) {
             $uuid = $qrEntity->getUuid();
-            $qrContent = $_ENV['APP_BASE_REDIRECT_PATH'].$uuid;
+            $qrContent = $_ENV['APP_BASE_REDIRECT_PATH'] . $uuid;
 
-            // Generate QR code image
-            $renderer = new ImageRenderer(
-                new RendererStyle($size),
-                new ImagickImageBackEnd('png')
+            $builder = new Builder();
+            // Use the Endroid QR Code Builder to generate the QR Code
+            $result = $builder->build(
+                data: $qrContent,
+                encoding: new Encoding('UTF-8'),
+                size: $size,
+                margin: $margin,
+                foregroundColor: $foregroundColor,
+                backgroundColor: $backgroundColor
             );
-            $writer = new Writer($renderer);
-            $qrCodeData = $writer->writeString($qrContent);
 
-            // Add QR code to the ZIP file
+            $qrCodeData = $result->getString(); // QR code as binary string (PNG format)
+
+            // Add the QR code image to the ZIP file
             $zip->addFromString("qr_code_$uuid.png", $qrCodeData);
         }
 
         // Close the ZIP archive
         $zip->close();
 
-        // Prepare response for the ZIP
+        // Prepare the HTTP response for downloading the ZIP file
         $response = new StreamedResponse(function () use ($zipFilename) {
             readfile($zipFilename);
-            unlink($zipFilename); // Cleanup the temp file after download
+            unlink($zipFilename); // Clean up temporary file after the response is sent
         });
 
         $response->headers->set('Content-Type', 'application/zip');
         $response->headers->set('Content-Disposition', 'attachment; filename="qr_codes.zip"');
 
         return $response;
+    }
+
+    /**
+     * Converts a HEX color string to an Endroid Color object.
+     */
+    private function createColorFromHex(string $hexColor): Color
+    {
+        list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
+        return new Color($r, $g, $b);
     }
 }
