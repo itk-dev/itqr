@@ -6,6 +6,9 @@ use App\Entity\Qr;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\Exception\ValidationException;
+use Endroid\QrCode\Label\LabelAlignment;
+use Endroid\QrCode\Label\Margin\Margin;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class DownloadHelper
@@ -13,58 +16,53 @@ class DownloadHelper
     /**
      * Generate and download QR Codes for multiple entities.
      *
-     * @param array $qrEntities An array of QR entities (containing UUID or identifiers)
-     * @param array $settings Settings for QR Code generation (size, margin, colors)
+     * @param array $qrEntities       an array of QR entities
+     * @param array $downloadSettings settings for QR Code generation
+     *
+     * @throws ValidationException
      */
-    public function generateQrCodes(array $qrEntities, array $settings): StreamedResponse
+    public function generateQrCodes(array $qrEntities, array $downloadSettings): StreamedResponse
     {
-        // Extract or set default settings
-        $size = $settings['size'] ?? 400;
-        $margin = $settings['margin'] ?? 10;
-        $foregroundColor = $this->createColorFromHex($settings['foregroundColor'] ?? '#000000');
-        $backgroundColor = $this->createColorFromHex($settings['backgroundColor'] ?? '#FFFFFF');
+        // Map settings
+        $settings = [
+            'size' => $downloadSettings['size'] ?? 400,
+            'margin' => $downloadSettings['margin'] ?? 10,
+            'backgroundColor' => $this->createColorFromHex($downloadSettings['backgroundColor'] ?? '#ffffff'),
+            'foregroundColor' => $this->createColorFromHex($downloadSettings['foregroundColor'] ?? '#000000'),
+            'labelText' => $downloadSettings['labelText'] ?? '',
+            'labelTextColor' => $this->createColorFromHex($downloadSettings['labelTextColor'] ?? '#000000'),
+            'labelMargin' => new Margin(
+                (int) ($downloadSettings['labelMarginTop'] ?? 0),
+                0,
+                (int) ($downloadSettings['labelMarginBottom'] ?? 0),
+                0
+            ),
+        ];
 
-        // Check if there's only one entity
-        if (1 === count($qrEntities)) {
-            $qrEntity = reset($qrEntities);
-
-            return $this->generateSingleQrCode($qrEntity, $size, $margin, $foregroundColor, $backgroundColor);
-        }
-
-        // Generate multiple QR codes as a ZIP file
-        return $this->generateQrCodesAsZip($qrEntities, $size, $margin, $foregroundColor, $backgroundColor);
+        // Based on the number of entities, call appropriate function
+        return 1 === count($qrEntities)
+            ? $this->generateSingleQrCode(reset($qrEntities), $settings)
+            : $this->generateQrCodesAsZip($qrEntities, $settings);
     }
 
     /**
      * Generate a single QR Code for download as PNG.
+     *
+     * @throws ValidationException
      */
     private function generateSingleQrCode(
         Qr $qrEntity,
-        int $size,
-        int $margin,
-        Color $foregroundColor,
-        Color $backgroundColor
+        array $settings,
     ): StreamedResponse {
-        $uuid = $qrEntity->getUuid();
-        $qrContent = $_ENV['APP_BASE_REDIRECT_PATH'] . $uuid;
-
-        // Use the Endroid QR Code Builder to generate the QR Code
-        $result = Builder::create()->build(
-            data: $qrContent,
-            encoding: new Encoding('UTF-8'),
-            size: $size,
-            margin: $margin,
-            foregroundColor: $foregroundColor,
-            backgroundColor: $backgroundColor
-        );
-
-        $qrCodeData = $result->getString(); // Get QR code as binary string (PNG format)
+        // Build qr code with given settings
+        $qrCodeData = $this->buildQrCode($qrEntity, $settings);
 
         // Prepare the HTTP response for downloading the image
         $response = new StreamedResponse(function () use ($qrCodeData) {
             echo $qrCodeData;
         });
 
+        // Set headers
         $response->headers->set('Content-Type', 'image/png');
         $response->headers->set('Content-Disposition', 'attachment; filename="qr_code.png"');
 
@@ -73,15 +71,14 @@ class DownloadHelper
 
     /**
      * Generate multiple QR codes and download them as a ZIP file.
+     *
+     * @throws ValidationException
      */
     private function generateQrCodesAsZip(
         array $qrEntities,
-        int $size,
-        int $margin,
-        Color $foregroundColor,
-        Color $backgroundColor
+        array $settings,
     ): StreamedResponse {
-        $zipFilename = tempnam(sys_get_temp_dir(), 'qrcodes') . '.zip';
+        $zipFilename = tempnam(sys_get_temp_dir(), 'qrcodes').'.zip';
         $zip = new \ZipArchive();
 
         if (true !== $zip->open($zipFilename, \ZipArchive::CREATE | \ZipArchive::OVERWRITE)) {
@@ -89,21 +86,8 @@ class DownloadHelper
         }
 
         foreach ($qrEntities as $qrEntity) {
+            $qrCodeData = $this->buildQrCode($qrEntity, $settings);
             $uuid = $qrEntity->getUuid();
-            $qrContent = $_ENV['APP_BASE_REDIRECT_PATH'] . $uuid;
-
-            $builder = new Builder();
-            // Use the Endroid QR Code Builder to generate the QR Code
-            $result = $builder->build(
-                data: $qrContent,
-                encoding: new Encoding('UTF-8'),
-                size: $size,
-                margin: $margin,
-                foregroundColor: $foregroundColor,
-                backgroundColor: $backgroundColor
-            );
-
-            $qrCodeData = $result->getString(); // QR code as binary string (PNG format)
 
             // Add the QR code image to the ZIP file
             $zip->addFromString("qr_code_$uuid.png", $qrCodeData);
@@ -125,11 +109,45 @@ class DownloadHelper
     }
 
     /**
-     * Converts a HEX color string to an Endroid Color object.
+     * Build a QR code using the provided entity and settings.
+     *
+     * @throws ValidationException
      */
-    private function createColorFromHex(string $hexColor): Color
+    private function buildQrCode(
+        Qr $qrEntity,
+        array $settings,
+    ): string {
+        $uuid = $qrEntity->getUuid();
+        $qrContent = $_ENV['APP_BASE_REDIRECT_PATH'].$uuid;
+
+        // Use the Endroid QR Code Builder to generate the QR Code
+        $result = (new Builder())->build(
+            data: $qrContent,
+            encoding: new Encoding('UTF-8'),
+            size: $settings['size'],
+            margin: $settings['margin'],
+            foregroundColor: $settings['foregroundColor'],
+            backgroundColor: $settings['backgroundColor'],
+            labelText: $settings['labelText'],
+            labelAlignment: LabelAlignment::Center,
+            labelMargin: $settings['labelMargin'],
+            labelTextColor: $settings['labelTextColor'],
+        );
+
+        return $result->getString(); // Return QR code as binary string (PNG format)
+    }
+
+    /**
+     * Converts a hexadecimal color code to an instance of the Color class.
+     *
+     * @param string $hexColor the hexadecimal color code
+     *
+     * @return Color an instance of the Color class
+     */
+    public function createColorFromHex(string $hexColor): Color
     {
-        list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
+        list($r, $g, $b) = sscanf($hexColor, '#%02x%02x%02x');
+
         return new Color($r, $g, $b);
     }
 }

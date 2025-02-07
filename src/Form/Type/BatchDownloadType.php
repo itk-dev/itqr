@@ -4,7 +4,6 @@ namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -38,13 +37,21 @@ class BatchDownloadType extends AbstractType
 
         $builder->add('labelText', TextType::class, [
             'label' => new TranslatableMessage('Tekst'),
+            'required' => false,
+        ]);
+        $builder->add('labelTextColor', ColorType::class, [
+            'label' => new TranslatableMessage('Tekst farve'),
         ]);
 
-        $builder->add('labelMargin', IntegerType::class, [
-            'label' => new TranslatableMessage('Tekst margin (top og bund)'),
-            'data' => 15
+        $builder->add('labelMarginTop', IntegerType::class, [
+            'label' => new TranslatableMessage('Tekst margin (top)'),
+            'data' => 15,
         ]);
 
+        $builder->add('labelMarginBottom', IntegerType::class, [
+            'label' => new TranslatableMessage('Tekst margin (bund)'),
+            'data' => 15,
+        ]);
         $builder->add('download', SubmitType::class);
     }
 
