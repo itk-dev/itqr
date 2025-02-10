@@ -18,10 +18,11 @@ final class BatchDownloadController extends FrontPageController
     ) {
     }
 
-  /**
-   * @throws \Endroid\QrCode\Exception\ValidationException
-   * @todo add permission check here.
-   */
+    /**
+     * @throws \Endroid\QrCode\Exception\ValidationException
+     *
+     * @todo add permission check here.
+     */
     #[Route('/batch/download', name: 'app_batch_download')]
     public function index(): Response
     {
