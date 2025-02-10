@@ -39,7 +39,6 @@ class QrCrudController extends AbstractCrudController
         return Qr::class;
     }
 
-    /*
     public function createEntity(string $entityFqcn): Qr
     {
         $qr = new Qr();
@@ -52,9 +51,7 @@ class QrCrudController extends AbstractCrudController
 
         return $qr;
     }
-
-    */
-
+    
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
