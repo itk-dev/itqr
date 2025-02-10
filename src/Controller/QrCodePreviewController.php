@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Helper\DownloadHelper;
-use Endroid\QrCode\Bacon\ErrorCorrectionLevelConverter;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
@@ -14,7 +13,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 readonly class QrCodePreviewController
 {

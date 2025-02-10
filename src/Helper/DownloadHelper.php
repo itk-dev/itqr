@@ -18,8 +18,10 @@ class DownloadHelper
     /**
      * Generate and download QR Codes for multiple entities.
      *
-     * @param array $qrEntities       an array of QR entities
-     * @param array $downloadSettings settings for QR Code generation
+     * @param array<int,Qr> $qrEntities
+     *   An array of QR entities
+     * @param array<string,mixed> $downloadSettings
+     *   Settings for QR Code generation
      *
      * @throws ValidationException
      */
@@ -54,11 +56,17 @@ class DownloadHelper
             : $this->generateQrCodesAsZip($qrEntities, $settings);
     }
 
-    /**
-     * Generate a single QR Code for download as PNG.
-     *
-     * @throws ValidationException
-     */
+  /**
+   * Generate a single QR Code for download as PNG.
+   *
+   * @param \App\Entity\Qr $qrEntity
+   *   A Qr code
+   * @param array<string,mixed> $settings
+   *   Some qr settings.
+   *
+   * @return \Symfony\Component\HttpFoundation\StreamedResponse
+   * @throws \Endroid\QrCode\Exception\ValidationException
+   */
     private function generateSingleQrCode(
         Qr $qrEntity,
         array $settings,
@@ -78,11 +86,19 @@ class DownloadHelper
         return $response;
     }
 
-    /**
-     * Generate multiple QR codes and download them as a ZIP file.
-     *
-     * @throws ValidationException
-     */
+  /**
+   * Generate multiple QR codes and download them as a ZIP file.
+   *
+   * @param array<int,Qr> $qrEntities
+   *   An array of QR entities
+   *
+   * @param array<string,mixed> $settings
+   *   Some qr settings.
+   *
+   * @return \Symfony\Component\HttpFoundation\StreamedResponse
+   *
+   * @throws \Endroid\QrCode\Exception\ValidationException
+   */
     private function generateQrCodesAsZip(
         array $qrEntities,
         array $settings,
@@ -117,11 +133,17 @@ class DownloadHelper
         return $response;
     }
 
-    /**
-     * Build a QR code using the provided entity and settings.
-     *
-     * @throws ValidationException
-     */
+  /**
+   * Build a QR code using the provided entity and settings.
+   *
+   * @param \App\Entity\Qr $qrEntity
+   *   A Qr code
+   * @param array<string,mixed> $settings
+   *   Some qr settings.
+   *
+   * @return string
+   * @throws \Endroid\QrCode\Exception\ValidationException
+   */
     private function buildQrCode(
         Qr $qrEntity,
         array $settings,
@@ -172,13 +194,15 @@ class DownloadHelper
     /**
      * Converts a hexadecimal color code to an instance of the Color class.
      *
-     * @param string $hexColor the hexadecimal color code
+     * @param string $hexColor
+     *   The hexadecimal color code
      *
-     * @return Color an instance of the Color class
+     * @return Color
+     *   An instance of the Color class
      */
     public function createColorFromHex(string $hexColor): Color
     {
-        list($r, $g, $b) = sscanf($hexColor, '#%02x%02x%02x');
+        [$r, $g, $b] = sscanf($hexColor, '#%02x%02x%02x');
 
         return new Color($r, $g, $b);
     }
