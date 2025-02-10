@@ -4,10 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\Qr;
 use App\Form\Type\UrlsType;
+use App\Helper\DownloadHelper;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\CrudControllerInterface;
@@ -16,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
@@ -38,6 +39,7 @@ class QrCrudController extends AbstractCrudController
         return Qr::class;
     }
 
+    /*
     public function createEntity(string $entityFqcn): Qr
     {
         $qr = new Qr();
@@ -50,6 +52,8 @@ class QrCrudController extends AbstractCrudController
 
         return $qr;
     }
+
+    */
 
     public function configureCrud(Crud $crud): Crud
     {
