@@ -23,6 +23,8 @@ class AppFixtures extends Fixture
             $qr->setDepartment(0 == $i % 2 ? $departments['0'] : $departments['1']);
             $qr->setAuthor('fixture_author');
             $qr->setMode(QrModeEnum::DEFAULT);
+            $qr->setCreatedAt(new \DateTimeImmutable());
+            $qr->setUpdatedAt(new \DateTimeImmutable());
 
             $manager->persist($qr);
 
