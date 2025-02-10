@@ -50,16 +50,13 @@ class Qr
     private Collection $urls;
 
     #[ORM\Column(type: 'string', length: 36, unique: true, columnDefinition: 'CHAR(36)')]
-    private ?string $uuid = null;
-  
+    private string $uuid = '';
+
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $updatedAt;
-
-    #[ORM\Column(type: 'uuid')]
-    private ?UuidV7 $uuid = null;
 
     public function __construct()
     {
@@ -142,9 +139,7 @@ class Qr
     #[ORM\PrePersist]
     public function setUuid(): void
     {
-        if (null === $this->uuid) {
-            $this->uuid = Uuid::v7()->toRfc4122(); // Generate UUID in canonical format
-        }
+        $this->uuid = Uuid::v7()->toRfc4122(); // Generate UUID in canonical format
     }
 
     /**
