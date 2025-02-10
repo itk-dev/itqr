@@ -131,7 +131,7 @@ class Qr
         return $this;
     }
 
-    public function getUuid(): ?UuidV7
+    public function getUuid(): ?string
     {
         return $this->uuid;
     }
@@ -139,9 +139,7 @@ class Qr
     #[ORM\PrePersist]
     public function setUuid(): void
     {
-        if (null === $this->uuid) {
-            $this->uuid = Uuid::v7()->toRfc4122(); // Generate UUID in canonical format
-        }
+        $this->uuid = Uuid::v7()->toRfc4122(); // Generate UUID in canonical format
     }
 
     /**
