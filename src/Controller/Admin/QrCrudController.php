@@ -51,7 +51,7 @@ class QrCrudController extends AbstractCrudController
 
         return $qr;
     }
-    
+
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
