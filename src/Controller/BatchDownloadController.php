@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\Type\BatchDownloadType;
 use App\Helper\DownloadHelper;
 use App\Repository\QrRepository;
+use Endroid\QrCode\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -19,7 +20,8 @@ final class BatchDownloadController extends FrontPageController
     }
 
     /**
-     * @todo add permission check here.
+     * @throws ValidationException
+*@todo add permission check here.
      */
     #[Route('/batch/download', name: 'app_batch_download')]
     public function index(): Response
@@ -32,6 +34,8 @@ final class BatchDownloadController extends FrontPageController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
+            $logoFile = $form->get('logo')->getData();
+
             $qrEntities = $this->qrRepository->findBy(['id' => $request->query->all()]);
 
             if (!$qrEntities) {
