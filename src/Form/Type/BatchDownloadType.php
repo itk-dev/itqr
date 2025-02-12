@@ -2,8 +2,11 @@
 
 namespace App\Form\Type;
 
+use Endroid\QrCode\ErrorCorrectionLevel;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -51,6 +54,19 @@ class BatchDownloadType extends AbstractType
         $builder->add('labelMarginBottom', IntegerType::class, [
             'label' => new TranslatableMessage('Tekst margin (bund)'),
             'data' => 15,
+        ]);
+        $builder->add('logo', FileType::class, [
+            'label' => new TranslatableMessage('Logo'),
+        ]);
+        $builder->add('errorCorrectionLevel', ChoiceType::class, [
+            'label' => new TranslatableMessage('Fejlreduktion'),
+            'choices' => [
+                'Low' => ErrorCorrectionLevel::Low->value,
+                'Medium' => ErrorCorrectionLevel::Medium->value,
+                'Quartile' => ErrorCorrectionLevel::Quartile->value,
+                'High' => ErrorCorrectionLevel::High->value,
+            ],
+
         ]);
         $builder->add('download', SubmitType::class);
     }
