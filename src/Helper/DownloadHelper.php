@@ -7,8 +7,10 @@ use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\Exception\ValidationException;
+use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\Label\LabelAlignment;
 use Endroid\QrCode\Label\Margin\Margin;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class DownloadHelper
@@ -25,8 +27,8 @@ class DownloadHelper
     {
         // Map settings
         $settings = [
-            'size' => $downloadSettings['size'] ?? 400,
-            'margin' => $downloadSettings['margin'] ?? 10,
+            'size' => (int) ($downloadSettings['size'] ?? 400),
+            'margin' => (int) ($downloadSettings['margin'] ?? 10),
             'backgroundColor' => $this->createColorFromHex($downloadSettings['backgroundColor'] ?? '#ffffff'),
             'foregroundColor' => $this->createColorFromHex($downloadSettings['foregroundColor'] ?? '#000000'),
             'labelText' => $downloadSettings['labelText'] ?? '',
@@ -37,9 +39,16 @@ class DownloadHelper
                 (int) ($downloadSettings['labelMarginBottom'] ?? 0),
                 0
             ),
+            'errorCorrectionLevel' => [
+                    'low' => ErrorCorrectionLevel::Low,
+                    'medium' => ErrorCorrectionLevel::Medium,
+                    'quartile' => ErrorCorrectionLevel::Quartile,
+                    'high' => ErrorCorrectionLevel::High,
+                ][$downloadSettings['errorCorrectionLevel'] ?? 'medium'] ?? ErrorCorrectionLevel::Medium,
+            'logo' => $this->processLogo($downloadSettings['logo'] ?? null),
         ];
 
-        // Based on the number of entities, call appropriate function
+        // Based on the number of entities, call the appropriate function
         return 1 === count($qrEntities)
             ? $this->generateSingleQrCode(reset($qrEntities), $settings)
             : $this->generateQrCodesAsZip($qrEntities, $settings);
@@ -124,6 +133,7 @@ class DownloadHelper
         $result = (new Builder())->build(
             data: $qrContent,
             encoding: new Encoding('UTF-8'),
+            errorCorrectionLevel: $settings['errorCorrectionLevel'],
             size: $settings['size'],
             margin: $settings['margin'],
             foregroundColor: $settings['foregroundColor'],
@@ -132,9 +142,31 @@ class DownloadHelper
             labelAlignment: LabelAlignment::Center,
             labelMargin: $settings['labelMargin'],
             labelTextColor: $settings['labelTextColor'],
+            logoPath: $settings['logo'],
+            logoPunchoutBackground: false,
         );
 
         return $result->getString(); // Return QR code as binary string (PNG format)
+    }
+
+    /**
+     * Process the logo file for QR code generation.
+     *
+     * @param UploadedFile|null $logo
+     *
+     * @return string|null
+     */
+    private function processLogo(?UploadedFile $logo): ?string
+    {
+        if ($logo instanceof UploadedFile) {
+            // Save the uploaded file and return its path
+            $targetPath = sys_get_temp_dir().'/'.$logo->getClientOriginalName();
+            $logo->move(sys_get_temp_dir(), $logo->getClientOriginalName());
+
+            return $targetPath;
+        }
+
+        return null; // No logo provided
     }
 
     /**
