@@ -8,6 +8,7 @@ use App\Helper\DownloadHelper;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\CrudControllerInterface;
@@ -57,7 +58,6 @@ class QrCrudController extends AbstractCrudController
         return $crud
             ->setDefaultSort(['updatedAt' => 'DESC']);
     }
-
 
     public function configureFields(string $pageName): iterable
     {

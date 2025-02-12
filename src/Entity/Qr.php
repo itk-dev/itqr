@@ -56,7 +56,13 @@ class Qr
     private \DateTimeImmutable $updatedAt;
 
     #[ORM\Column(type: 'string', length: 36, unique: true, columnDefinition: 'CHAR(36)')]
-    private ?string $uuid = null;
+    private string $uuid = '';
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $createdAt;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $updatedAt;
 
     public function __construct()
     {
