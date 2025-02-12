@@ -6,8 +6,8 @@ use App\Entity\Qr;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\Exception\ValidationException;
 use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\Exception\ValidationException;
 use Endroid\QrCode\Label\LabelAlignment;
 use Endroid\QrCode\Label\Margin\Margin;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -42,11 +42,11 @@ class DownloadHelper
                 0
             ),
             'errorCorrectionLevel' => [
-                    'low' => ErrorCorrectionLevel::Low,
-                    'medium' => ErrorCorrectionLevel::Medium,
-                    'quartile' => ErrorCorrectionLevel::Quartile,
-                    'high' => ErrorCorrectionLevel::High,
-                ][$downloadSettings['errorCorrectionLevel'] ?? 'medium'] ?? ErrorCorrectionLevel::Medium,
+                'low' => ErrorCorrectionLevel::Low,
+                'medium' => ErrorCorrectionLevel::Medium,
+                'quartile' => ErrorCorrectionLevel::Quartile,
+                'high' => ErrorCorrectionLevel::High,
+            ][$downloadSettings['errorCorrectionLevel'] ?? 'medium'] ?? ErrorCorrectionLevel::Medium,
             'logo' => $this->processLogo($downloadSettings['logo'] ?? null),
         ];
 
@@ -168,10 +168,6 @@ class DownloadHelper
 
     /**
      * Process the logo file for QR code generation.
-     *
-     * @param UploadedFile|null $logo
-     *
-     * @return string|null
      */
     private function processLogo(?UploadedFile $logo): ?string
     {

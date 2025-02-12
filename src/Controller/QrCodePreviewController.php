@@ -18,8 +18,7 @@ readonly class QrCodePreviewController
 {
     public function __construct(
         private DownloadHelper $downloadHelper,
-    )
-    {
+    ) {
     }
 
     /**
@@ -35,7 +34,6 @@ readonly class QrCodePreviewController
     #[Route('/generate-qr-code', name: 'generate_qr_code', methods: ['POST'])]
     public function generateQrCode(Request $request): JsonResponse
     {
-
         // Extract data from the request
         $data = $request->request->all();
 
@@ -51,8 +49,8 @@ readonly class QrCodePreviewController
         $qrString = 'https://www.google.dk';
 
         // Get QR code settings or use defaults
-        $size = (int)min(400, $downloadSettings['size'] ?? 400);
-        $margin = (int)($downloadSettings['margin'] ?? 0);
+        $size = (int) min(400, $downloadSettings['size'] ?? 400);
+        $margin = (int) ($downloadSettings['margin'] ?? 0);
         $backgroundColor = $downloadSettings['backgroundColor'] ?? '#ffffff';
         $backgroundColor = $this->downloadHelper->createColorFromHex($backgroundColor);
         $foregroundColor = $downloadSettings['foregroundColor'] ?? '#000000';
@@ -60,7 +58,7 @@ readonly class QrCodePreviewController
         $labelText = $downloadSettings['labelText'] ?? '';
         $labelTextColor = $downloadSettings['labelTextColor'] ?? '#000000';
         $labelTextColor = $this->downloadHelper->createColorFromHex($labelTextColor);
-        $labelMargin = new Margin((int)$downloadSettings['labelMarginTop'] ?? 0, 0, (int)$downloadSettings['labelMarginBottom'] ?? 0, 0);
+        $labelMargin = new Margin((int) $downloadSettings['labelMarginTop'] ?? 0, 0, (int) $downloadSettings['labelMarginBottom'] ?? 0, 0);
         $errorCorrectionLevel = [
             'low' => ErrorCorrectionLevel::Low,
             'medium' => ErrorCorrectionLevel::Medium,
@@ -91,7 +89,7 @@ readonly class QrCodePreviewController
 
         // Respond with the QR code as a base64-encoded PNG
         return new JsonResponse([
-            'qrCode' => 'data:image/png;base64,' . $qrCodeBase64,
+            'qrCode' => 'data:image/png;base64,'.$qrCodeBase64,
         ]);
     }
 }

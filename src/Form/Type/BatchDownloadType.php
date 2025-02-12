@@ -66,7 +66,6 @@ class BatchDownloadType extends AbstractType
                 'Quartile' => ErrorCorrectionLevel::Quartile->value,
                 'High' => ErrorCorrectionLevel::High->value,
             ],
-
         ]);
         $builder->add('download', SubmitType::class);
     }

@@ -5,7 +5,6 @@ namespace App\Controller\Admin;
 use App\Entity\Qr;
 use App\Form\Type\UrlsType;
 use App\Helper\DownloadHelper;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -16,8 +15,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
@@ -61,39 +60,42 @@ class QrCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        if ($pageName === Crud::PAGE_INDEX) {
+        if (Crud::PAGE_INDEX === $pageName) {
             return [
-             TextField::new('title', new TranslatableMessage('Title')),
-             TextEditorField::new('description', new TranslatableMessage('Description')),
-             CollectionField::new('urls', new TranslatableMessage('URLs'))
-                ->setFormTypeOption('entry_type', UrlsType::class)
-                ->allowAdd()
-                ->allowDelete()
-                ->renderExpanded(),
-             ChoiceField::new('mode', new TranslatableMessage('Mode'))
-                ->renderAsNativeWidget(),
-             TextField::new('author', new TranslatableMessage('Author'))
-                ->setDisabled(),
+                TextField::new('title', new TranslatableMessage('Title')),
+                TextEditorField::new('description', new TranslatableMessage('Description')),
+                CollectionField::new('urls', new TranslatableMessage('URLs'))
+                   ->setFormTypeOption('entry_type', UrlsType::class)
+                   ->allowAdd()
+                   ->allowDelete()
+                   ->renderExpanded(),
+                ChoiceField::new('mode', new TranslatableMessage('Mode'))
+                   ->renderAsNativeWidget(),
+                TextField::new('author', new TranslatableMessage('Author'))
+                   ->setDisabled(),
+                Field::new('customUrlButton', new TranslatableMessage('Open Resource'))
+                    ->setTemplatePath('fields/link/link.html.twig')
+                    ->hideOnForm(),
             ];
         }
 
-        if ($pageName === Crud::PAGE_EDIT || $pageName === Crud::PAGE_NEW) {
+        if (Crud::PAGE_EDIT === $pageName || Crud::PAGE_NEW === $pageName) {
             return [
-             IdField::new('id', 'ID')
-                ->setDisabled()
-                ->hideOnForm(),
-             TextField::new('title', new TranslatableMessage('Title')),
-             ChoiceField::new('mode', new TranslatableMessage('Mode'))
-                ->renderAsNativeWidget(),
-             TextEditorField::new('description', new TranslatableMessage('Description')),
-             CollectionField::new('urls', new TranslatableMessage('URLs'))
-                ->setFormTypeOption('entry_type', UrlsType::class)
-                ->allowAdd()
-                ->allowDelete()
-                ->renderExpanded(),
-             TextField::new('author', new TranslatableMessage('Author'))
-                ->setDisabled()
-                ->hideOnForm(),
+                IdField::new('id', 'ID')
+                   ->setDisabled()
+                   ->hideOnForm(),
+                TextField::new('title', new TranslatableMessage('Title')),
+                ChoiceField::new('mode', new TranslatableMessage('Mode'))
+                   ->renderAsNativeWidget(),
+                TextEditorField::new('description', new TranslatableMessage('Description')),
+                CollectionField::new('urls', new TranslatableMessage('URLs'))
+                   ->setFormTypeOption('entry_type', UrlsType::class)
+                   ->allowAdd()
+                   ->allowDelete()
+                   ->renderExpanded(),
+                TextField::new('author', new TranslatableMessage('Author'))
+                   ->setDisabled()
+                   ->hideOnForm(),
             ];
         }
     }
