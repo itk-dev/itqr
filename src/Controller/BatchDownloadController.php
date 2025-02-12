@@ -34,13 +34,14 @@ final class BatchDownloadController extends FrontPageController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
+
             $qrEntities = $this->qrRepository->findBy(['id' => $request->query->all()]);
 
             if (!$qrEntities) {
                 throw $this->createNotFoundException('No QR codes found');
             }
 
-            return $this->downloadHelper->generateQrCodes($qrEntities, $data);
+            return $this->downloadHelper->generateQrCodes($qrEntities, (array) $data);
         }
 
         return $this->render('form/batchDownload.html.twig', [
