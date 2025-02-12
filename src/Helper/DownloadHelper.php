@@ -27,7 +27,6 @@ class DownloadHelper
      */
     public function generateQrCodes(array $qrEntities, array $downloadSettings): StreamedResponse
     {
-
         // Map settings
         $settings = [
             'size' => (int) ($downloadSettings['size'] ?? 400),
