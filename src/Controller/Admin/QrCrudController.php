@@ -41,26 +41,28 @@ class QrCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield IdField::new('id', 'ID')
-            ->setDisabled();
+        return [
+            IdField::new('id', 'ID')
+                ->setDisabled(),
 
-        yield TextField::new('title', new TranslatableMessage('Title'));
+            TextField::new('title', new TranslatableMessage('Title')),
 
-        yield TextareaField::new('description', new TranslatableMessage('Description'))
-            ->renderAsHtml();
+            TextareaField::new('description', new TranslatableMessage('Description'))
+                ->renderAsHtml(),
 
-        yield ChoiceField::new('mode', new TranslatableMessage('Mode'))
-            ->renderAsNativeWidget();
+            ChoiceField::new('mode', new TranslatableMessage('Mode'))
+                ->renderAsNativeWidget(),
 
-        yield CollectionField::new('urls', new TranslatableMessage('URLs'))
-            ->setFormTypeOption('entry_type', UrlsType::class)
-            ->allowAdd()
-            ->allowDelete()
-            ->renderExpanded();
+            CollectionField::new('urls', new TranslatableMessage('URLs'))
+                ->setFormTypeOption('entry_type', UrlsType::class)
+                ->allowAdd()
+                ->allowDelete()
+                ->renderExpanded(),
 
-        yield Field::new('customUrlButton', new TranslatableMessage('Open Resource'))
-            ->setTemplatePath('fields/link/link.html.twig')
-            ->hideOnForm();
+            Field::new('customUrlButton', new TranslatableMessage('Open Resource'))
+                ->setTemplatePath('fields/link/link.html.twig')
+                ->hideOnForm(),
+        ];
     }
 
     /**
