@@ -58,7 +58,7 @@ readonly class QrCodePreviewController
         $labelText = $downloadSettings['labelText'] ?? '';
         $labelTextColor = $downloadSettings['labelTextColor'] ?? '#000000';
         $labelTextColor = $this->downloadHelper->createColorFromHex($labelTextColor);
-        $labelMargin = new Margin((int) $downloadSettings['labelMarginTop'] ?? 0, 0, (int) $downloadSettings['labelMarginBottom'] ?? 0, 0);
+        $labelMargin = new Margin((int) $downloadSettings['labelMarginTop'] ?: 0, 0, (int) $downloadSettings['labelMarginBottom'] ?: 0, 0);
         $errorCorrectionLevel = [
             'low' => ErrorCorrectionLevel::Low,
             'medium' => ErrorCorrectionLevel::Medium,

@@ -65,14 +65,14 @@ class QrCrudController extends AbstractCrudController
                 TextField::new('title', new TranslatableMessage('Title')),
                 TextEditorField::new('description', new TranslatableMessage('Description')),
                 CollectionField::new('urls', new TranslatableMessage('URLs'))
-                   ->setFormTypeOption('entry_type', UrlsType::class)
-                   ->allowAdd()
-                   ->allowDelete()
-                   ->renderExpanded(),
+                    ->setFormTypeOption('entry_type', UrlsType::class)
+                    ->allowAdd()
+                    ->allowDelete()
+                    ->renderExpanded(),
                 ChoiceField::new('mode', new TranslatableMessage('Mode'))
-                   ->renderAsNativeWidget(),
+                    ->renderAsNativeWidget(),
                 TextField::new('author', new TranslatableMessage('Author'))
-                   ->setDisabled(),
+                    ->setDisabled(),
                 Field::new('customUrlButton', new TranslatableMessage('Open Resource'))
                     ->setTemplatePath('fields/link/link.html.twig')
                     ->hideOnForm(),
@@ -82,22 +82,24 @@ class QrCrudController extends AbstractCrudController
         if (Crud::PAGE_EDIT === $pageName || Crud::PAGE_NEW === $pageName) {
             return [
                 IdField::new('id', 'ID')
-                   ->setDisabled()
-                   ->hideOnForm(),
+                    ->setDisabled()
+                    ->hideOnForm(),
                 TextField::new('title', new TranslatableMessage('Title')),
                 ChoiceField::new('mode', new TranslatableMessage('Mode'))
-                   ->renderAsNativeWidget(),
+                    ->renderAsNativeWidget(),
                 TextEditorField::new('description', new TranslatableMessage('Description')),
                 CollectionField::new('urls', new TranslatableMessage('URLs'))
-                   ->setFormTypeOption('entry_type', UrlsType::class)
-                   ->allowAdd()
-                   ->allowDelete()
-                   ->renderExpanded(),
+                    ->setFormTypeOption('entry_type', UrlsType::class)
+                    ->allowAdd()
+                    ->allowDelete()
+                    ->renderExpanded(),
                 TextField::new('author', new TranslatableMessage('Author'))
-                   ->setDisabled()
-                   ->hideOnForm(),
+                    ->setDisabled()
+                    ->hideOnForm(),
             ];
         }
+
+        return [];
     }
 
     /**
