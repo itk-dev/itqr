@@ -50,14 +50,14 @@ class Qr
     #[Assert\Valid]
     private Collection $urls;
 
+    #[ORM\Column(type: 'uuid')]
+    private ?UuidV7 $uuid = null;
+
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $updatedAt;
-
-    #[ORM\Column(type: 'uuid')]
-    private ?UuidV7 $uuid = null;
 
     public function __construct()
     {
