@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Uid\UuidV7;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource]
@@ -49,8 +50,8 @@ class Qr
     #[Assert\Valid]
     private Collection $urls;
 
-    #[ORM\Column(type: 'string', length: 36, unique: true, columnDefinition: 'CHAR(36)')]
-    private string $uuid = '';
+    #[ORM\Column(type: 'uuid')]
+    private ?UuidV7 $uuid = null;
 
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $createdAt;
@@ -131,7 +132,7 @@ class Qr
         return $this;
     }
 
-    public function getUuid(): ?string
+    public function getUuid(): ?UuidV7
     {
         return $this->uuid;
     }
@@ -139,7 +140,7 @@ class Qr
     #[ORM\PrePersist]
     public function setUuid(): void
     {
-        $this->uuid = Uuid::v7()->toRfc4122(); // Generate UUID in canonical format
+        $this->uuid = Uuid::v7();
     }
 
     /**
