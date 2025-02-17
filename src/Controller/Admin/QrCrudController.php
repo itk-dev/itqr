@@ -118,7 +118,7 @@ class QrCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         // Define batch download action
-        $batchDownloadAction = Action::new('download', new TranslatableMessage('Konfigurer download'))
+        $batchDownloadAction = Action::new('download', new TranslatableMessage('Configure download'))
             ->linkToCrudAction('batchDownload')
             ->addCssClass('btn btn-success')
             ->setIcon('fa fa-download');

@@ -22,7 +22,7 @@ class BatchDownloadType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('size', TextType::class, [
-            'label' => new TranslatableMessage('Størrelse (px)'),
+            'label' => new TranslatableMessage('Size (px)'),
             'data' => '400',
         ]);
         $builder->add('margin', TextType::class, [
@@ -30,29 +30,29 @@ class BatchDownloadType extends AbstractType
             'data' => '0',
         ]);
         $builder->add('backgroundColor', ColorType::class, [
-            'label' => new TranslatableMessage('Kode baggrund'),
+            'label' => new TranslatableMessage('Code background'),
             'data' => '#ffffff',
         ]);
         $builder->add('foregroundColor', ColorType::class, [
-            'label' => new TranslatableMessage('Kode farve'),
+            'label' => new TranslatableMessage('Code color'),
             'data' => '#000000',
         ]);
 
         $builder->add('labelText', TextType::class, [
-            'label' => new TranslatableMessage('Tekst'),
+            'label' => new TranslatableMessage('Text'),
             'required' => false,
         ]);
         $builder->add('labelTextColor', ColorType::class, [
-            'label' => new TranslatableMessage('Tekst farve'),
+            'label' => new TranslatableMessage('Text color'),
         ]);
 
         $builder->add('labelMarginTop', IntegerType::class, [
-            'label' => new TranslatableMessage('Tekst margin (top)'),
+            'label' => new TranslatableMessage('Text margin (top)'),
             'data' => 15,
         ]);
 
         $builder->add('labelMarginBottom', IntegerType::class, [
-            'label' => new TranslatableMessage('Tekst margin (bund)'),
+            'label' => new TranslatableMessage('Text margin (bund)'),
             'data' => 15,
         ]);
         $builder->add('logo', FileType::class, [
@@ -60,7 +60,7 @@ class BatchDownloadType extends AbstractType
             'required' => false,
         ]);
         $builder->add('errorCorrectionLevel', ChoiceType::class, [
-            'label' => new TranslatableMessage('Fejlreduktion'),
+            'label' => new TranslatableMessage('Error correction level'),
             'choices' => [
                 'Low' => ErrorCorrectionLevel::Low->value,
                 'Medium' => ErrorCorrectionLevel::Medium->value,
