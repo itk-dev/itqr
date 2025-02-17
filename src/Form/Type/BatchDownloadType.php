@@ -57,6 +57,7 @@ class BatchDownloadType extends AbstractType
         ]);
         $builder->add('logo', FileType::class, [
             'label' => new TranslatableMessage('Logo'),
+            'required' => false,
         ]);
         $builder->add('errorCorrectionLevel', ChoiceType::class, [
             'label' => new TranslatableMessage('Fejlreduktion'),
