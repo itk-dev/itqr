@@ -8,6 +8,9 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-13](https://github.com/itk-dev/itqr/pull/13)
+    - Added download functionality
+    - Preview QR code before download
 [PR-12](https://github.com/itk-dev/itqr/pull/12)
     - Setup paths for generation and redirect
     - Added view link on qr index
