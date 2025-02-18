@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Qr;
+use App\Entity\Tenant\Qr;
 use App\Form\Type\UrlsType;
 use App\Helper\DownloadHelper;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -55,7 +55,7 @@ class QrCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setDefaultSort(['updatedAt' => 'DESC']);
+            ->setDefaultSort(['modifiedAt' => 'DESC']);
     }
 
     public function configureFields(string $pageName): iterable

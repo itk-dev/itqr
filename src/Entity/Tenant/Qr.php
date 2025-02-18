@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Tenant;
 
 use ApiPlatform\Doctrine\Orm\Filter\BackedEnumFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
@@ -17,13 +17,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: QrRepository::class)]
-#[ORM\HasLifecycleCallbacks]
-class Qr
+class Qr extends AbstractTenantScopedEntity
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    public ?int $id = null;
+    #[ORM\Column(type: 'uuid', unique: true)]
+    private ?UuidV7 $uuid;
 
     #[ORM\Column(length: 255)]
     #[ApiFilter(SearchFilter::class, strategy: 'partial')]
@@ -50,26 +47,12 @@ class Qr
     #[Assert\Valid]
     private Collection $urls;
 
-    #[ORM\Column(type: 'uuid')]
-    private ?UuidV7 $uuid = null;
-
-    #[ORM\Column(type: 'datetime_immutable')]
-    private \DateTimeImmutable $createdAt;
-
-    #[ORM\Column(type: 'datetime_immutable')]
-    private \DateTimeImmutable $updatedAt;
-
     public function __construct()
     {
-        $this->urls = new ArrayCollection();
-        $now = new \DateTimeImmutable();
-        $this->createdAt = $now;
-        $this->updatedAt = $now;
-    }
+        parent::__construct();
 
-    public function getId(): ?int
-    {
-        return $this->id;
+        $this->urls = new ArrayCollection();
+        $this->uuid = Uuid::v7();
     }
 
     public function getTitle(): ?string
@@ -137,12 +120,6 @@ class Qr
         return $this->uuid;
     }
 
-    #[ORM\PrePersist]
-    public function setUuid(): void
-    {
-        $this->uuid = Uuid::v7();
-    }
-
     /**
      * @return Collection<int, Url>
      */
@@ -172,44 +149,6 @@ class Qr
         }
 
         return $this;
-    }
-
-    public function getCreatedAt(): \DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): \DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    #[ORM\PrePersist]
-    public function onPrePersist(): void
-    {
-        $now = new \DateTimeImmutable();
-        $this->createdAt = $now;
-        $this->updatedAt = $now;
-    }
-
-    #[ORM\PreUpdate]
-    public function onPreUpdate(): void
-    {
-        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function removeAllUrls(): void

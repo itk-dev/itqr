@@ -2,14 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Qr;
 use App\Repository\QrRepository;
 use App\Repository\UrlRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Uid\Uuid;
 
 final class RedirectController extends AbstractController
 {

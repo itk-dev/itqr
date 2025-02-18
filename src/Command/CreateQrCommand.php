@@ -2,8 +2,8 @@
 
 namespace App\Command;
 
-use App\Entity\Qr;
-use App\Entity\Url;
+use App\Entity\Tenant\Qr;
+use App\Entity\Tenant\Url;
 use App\Enum\QrModeEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;

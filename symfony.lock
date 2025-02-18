@@ -76,6 +76,9 @@
             ".php-cs-fixer.dist.php"
         ]
     },
+    "itk-dev/openid-connect-bundle": {
+        "version": "4.0.1"
+    },
     "phpstan/phpstan": {
         "version": "2.1",
         "recipe": {

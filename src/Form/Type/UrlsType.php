@@ -2,7 +2,7 @@
 
 namespace App\Form\Type;
 
-use App\Entity\Url;
+use App\Entity\Tenant\Url;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

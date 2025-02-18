@@ -2,7 +2,7 @@
 
 namespace App\Helper;
 
-use App\Entity\Qr;
+use App\Entity\Tenant\Qr;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Encoding\Encoding;
