@@ -222,38 +222,4 @@ class Qr
             $this->removeUrl($url);
         }
     }
-
-    public function getConfig(): Config
-    {
-        $config = $this->config;
-
-        return new Config(
-          $config['size'],
-          $config['margin'],
-          $config['code_background'],
-          $config['code_color'],
-          $config['text'],
-          $config['text_color'],
-          $config['text_margin_top'],
-          $config['text_margin_bottom'],
-          $config['error_correction_level'],
-        );
-    }
-
-    public function setConfig(Config $config): static
-    {
-        $this->config = [
-          'size' => $config->getSize(),
-          'margin' => $config->getMargin(),
-          'code_background' => $config->getCodeBackground(),
-          'code_color' => $config->getCodeColor(),
-          'text' => $config->getText(),
-          'text_color' => $config->getTextColor(),
-          'text_margin_top' => $config->getTextMarginTop(),
-          'text_margin_bottom' => $config->getTextMarginBottom(),
-          'error_correction_level' => $config->getErrorCorrectionLevel()
-        ];
-
-        return $this;
-    }
 }
