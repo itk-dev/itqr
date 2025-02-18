@@ -7,6 +7,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Enum\QrModeEnum;
+use App\QrConfig\Config;
 use App\Repository\QrRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -58,6 +59,9 @@ class Qr
 
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $updatedAt;
+
+    #[ORM\Column(type: 'json')]
+    private ?array $config = null;
 
     public function __construct()
     {
@@ -217,5 +221,39 @@ class Qr
         foreach ($this->urls as $url) {
             $this->removeUrl($url);
         }
+    }
+
+    public function getConfig(): Config
+    {
+        $config = $this->config;
+
+        return new Config(
+          $config['size'],
+          $config['margin'],
+          $config['code_background'],
+          $config['code_color'],
+          $config['text'],
+          $config['text_color'],
+          $config['text_margin_top'],
+          $config['text_margin_bottom'],
+          $config['error_correction_level'],
+        );
+    }
+
+    public function setConfig(Config $config): static
+    {
+        $this->config = [
+          'size' => $config->getSize(),
+          'margin' => $config->getMargin(),
+          'code_background' => $config->getCodeBackground(),
+          'code_color' => $config->getCodeColor(),
+          'text' => $config->getText(),
+          'text_color' => $config->getTextColor(),
+          'text_margin_top' => $config->getTextMarginTop(),
+          'text_margin_bottom' => $config->getTextMarginBottom(),
+          'error_correction_level' => $config->getErrorCorrectionLevel()
+        ];
+
+        return $this;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Field\ConfigField;
 use App\Entity\Qr;
 use App\Form\Type\UrlsType;
 use App\Helper\DownloadHelper;
@@ -13,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\CrudControllerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
@@ -64,11 +66,9 @@ class QrCrudController extends AbstractCrudController
             return [
                 TextField::new('title', new TranslatableMessage('Title')),
                 TextEditorField::new('description', new TranslatableMessage('Description')),
-                CollectionField::new('urls', new TranslatableMessage('URLs'))
-                    ->setFormTypeOption('entry_type', UrlsType::class)
-                    ->allowAdd()
-                    ->allowDelete()
-                    ->renderExpanded(),
+                AssociationField::new('urls')
+                  ->setFormTypeOptions(['by_reference' => false])
+                  ->setTemplatePath('fields/url/urls.html.twig'),
                 ChoiceField::new('mode', new TranslatableMessage('Mode'))
                     ->renderAsNativeWidget(),
                 TextField::new('author', new TranslatableMessage('Author'))
@@ -76,6 +76,7 @@ class QrCrudController extends AbstractCrudController
                 Field::new('customUrlButton', new TranslatableMessage('Open Resource'))
                     ->setTemplatePath('fields/link/link.html.twig')
                     ->hideOnForm(),
+                ConfigField::new('config', new TranslatableMessage('Configuration'))
             ];
         }
 
@@ -96,6 +97,7 @@ class QrCrudController extends AbstractCrudController
                 TextField::new('author', new TranslatableMessage('Author'))
                     ->setDisabled()
                     ->hideOnForm(),
+                ConfigField::new('config', new TranslatableMessage('Configuration'))
             ];
         }
 

@@ -45,9 +45,6 @@ readonly class QrCodePreviewController
             $logo = null;
         }
 
-        // Build the data you want encoded in the QR code
-        $qrString = 'https://www.google.dk';
-
         // Get QR code settings or use defaults
         $size = (int) min(400, $downloadSettings['size'] ?? 400);
         $margin = (int) ($downloadSettings['margin'] ?? 0);
@@ -69,7 +66,6 @@ readonly class QrCodePreviewController
         // Generate the QR Code using Endroid QR Code Builder
         $builder = new Builder();
         $result = $builder->build(
-            data: $qrString,
             encoding: new Encoding('UTF-8'),
             errorCorrectionLevel: $errorCorrectionLevel,
             size: $size,
