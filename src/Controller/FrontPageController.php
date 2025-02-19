@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Qr;
+use App\Entity\Tenant\Qr;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;

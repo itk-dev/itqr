@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Qr;
+use App\Entity\Tenant\Qr;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

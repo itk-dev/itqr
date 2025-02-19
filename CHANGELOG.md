@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-14](https://github.com/itk-dev/itqr/pull/14)
+    - Added initial OIDC and Tenant setup
 [PR-13](https://github.com/itk-dev/itqr/pull/13)
     - Added download functionality
     - Preview QR code before download

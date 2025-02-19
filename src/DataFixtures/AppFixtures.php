@@ -2,8 +2,8 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Qr;
-use App\Entity\Url;
+use App\Entity\Tenant\Qr;
+use App\Entity\Tenant\Url;
 use App\Enum\QrModeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -24,7 +24,7 @@ class AppFixtures extends Fixture
             $qr->setAuthor('fixture_author');
             $qr->setMode(QrModeEnum::DEFAULT);
             $qr->setCreatedAt(new \DateTimeImmutable());
-            $qr->setUpdatedAt(new \DateTimeImmutable());
+            $qr->setModifiedAt(new \DateTimeImmutable());
 
             $manager->persist($qr);
 

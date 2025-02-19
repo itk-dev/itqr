@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Controller\Admin\QrCrudController;
-use App\Entity\Qr;
-use App\Entity\Url;
+use App\Entity\Tenant\Qr;
+use App\Entity\Tenant\Url;
 use App\Form\SetUrlType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
