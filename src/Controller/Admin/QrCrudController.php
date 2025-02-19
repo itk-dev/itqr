@@ -97,7 +97,7 @@ class QrCrudController extends AbstractCrudController
                 TextField::new('author', new TranslatableMessage('Author'))
                     ->setDisabled()
                     ->hideOnForm(),
-                ConfigField::new('config', new TranslatableMessage('Configuration'))
+                ConfigField::new('qrConfig', new TranslatableMessage('Configuration'))
             ];
         }
 
