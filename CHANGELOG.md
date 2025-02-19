@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-16](https://github.com/itk-dev/itqr/pull/16)
+    - Changed url in list to link to redirect path
 [PR-13](https://github.com/itk-dev/itqr/pull/13)
     - Added download functionality
     - Preview QR code before download
