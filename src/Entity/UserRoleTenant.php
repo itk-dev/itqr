@@ -23,13 +23,11 @@ class UserRoleTenant extends AbstractBaseEntity implements \JsonSerializable
     public function __construct(
         User $user,
         Tenant $tenant,
-    )
-    {
+    ) {
         parent::__construct();
         $this->user = $user;
         $this->tenant = $tenant;
     }
-
 
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::JSON)]
     private array $roles = [];

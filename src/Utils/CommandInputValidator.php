@@ -108,7 +108,7 @@ class CommandInputValidator
     }
 
     /**
-     * Validate array of tenant keys
+     * Validate array of tenant keys.
      *
      * @param string[] $tenantKeys
      *
