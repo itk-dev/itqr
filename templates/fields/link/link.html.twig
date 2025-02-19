@@ -1,9 +1,9 @@
-{% set generate_qr_url = app_base_generate_path ~ app_base_redirect_path ~ entity.instance.uuid %}
+{% set generate_qr_url = app_base_redirect_path ~ entity.instance.uuid %}
 
-<a href="{{ generate_qr_url }}" target="_blank" class="popover-link">
+<a href="{{ qr_code_data_uri(generate_qr_url) }}" target="_blank" class="popover-link">
     View
     <span class="popover-content">
-       <img src="{{ generate_qr_url }}" alt="Generated Image" />
+       <img src="{{ qr_code_data_uri(generate_qr_url) }}" alt="Generated Image" />
    </span>
 </a>
 
