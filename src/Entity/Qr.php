@@ -11,6 +11,7 @@ use App\Repository\QrRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Embedded;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Uid\UuidV7;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -58,6 +59,9 @@ class Qr
 
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $updatedAt;
+
+    #[Embedded(class: QrConfig::class)]
+    private QrConfig $qrConfig;
 
     public function __construct()
     {
@@ -196,6 +200,16 @@ class Qr
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    public function setQrConfig(QrConfig $qrConfig): void
+    {
+      $this->qrConfig = $qrConfig;
+    }
+
+    public function getQrConfig(): QrConfig
+    {
+      return $this->qrConfig;
     }
 
     #[ORM\PrePersist]
