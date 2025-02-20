@@ -1,6 +1,6 @@
 # README
 
-Platform to create and update QR codes for URLs. All QR codes/URLs will point back to the system, which then 
+Platform to create and update QR codes for URLs. All QR codes/URLs will point back to the system, which then
 handles redirect to the relevant end URL. This enables updates to QR codes even after they are deployed in
 the field.
 
