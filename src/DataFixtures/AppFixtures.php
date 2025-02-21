@@ -31,7 +31,7 @@ class AppFixtures extends Fixture
         // Create Qr entities
         for ($i = 0; $i < 80; ++$i) {
             $qr = new Qr();
-            $qr->setTitle('qr ' . $i);
+            $qr->setTitle('qr '.$i);
             $qr->setDepartment(0 == $i % 2 ? $departments[0] : $departments[1]);
             $qr->setAuthor('fixture_author');
             $qr->setMode(QrModeEnum::DEFAULT);
@@ -44,7 +44,7 @@ class AppFixtures extends Fixture
             $manager->persist($qr);
 
             $url = new Url();
-            $url->setUrl('http://localhost/loremipsum/long_url/' . $i);
+            $url->setUrl('http://localhost/loremipsum/long_url/'.$i);
             $url->setQr($qr);
             $url->setTenant($tenant);
             $url->setCreatedAt(new \DateTimeImmutable());

@@ -106,7 +106,7 @@ readonly class QrCodePreviewController
             );
 
             // Convert the QR code image to base64 and add to the array
-            $data[$qrCodeTitle] = 'data:image/png;base64,' . base64_encode($result->getString());
+            $data[$qrCodeTitle] = 'data:image/png;base64,'.base64_encode($result->getString());
         }
 
         // Respond with the array of QR codes as base64-encoded PNGs
