@@ -23,6 +23,7 @@
         "symfony/maker-bundle": "^1.62.1",
         "symfony/runtime": "~7.2.0",
         "symfony/twig-bundle": "~7.2.0",
+        "symfony/webpack-encore-bundle": "^2.2",
         "symfony/yaml": "~7.2.0"
     },
     "require-dev": {
