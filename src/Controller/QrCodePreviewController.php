@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Helper\DownloadHelper;
+use App\Repository\QrRepository;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
@@ -18,26 +19,29 @@ readonly class QrCodePreviewController
 {
     public function __construct(
         private DownloadHelper $downloadHelper,
+        private readonly QrRepository $qrRepository,
     ) {
     }
 
     /**
-     * Handles the generation of a QR codes for review before batch download.
-     * Provides the QR code as a base64-encoded PNG in the response.
+     * Handles the generation of QR codes for multiple selected entities.
+     * Returns the QR codes as base64-encoded strings in an array.
      *
-     * @param Request $request the HTTP request containing parameters for the QR code
+     * @param Request $request the HTTP request containing parameters for the QR codes
      *
-     * @return JsonResponse a JSON response containing the generated QR code as a base64-encoded string
+     * @return JsonResponse a JSON response containing the generated QR codes as a base64-encoded array
      *
      * @throws ValidationException
      */
-    #[Route('/generate-qr-code', name: 'generate_qr_code', methods: ['POST'])]
+    #[Route('/generate-qr-codes', name: 'generate_qr_codes', methods: ['POST'])]
     public function generateQrCode(Request $request): JsonResponse
     {
         // Extract data from the request
         $data = $request->request->all();
 
         $downloadSettings = $data['batch_download'] ?? [];
+        $selectedQrCodes = $data['selectedQrCodes'] ?? [];
+        $selectedQrCodes = json_decode($selectedQrCodes, true);
 
         $logo = $request->files->get('batch_download')['logo'] ?? null;
 
@@ -45,8 +49,12 @@ readonly class QrCodePreviewController
             $logo = null;
         }
 
-        // Build the data you want encoded in the QR code
-        $qrString = 'https://www.google.dk';
+        // Validate selected QR codes
+        if (!is_array($selectedQrCodes) || empty($selectedQrCodes)) {
+            return new JsonResponse([
+                'error' => 'No QR codes selected.',
+            ], 400);
+        }
 
         // Get QR code settings or use defaults
         $size = (int) min(400, $downloadSettings['size'] ?? 400);
@@ -66,30 +74,44 @@ readonly class QrCodePreviewController
             'high' => ErrorCorrectionLevel::High,
         ][$downloadSettings['errorCorrectionLevel'] ?? 'medium'] ?? ErrorCorrectionLevel::Medium;
 
-        // Generate the QR Code using Endroid QR Code Builder
-        $builder = new Builder();
-        $result = $builder->build(
-            data: $qrString,
-            encoding: new Encoding('UTF-8'),
-            errorCorrectionLevel: $errorCorrectionLevel,
-            size: $size,
-            margin: $margin,
-            foregroundColor: $foregroundColor,
-            backgroundColor: $backgroundColor,
-            labelText: $labelText,
-            labelAlignment: LabelAlignment::Center,
-            labelMargin: $labelMargin,
-            labelTextColor: $labelTextColor,
-            logoPath: $logo,
-            logoPunchoutBackground: false,
-        );
+        // Initialize the array for storing base64-encoded QR codes
+        $data = [];
 
-        // Convert the QR code image to base64
-        $qrCodeBase64 = base64_encode($result->getString());
+        // Loop through each selected QR code entity ID
+        foreach ($selectedQrCodes as $qrCodeId) {
+            // Replace this with logic to retrieve the URL (or string) for each QR code entity
+            $qrCodeUrl = $this->qrRepository->findOneBy(['id' => $qrCodeId])->getUrls()->first()->getUrl();
+            $qrCodeTitle = $this->qrRepository->findOneBy(['id' => $qrCodeId])->getTitle();
 
-        // Respond with the QR code as a base64-encoded PNG
+            if (!$qrCodeUrl) {
+                continue;
+            }
+
+            // Generate the QR Code using Endroid QR Code Builder
+            $builder = new Builder();
+            $result = $builder->build(
+                data: $qrCodeUrl,
+                encoding: new Encoding('UTF-8'),
+                errorCorrectionLevel: $errorCorrectionLevel,
+                size: $size,
+                margin: $margin,
+                foregroundColor: $foregroundColor,
+                backgroundColor: $backgroundColor,
+                labelText: $labelText,
+                labelAlignment: LabelAlignment::Center,
+                labelMargin: $labelMargin,
+                labelTextColor: $labelTextColor,
+                logoPath: $logo,
+                logoPunchoutBackground: false,
+            );
+
+            // Convert the QR code image to base64 and add to the array
+            $data[$qrCodeTitle] = 'data:image/png;base64,' . base64_encode($result->getString());
+        }
+
+        // Respond with the array of QR codes as base64-encoded PNGs
         return new JsonResponse([
-            'qrCode' => 'data:image/png;base64,'.$qrCodeBase64,
+            'qrCodes' => $data,
         ]);
     }
 }
