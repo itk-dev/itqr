@@ -1,6 +1,10 @@
 # README
 
-This project is a Symfony application built using PHP 8.2 and utilizes Docker for environment isolation.
+Platform to create and update QR codes for URLs. All QR codes/URLs will point back to the system, which then
+handles redirect to the relevant end URL. This enables updates to QR codes even after they are deployed in
+the field.
+
+This project is a Symfony application built using PHP 8.4 and utilizes Docker for environment isolation.
 Below are directions to set up, run, and maintain the project effectively.
 
 ---
