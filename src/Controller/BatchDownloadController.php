@@ -46,6 +46,7 @@ final class BatchDownloadController extends FrontPageController
 
         return $this->render('form/batchDownload.html.twig', [
             'form' => $form,
+            'selectedQrCodes' => json_encode($request->query->all()),
             'count' => count($request->query->all()),
         ]);
     }
