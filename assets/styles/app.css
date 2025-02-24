@@ -1,0 +1,72 @@
+
+.qr-preview h3 {
+    margin-bottom: 10px;
+}
+
+.form-wrapper {
+    display: flex;
+}
+
+.form-wrapper form {
+    flex: 1;
+    padding-right: 30px;
+}
+
+.popover-link {
+    position: relative;
+    display: inline-block;
+    text-decoration: underline;
+}
+
+.popover-content {
+    display: none;
+    position: absolute;
+    top: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    z-index: 1000;
+    white-space: nowrap;
+}
+
+.popover-content img {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+.popover-link:hover .popover-content {
+    display: block;
+}
+
+
+.qr-preview {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    flex: 1;
+    height: 475px;
+
+    .nav-link {
+        color: #000;
+    }
+    .nav-link.active {
+        color: #000;
+        font-weight: bold;
+    }
+}
+
+.qr-preview .qr-code-tab-pane {
+    text-align: center;
+}
+
+.qr-preview .qr-code-image {
+    max-width: 100%;
+    display: block;
+    margin: 15px auto 0 auto;
+}

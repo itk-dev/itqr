@@ -23,7 +23,9 @@
         "symfony/maker-bundle": "^1.62.1",
         "symfony/runtime": "~7.2.0",
         "symfony/twig-bundle": "~7.2.0",
-        "symfony/yaml": "~7.2.0"
+        "symfony/webpack-encore-bundle": "^2.2",
+        "symfony/yaml": "~7.2.0",
+        "twig/twig": "^3.19.0"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^4.0",
