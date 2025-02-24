@@ -4,9 +4,6 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    app_base_url: '%env(APP_BASE_URL)%' # Add the APP_BASE_URL parameter
-    app_base_generate_path: '%env(APP_BASE_GENERATE_PATH)%'
-    app_base_redirect_path: '%env(APP_BASE_REDIRECT_PATH)%'
 
 services:
     # default configuration for services in *this* file

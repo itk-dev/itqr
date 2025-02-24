@@ -3,8 +3,6 @@ twig:
     paths:
         '%kernel.project_dir%/vendor/easycorp/easyadmin-bundle/templates': 'EasyAdmin'
     globals:
-        app_base_generate_path: '%app_base_generate_path%'
-        app_base_redirect_path: '%app_base_redirect_path%'
 
 when@test:
     twig:
