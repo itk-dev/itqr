@@ -16,7 +16,7 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'app:create-qr',
+    name: 'app:qr:create',
     description: 'Create a QR Code',
 )]
 class CreateQrCommand extends Command
