@@ -116,7 +116,7 @@ jobs:
           docker compose run --rm phpfpm composer code-analysis
 
   apispec:
-    name: PHP - Code analysis
+    name: API Spec Change 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
