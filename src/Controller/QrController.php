@@ -32,7 +32,7 @@ final class QrController extends AbstractController
 
         // @TODO: Add what happens if a qr has multiple urls with certain modes.
 
-        if (!$urls) {
+        if ($urls->isEmpty()) {
             throw $this->createNotFoundException('No URLs found for the given QR code');
         }
 

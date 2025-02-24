@@ -21,7 +21,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 readonly class PrePersistListener
 {
     public function __construct(
-        private Security $security,
+        // private Security $security,
         private TenantRepository $tenantRepository,
     ) {
     }

@@ -36,7 +36,6 @@ class CreateQrCommand extends Command
         $qr->setTitle($attributes['title']);
         $qr->setDepartment($attributes['department']);
         $qr->setDescription($attributes['description']);
-        $qr->setAuthor($attributes['author']);
         $qr->setMode(QrModeEnum::{$attributes['mode']});
 
         $this->entityManager->persist($qr);
