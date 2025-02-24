@@ -62,7 +62,7 @@
 
                 const formData = new FormData(form);
                 try {
-                    const response = await fetch('{{ path('generate_qr_code') }}', {
+                    const response = await fetch('{{ path('admin_generate_qr') }}', {
                         method: 'POST',
                         body: formData,
                     });
