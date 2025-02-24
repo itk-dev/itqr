@@ -20,6 +20,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
+use Endroid\QrCode\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Translation\TranslatableMessage;
@@ -37,19 +38,6 @@ class QrCrudController extends AbstractCrudController
     public static function getEntityFqcn(): string
     {
         return Qr::class;
-    }
-
-    public function createEntity(string $entityFqcn): Qr
-    {
-        $qr = new Qr();
-        $user = $this->getUser();
-        if ($user) {
-            $qr->setAuthor($user->getUserIdentifier());
-        } else {
-            $qr->setAuthor('anonymous');
-        }
-
-        return $qr;
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -71,8 +59,6 @@ class QrCrudController extends AbstractCrudController
                     ->renderExpanded(),
                 ChoiceField::new('mode', new TranslatableMessage('Mode'))
                     ->renderAsNativeWidget(),
-                TextField::new('author', new TranslatableMessage('Author'))
-                    ->setDisabled(),
                 Field::new('customUrlButton', new TranslatableMessage('Open Resource'))
                     ->setTemplatePath('fields/link/link.html.twig')
                     ->hideOnForm(),
@@ -93,9 +79,6 @@ class QrCrudController extends AbstractCrudController
                     ->allowAdd()
                     ->allowDelete()
                     ->renderExpanded(),
-                TextField::new('author', new TranslatableMessage('Author'))
-                    ->setDisabled()
-                    ->hideOnForm(),
             ];
         }
 
@@ -141,7 +124,7 @@ class QrCrudController extends AbstractCrudController
 
     public function setUrl(BatchActionDto $batchActionDto): RedirectResponse
     {
-        return $this->redirectToRoute('app_set_url', $batchActionDto->getEntityIds());
+        return $this->redirectToRoute('admin_set_url', $batchActionDto->getEntityIds());
     }
 
     /**
@@ -150,6 +133,8 @@ class QrCrudController extends AbstractCrudController
      * @param AdminContext $context the context containing the entity data
      *
      * @return StreamedResponse the response containing the generated QR codes
+     *
+     * @throws ValidationException
      */
     public function quickDownload(AdminContext $context): StreamedResponse
     {
@@ -168,6 +153,6 @@ class QrCrudController extends AbstractCrudController
      */
     public function batchDownload(BatchActionDto $batchActionDto): RedirectResponse
     {
-        return $this->redirectToRoute('app_batch_download', $batchActionDto->getEntityIds());
+        return $this->redirectToRoute('admin_batch_download', $batchActionDto->getEntityIds());
     }
 }
