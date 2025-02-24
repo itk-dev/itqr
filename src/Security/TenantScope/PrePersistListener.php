@@ -41,7 +41,9 @@ readonly class PrePersistListener
         }
 
         $all = $this->tenantRepository->findAll();
-        $object->setTenant($all[0]);
+        if (!empty($all)) {
+            $object->setTenant($all[0]);
+        }
 
         //        @TODO Enable when OIDC setup complete
         //        $user = $this->security->getUser();
