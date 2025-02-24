@@ -23,7 +23,8 @@ readonly class PrePersistListener
     public function __construct(
         private Security $security,
         private TenantRepository $tenantRepository,
-    ) {}
+    ) {
+    }
 
     public function prePersist(PrePersistEventArgs $args): void
     {
@@ -32,10 +33,6 @@ readonly class PrePersistListener
 
     /**
      * Set entity tenant from users active tenant.
-     *
-     * @param object $object
-     *
-     * @return void
      */
     private function setTenant(object $object): void
     {
@@ -46,11 +43,11 @@ readonly class PrePersistListener
         $all = $this->tenantRepository->findAll();
         $object->setTenant($all[0]);
 
-//        @TODO Enable when OIDC setup complete
-//        $user = $this->security->getUser();
-//
-//        if ($user instanceof User) {
-//            $object->setTenant($user->getActiveTenant());
-//        }
+        //        @TODO Enable when OIDC setup complete
+        //        $user = $this->security->getUser();
+        //
+        //        if ($user instanceof User) {
+        //            $object->setTenant($user->getActiveTenant());
+        //        }
     }
 }
