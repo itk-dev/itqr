@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
-use App\Controller\Admin\QrCrudController;
 use App\Entity\Tenant\Qr;
 use App\Entity\Tenant\Url;
 use App\Form\SetUrlType;
@@ -12,7 +11,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class SetUrlController extends FrontPageController
+final class SetUrlController extends DashboardController
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -24,7 +23,7 @@ final class SetUrlController extends FrontPageController
     /**
      * @todo add permission check here.
      */
-    #[Route('/batch/set_url', name: 'app_set_url')]
+    #[Route('/admin/batch/set_url', name: 'admin_set_url')]
     public function index(): Response
     {
         $form = $this->createForm(SetUrlType::class);

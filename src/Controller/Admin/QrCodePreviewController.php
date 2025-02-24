@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Helper\DownloadHelper;
 use Endroid\QrCode\Builder\Builder;
@@ -31,7 +31,7 @@ readonly class QrCodePreviewController
      *
      * @throws ValidationException
      */
-    #[Route('/generate-qr-code', name: 'generate_qr_code', methods: ['POST'])]
+    #[Route('/admin/generate-qr', name: 'admin_generate_qr', methods: ['POST'])]
     public function generateQrCode(Request $request): JsonResponse
     {
         // Extract data from the request
@@ -46,7 +46,7 @@ readonly class QrCodePreviewController
         }
 
         // Build the data you want encoded in the QR code
-        $qrString = 'https://www.google.dk';
+        $qrString = 'https://www.aarhus.dk';
 
         // Get QR code settings or use defaults
         $size = (int) min(400, $downloadSettings['size'] ?? 400);
