@@ -8,6 +8,9 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-18](https://github.com/itk-dev/itqr/pull/18)
+    - Extract inline assets
+    - Improve download preview to serve multiple reviews
 [PR-17](https://github.com/itk-dev/itqr/pull/17)
     - Cleanup github actions, Standardize on using docker compose
 [PR-14](https://github.com/itk-dev/itqr/pull/14)
