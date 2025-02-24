@@ -36,6 +36,7 @@ tasks:
     desc: "Start docker compose stuff and install composer stuff"
     cmds:
       - task compose -- pull
+      - task compose -- run --rm node npm install
       - task compose -- up --detach --remove-orphans --wait
       - task composer -- install
     silent: true
@@ -69,3 +70,13 @@ tasks:
     desc: "Apply fixtures"
     cmds:
       - task console -- doctrine:fixtures:load
+
+  run-dev:
+    desc: "Build assets"
+    cmds:
+      - task compose -- run --rm node npm run dev
+
+  run-watch:
+    desc: "Build and watch assets"
+    cmds:
+      - task compose -- run --rm node npm run watch
