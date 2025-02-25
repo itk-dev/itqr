@@ -29,6 +29,28 @@ Below are directions to set up, run, and maintain the project effectively.
 
 ---
 
+## Building assets
+
+The assets [app.css](/assets/styles/app.css) and [app.js](/assets/app.js) are served through webpack.
+
+Build assets:
+
+  ```bash
+   task run-dev
+   ```
+
+Build and watch assets:
+
+  ```bash
+   task run-watch
+   ```
+
+Build assets for production:
+
+  ```bash
+   task run-build
+   ```
+
 ## Running Coding Standards
 
 The project uses [PHP CS Fixer](https://cs.symfony.com/) for code formatting and [PHPStan](https://phpstan.org/) for static
