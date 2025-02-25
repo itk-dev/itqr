@@ -31,8 +31,6 @@ Below are directions to set up, run, and maintain the project effectively.
 
 ## Building assets
 
-## Building assets
-
 The assets [app.css](/assets/styles/app.css) and [app.js](/assets/app.js) are served through webpack.
 
 Build assets:
