@@ -80,3 +80,8 @@ tasks:
     desc: "Build and watch assets"
     cmds:
       - task compose -- run --rm node npm run watch
+
+  run-build:
+    desc: "Build assets for production"
+    cmds:
+      - task compose -- run --rm node npm run build
