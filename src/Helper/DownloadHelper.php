@@ -12,9 +12,15 @@ use Endroid\QrCode\Label\LabelAlignment;
 use Endroid\QrCode\Label\Margin\Margin;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DownloadHelper
 {
+    public function __construct(
+        private UrlGeneratorInterface $urlGenerator,
+    ) {
+    }
+
     /**
      * Generate and download QR Codes for multiple entities.
      *
@@ -144,7 +150,7 @@ class DownloadHelper
         array $settings,
     ): string {
         $uuid = $qrEntity->getUuid();
-        $qrContent = $_ENV['APP_BASE_REDIRECT_PATH'].$uuid;
+        $qrContent = $this->urlGenerator->generate('app_qr_index', ['uuid' => $uuid]);
 
         // Use the Endroid QR Code Builder to generate the QR Code
         $result = (new Builder())->build(

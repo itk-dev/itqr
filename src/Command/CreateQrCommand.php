@@ -16,7 +16,7 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'app:create-qr',
+    name: 'app:qr:create',
     description: 'Create a QR Code',
 )]
 class CreateQrCommand extends Command
@@ -36,7 +36,6 @@ class CreateQrCommand extends Command
         $qr->setTitle($attributes['title']);
         $qr->setDepartment($attributes['department']);
         $qr->setDescription($attributes['description']);
-        $qr->setAuthor($attributes['author']);
         $qr->setMode(QrModeEnum::{$attributes['mode']});
 
         $this->entityManager->persist($qr);

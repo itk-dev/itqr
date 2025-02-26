@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Tenant\Qr;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -10,9 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Translation\TranslatableMessage;
 
-class FrontPageController extends AbstractDashboardController
+class DashboardController extends AbstractDashboardController
 {
-    #[Route('/', name: 'admin')]
+    #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
         return $this->render('@EasyAdmin/page/content.html.twig');
@@ -35,6 +35,6 @@ class FrontPageController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud(new TranslatableMessage('Qr code'), 'fa fa-qrcode', Qr::class);
+        yield MenuItem::linkToCrud(new TranslatableMessage('QR codes'), 'fa fa-qrcode', Qr::class);
     }
 }

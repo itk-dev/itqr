@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Form\Type\BatchDownloadType;
 use App\Helper\DownloadHelper;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class BatchDownloadController extends FrontPageController
+final class BatchDownloadController extends DashboardController
 {
     public function __construct(
         private readonly RequestStack $requestStack,
@@ -20,10 +20,8 @@ final class BatchDownloadController extends FrontPageController
 
     /**
      * @throws \Endroid\QrCode\Exception\ValidationException
-     *
-     * @todo add permission check here.
      */
-    #[Route('/batch/download', name: 'app_batch_download')]
+    #[Route('/admin/batch/download', name: 'admin_batch_download')]
     public function index(): Response
     {
         $form = $this->createForm(BatchDownloadType::class);

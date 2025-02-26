@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Helper\DownloadHelper;
 use App\Repository\QrRepository;
@@ -33,7 +33,7 @@ readonly class QrCodePreviewController
      *
      * @throws ValidationException
      */
-    #[Route('/generate-qr-codes', name: 'generate_qr_codes', methods: ['POST'])]
+    #[Route('/admin/generate-qr-codes', name: 'admin_generate_qr_codes', methods: ['POST'])]
     public function generateQrCode(Request $request): JsonResponse
     {
         // Extract data from the request

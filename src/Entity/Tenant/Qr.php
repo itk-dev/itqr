@@ -20,14 +20,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Qr extends AbstractTenantScopedEntity
 {
     #[ORM\Column(type: 'uuid', unique: true)]
+    #[Assert\NotNull(message: 'The UUID field cannot be empty.')]
     private ?UuidV7 $uuid;
 
     #[ORM\Column(length: 255)]
     #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private string $title = '';
-
-    #[ORM\Column(length: 255)]
-    private string $author = '';
 
     #[ORM\Column(length: 255)]
     #[ApiFilter(SearchFilter::class, strategy: 'partial')]
@@ -43,7 +41,7 @@ class Qr extends AbstractTenantScopedEntity
     /**
      * @var Collection<int, Url>
      */
-    #[ORM\OneToMany(targetEntity: Url::class, mappedBy: 'qr', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Url::class, mappedBy: 'qr', cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: true)]
     #[Assert\Valid]
     private Collection $urls;
 
@@ -63,18 +61,6 @@ class Qr extends AbstractTenantScopedEntity
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getAuthor(): ?string
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(string $author): self
-    {
-        $this->author = $author;
 
         return $this;
     }
