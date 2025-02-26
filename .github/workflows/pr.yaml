@@ -41,7 +41,6 @@ jobs:
           docker compose run --rm phpfpm bin/console doctrine:fixtures:load --no-interaction
 
   test-suite:
-    if: false # Currently the project has no tests
     name: Test suite
     runs-on: ubuntu-latest
     steps:

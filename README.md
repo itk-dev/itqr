@@ -29,6 +29,16 @@ Below are directions to set up, run, and maintain the project effectively.
 
 ---
 
+## Testing
+
+The standard Symfony test pack is installed along with the panther package. Please the relevant Symfomny
+docs for more info:
+* [Application Tests](https://symfony.com/doc/current/testing.html#application-tests)
+* [End to End Tests (E2E)](https://symfony.com/doc/current/testing/end_to_end.html)
+
+Note that to have javascript executed in the tests you have to follow "End to End" testing, as this will
+use a full headless browser for the tests.
+
 ## Building assets
 
 The assets [app.css](/assets/styles/app.css) and [app.js](/assets/app.js) are served through webpack.
