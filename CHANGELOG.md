@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-20](https://github.com/itk-dev/itqr/pull/20)
+    - Implement and document npm setup
 [PR-19](https://github.com/itk-dev/itqr/pull/19)
     - Refactor and cleanup
 [PR-18](https://github.com/itk-dev/itqr/pull/18)
