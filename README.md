@@ -34,7 +34,7 @@ Below are directions to set up, run, and maintain the project effectively.
    ```bash
    task console doctrine:fixtures:load
    ```
-   
+  
 4. **Optinional: Create more Tenants/Users**  
    Run the following commands to create a Tenant and User
 
