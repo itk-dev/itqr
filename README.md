@@ -27,6 +27,16 @@ Below are directions to set up, run, and maintain the project effectively.
 
    Update the configuration in `.env.local` as needed.
 
+3. **Create Tenant/Users**
+   Run the following commands to create a Tenant and User
+
+   ```bash
+   task console app:tenant:add
+   task console app:user:add
+   ```
+
+   Note: Form login and manual user management is a temporary solution while we wait for OIDC
+
 ---
 
 ## Building assets

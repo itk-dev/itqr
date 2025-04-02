@@ -8,6 +8,9 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-22](https://github.com/itk-dev/itqr/pull/22)
+    - Add temporary form login
+    - Fix for "tenant null" error on URLs in embedded forms
 [PR-20](https://github.com/itk-dev/itqr/pull/20)
     - Implement and document npm setup
 [PR-19](https://github.com/itk-dev/itqr/pull/19)
