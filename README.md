@@ -27,7 +27,14 @@ Below are directions to set up, run, and maintain the project effectively.
 
    Update the configuration in `.env.local` as needed.
 
-3. **Create Tenant/Users**
+3. **Optinional: Load fixtures**  
+   To load fixtures run the following command. This will create QR codes and tenants/users.
+   You can now login with `user-a@example.com` as username and `password` as password.
+
+   ```bash
+   task console doctrine:fixtures:load
+   ```
+5. **Optinional: Create more Tenants/Users**  
    Run the following commands to create a Tenant and User
 
    ```bash

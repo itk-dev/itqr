@@ -62,7 +62,6 @@ class AppFixtures extends Fixture
             $manager->persist($qr);
 
             $url = new Url();
-            $url->setTenant(0 == $i % 2 ? $tenants['0'] : $tenants['1']);
             $url->setUrl('http://localhost/loremipsum/long_url/'.$i);
             $url->setQr($qr);
             $this->setCreatedModified($url);
@@ -84,7 +83,11 @@ class AppFixtures extends Fixture
         $user->setProviderId($email);
         $user->setUserType(UserTypeEnum::USERNAME_PASSWORD);
 
+        // "password" hashed using bin/console security:hash-password
+        $user->setPassword('$2y$13$Jv2TbiWnI3hm7dTzNpt1e.GnX7bYIO4bTFV5jlVBfh6BT3U0CMhUm');
+
         $userRoleTenant = new UserRoleTenant($user, $tenant);
+        $userRoleTenant->setRoles(['ROLE_ADMIN']);
         $this->setCreatedModified($userRoleTenant);
         $user->addUserRoleTenant($userRoleTenant);
 
