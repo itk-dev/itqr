@@ -37,6 +37,11 @@ class Tenant extends AbstractBaseEntity implements \JsonSerializable
         $this->userRoleTenants = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->title;
+    }
+
     public function getTitle(): string
     {
         return $this->title;
