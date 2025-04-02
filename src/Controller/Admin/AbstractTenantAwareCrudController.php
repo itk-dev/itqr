@@ -17,6 +17,7 @@ abstract class AbstractTenantAwareCrudController extends AbstractCrudController
         return $entity;
     }
 
+    /** @phpstan-ignore missingType.parameter */
     private function setTenant($entity): void
     {
         if ($entity instanceof TenantScopedEntityInterface) {
