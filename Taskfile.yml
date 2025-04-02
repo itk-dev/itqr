@@ -39,6 +39,7 @@ tasks:
       - task compose -- run --rm node npm install
       - task compose -- up --detach --remove-orphans --wait
       - task composer -- install
+      - task console -- doctrine:migrations:migrate --no-interaction
     silent: true
 
   site-url:

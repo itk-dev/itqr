@@ -105,6 +105,10 @@ class User extends AbstractBaseEntity implements UserInterface, PasswordAuthenti
      */
     public function getRoles(): array
     {
+        // @TODO remove once OIDC tenants implemented
+        $fallBack = $this->getTenants()->first();
+        $this->setActiveTenant($fallBack);
+
         // If no active Tenant set user has no access.
         if (!isset($this->activeTenant)) {
             return [Roles::ROLE_USER];

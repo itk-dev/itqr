@@ -2,10 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Embed\UrlCrudController;
 use App\Entity\Tenant\Qr;
-use App\Form\Type\UrlsType;
 use App\Helper\DownloadHelper;
-use App\Repository\TenantRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -32,9 +31,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
 {
     public function __construct(
         private readonly DownloadHelper $downloadHelper,
-        private readonly TenantRepository $tenantRepository,
     ) {
-        parent::__construct($this->tenantRepository);
     }
 
     public static function getEntityFqcn(): string
@@ -60,10 +57,10 @@ class QrCrudController extends AbstractTenantAwareCrudController
                 TextField::new('title', new TranslatableMessage('Title')),
                 TextEditorField::new('description', new TranslatableMessage('Description')),
                 CollectionField::new('urls', new TranslatableMessage('URLs'))
-                    ->setFormTypeOption('entry_type', UrlsType::class)
                     ->allowAdd()
                     ->allowDelete()
-                    ->renderExpanded(),
+                    ->renderExpanded()
+                    ->useEntryCrudForm(UrlCrudController::class),
                 ChoiceField::new('mode', new TranslatableMessage('Mode'))
                     ->renderAsNativeWidget(),
                 Field::new('customUrlButton', new TranslatableMessage('Open Resource'))
@@ -82,10 +79,10 @@ class QrCrudController extends AbstractTenantAwareCrudController
                     ->renderAsNativeWidget(),
                 TextEditorField::new('description', new TranslatableMessage('Description')),
                 CollectionField::new('urls', new TranslatableMessage('URLs'))
-                    ->setFormTypeOption('entry_type', UrlsType::class)
                     ->allowAdd()
                     ->allowDelete()
-                    ->renderExpanded(),
+                    ->renderExpanded()
+                    ->useEntryCrudForm(UrlCrudController::class),
             ];
         }
 
