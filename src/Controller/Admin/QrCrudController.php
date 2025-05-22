@@ -7,6 +7,7 @@ use App\Entity\Tenant\Qr;
 use App\Helper\DownloadHelper;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
@@ -158,5 +159,11 @@ class QrCrudController extends AbstractTenantAwareCrudController
     public function batchDownload(BatchActionDto $batchActionDto): RedirectResponse
     {
         return $this->redirectToRoute('admin_batch_download', $batchActionDto->getEntityIds());
+    }
+
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $assets
+            ->addWebpackEncoreEntry('app');
     }
 }
