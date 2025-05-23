@@ -8,6 +8,9 @@ use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\Exception\ValidationException;
+use Endroid\QrCode\Label\Font\Font;
+use Endroid\QrCode\Label\Font\FontInterface;
+use Endroid\QrCode\Label\Font\OpenSans;
 use Endroid\QrCode\Label\LabelAlignment;
 use Endroid\QrCode\Label\Margin\Margin;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -41,12 +44,7 @@ class DownloadHelper
             'foregroundColor' => $this->createColorFromHex($downloadSettings['foregroundColor'] ?? '#000000'),
             'labelText' => $downloadSettings['labelText'] ?? '',
             'labelTextColor' => $this->createColorFromHex($downloadSettings['labelTextColor'] ?? '#000000'),
-            'labelMargin' => new Margin(
-                (int) ($downloadSettings['labelMarginTop'] ?? 0),
-                0,
-                (int) ($downloadSettings['labelMarginBottom'] ?? 0),
-                0
-            ),
+            'labelMargin' => $this->createLabelMargin((int) ($downloadSettings['labelMarginTop'] ?? 0), (int) ($downloadSettings['labelMarginBottom'] ?? 0)),
             'errorCorrectionLevel' => [
                 'low' => ErrorCorrectionLevel::Low,
                 'medium' => ErrorCorrectionLevel::Medium,
@@ -203,4 +201,27 @@ class DownloadHelper
 
         return new Color($r, $g, $b);
     }
+
+    /**
+     * Create a margin object with specified top and bottom margins.
+     *
+     * @param int $top Top margin value
+     * @param int $bottom Bottom margin value
+     */
+    public function createLabelMargin(int $top, int $bottom): Margin
+    {
+        return new Margin($top, 0, $bottom, 0);
+    }
+
+    /**
+     * Create a font interface with the specified font size.
+     *
+     * @param int $size The font size
+     * @return FontInterface The created font interface
+     */
+    public function createFontInterface(int $size): FontInterface
+    {
+        return new Font((new OpenSans())->getPath(), $size);
+    }
+
 }
