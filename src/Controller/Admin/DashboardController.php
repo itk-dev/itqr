@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Tenant\QrVisualConfig;
 use App\Entity\Tenant\Qr;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -35,6 +36,7 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud(new TranslatableMessage('QR codes'), 'fa fa-qrcode', Qr::class);
+        yield MenuItem::linkToCrud(new TranslatableMessage('QR Codes'), 'fa fa-qrcode', Qr::class);
+        yield MenuItem::linkToCrud(new TranslatableMessage('QR Designs'), 'fa fa-palette', QrVisualConfig::class);
     }
 }
