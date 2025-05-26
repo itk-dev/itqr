@@ -24,6 +24,7 @@ readonly class QrCodePreviewController
         private QrVisualConfigRepository $qrVisualConfigRepository,
     ) {
     }
+    const QR_LOGO_UPLOAD_DIR = 'uploads/qr_logo/';
 
     /**
      * Handles the generation of QR codes for multiple selected entities.
@@ -48,7 +49,12 @@ readonly class QrCodePreviewController
         $logo = $request->files->get('batch_download')['logo'] ?? null;
 
         if (!$logo instanceof UploadedFile) {
-            $logo = null;
+            if (isset($downloadSettings['logoPath'])) {
+                $logo = $downloadSettings['logoPath'];
+            } else {
+                $logo = null;
+
+            }
         }
 
         // Validate selected QR codes
@@ -58,7 +64,7 @@ readonly class QrCodePreviewController
             ], 400);
         }
 
-        $size = (int) min(400, $downloadSettings['size'] ?? 400);
+        $size = (int)($downloadSettings['size'] ?? 400);
         $margin = (int) ($downloadSettings['margin'] ?? 0);
         $backgroundColor = $downloadSettings['backgroundColor'] ?? '#ffffff';
         $backgroundColor = $this->downloadHelper->createColorFromHex($backgroundColor);
@@ -106,7 +112,7 @@ readonly class QrCodePreviewController
                 labelMargin: $labelMargin,
                 labelTextColor: $labelTextColor,
                 logoPath: $logo,
-                logoPunchoutBackground: false,
+                logoPunchoutBackground: true,
             );
 
             // Convert the QR code image to base64 and add to the array
@@ -147,7 +153,8 @@ readonly class QrCodePreviewController
             'labelTextColor' => $config->getLabelTextColor(),
             'labelMarginTop' => $config->getLabelMarginTop(),
             'labelMarginBottom' => $config->getLabelMarginBottom(),
-            'errorCorrectionLevel' => $config->getErrorCorrectionLevel()->value
+            'errorCorrectionLevel' => $config->getErrorCorrectionLevel()->value,
+            'logo' => $_ENV['APP_BASE_UPLOAD_PATH'] . $config->getLogo(),
         ]);
     }
 
