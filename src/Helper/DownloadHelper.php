@@ -43,6 +43,7 @@ class DownloadHelper
             'backgroundColor' => $this->createColorFromHex($downloadSettings['backgroundColor'] ?? '#ffffff'),
             'foregroundColor' => $this->createColorFromHex($downloadSettings['foregroundColor'] ?? '#000000'),
             'labelText' => $downloadSettings['labelText'] ?? '',
+            'labelFont' => $this->createFontInterface((int) ($downloadSettings['labelSize'] ?? 12)),
             'labelTextColor' => $this->createColorFromHex($downloadSettings['labelTextColor'] ?? '#000000'),
             'labelMargin' => $this->createLabelMargin((int) ($downloadSettings['labelMarginTop'] ?? 0), (int) ($downloadSettings['labelMarginBottom'] ?? 0)),
             'errorCorrectionLevel' => [
@@ -160,6 +161,7 @@ class DownloadHelper
             foregroundColor: $settings['foregroundColor'],
             backgroundColor: $settings['backgroundColor'],
             labelText: $settings['labelText'],
+            labelFont: $settings['labelFont'],
             labelAlignment: LabelAlignment::Center,
             labelMargin: $settings['labelMargin'],
             labelTextColor: $settings['labelTextColor'],
