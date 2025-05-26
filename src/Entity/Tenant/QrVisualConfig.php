@@ -21,37 +21,38 @@ class QrVisualConfig
     private ?string $name = null;
 
     #[ORM\Column(length: 5)]
-    private ?int $size = null;
+    private ?int $size = 400;
 
     #[ORM\Column(length: 5)]
-    private ?int $margin = null;
+    private ?int $margin = 15;
 
     #[ORM\Column(length: 10)]
-    private ?string $backgroundColor = null;
+    private ?string $backgroundColor = "#ffffff";
 
     #[ORM\Column(length: 10)]
-    private ?string $foregroundColor = null;
+    private ?string $foregroundColor = "#000000";
+
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $labelText = null;
 
     #[ORM\Column(length: 5, nullable: true)]
-    private ?int $labelSize = null;
+    private ?int $labelSize = 15;
 
     #[ORM\Column(length: 10)]
-    private ?string $labelTextColor = null;
+    private ?string $labelTextColor = "#000000";
 
     #[ORM\Column(length: 5)]
-    private ?string $labelMarginTop = null;
+    private ?int $labelMarginTop = 0;
 
     #[ORM\Column(length: 5)]
-    private ?string $labelMarginBottom = null;
+    private ?int $labelMarginBottom = 0;
 
     #[ORM\Column(type: Types::BLOB, nullable: true)]
     private $logo = null;
 
     #[ORM\Column(enumType: ErrorCorrectionLevel::class)]
-    private ?ErrorCorrectionLevel $errorCorrectionLevel = null;
+    private ?ErrorCorrectionLevel $errorCorrectionLevel = ErrorCorrectionLevel::Low;
 
     public function getId(): ?int
     {
