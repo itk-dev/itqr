@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Helper\DownloadHelper;
 use App\Repository\QrRepository;
+use App\Repository\QrVisualConfigRepository;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
@@ -18,8 +19,9 @@ use Symfony\Component\Routing\Annotation\Route;
 readonly class QrCodePreviewController
 {
     public function __construct(
-        private DownloadHelper $downloadHelper,
-        private readonly QrRepository $qrRepository,
+        private DownloadHelper           $downloadHelper,
+        private QrRepository             $qrRepository,
+        private QrVisualConfigRepository $qrVisualConfigRepository,
     ) {
     }
 
@@ -38,8 +40,8 @@ readonly class QrCodePreviewController
     {
         // Extract data from the request
         $data = $request->request->all();
-
         $downloadSettings = $data['batch_download'] ?? [];
+
         $selectedQrCodes = $data['selectedQrCodes'] ?? [];
         $selectedQrCodes = json_decode($selectedQrCodes, true);
 
@@ -56,7 +58,6 @@ readonly class QrCodePreviewController
             ], 400);
         }
 
-        // Get QR code settings or use defaults
         $size = (int) min(400, $downloadSettings['size'] ?? 400);
         $margin = (int) ($downloadSettings['margin'] ?? 0);
         $backgroundColor = $downloadSettings['backgroundColor'] ?? '#ffffff';
@@ -64,6 +65,7 @@ readonly class QrCodePreviewController
         $foregroundColor = $downloadSettings['foregroundColor'] ?? '#000000';
         $foregroundColor = $this->downloadHelper->createColorFromHex($foregroundColor);
         $labelText = $downloadSettings['labelText'] ?? '';
+        $labelFont = $this->downloadHelper->createFontInterface((int) $downloadSettings['labelSize'] ?: 12);
         $labelTextColor = $downloadSettings['labelTextColor'] ?? '#000000';
         $labelTextColor = $this->downloadHelper->createColorFromHex($labelTextColor);
         $labelMargin = new Margin((int) $downloadSettings['labelMarginTop'] ?: 0, 0, (int) $downloadSettings['labelMarginBottom'] ?: 0, 0);
@@ -76,6 +78,7 @@ readonly class QrCodePreviewController
 
         // Initialize the array for storing base64-encoded QR codes
         $data = [];
+
 
         // Loop through each selected QR code entity ID
         foreach ($selectedQrCodes as $qrCodeId) {
@@ -98,6 +101,7 @@ readonly class QrCodePreviewController
                 foregroundColor: $foregroundColor,
                 backgroundColor: $backgroundColor,
                 labelText: $labelText,
+                labelFont: $labelFont,
                 labelAlignment: LabelAlignment::Center,
                 labelMargin: $labelMargin,
                 labelTextColor: $labelTextColor,
@@ -106,7 +110,7 @@ readonly class QrCodePreviewController
             );
 
             // Convert the QR code image to base64 and add to the array
-            $data[$qrCodeTitle] = 'data:image/png;base64,'.base64_encode($result->getString());
+            $data[$qrCodeTitle] = 'data:image/png;base64,' . base64_encode($result->getString());
         }
 
         // Respond with the array of QR codes as base64-encoded PNGs
@@ -114,4 +118,37 @@ readonly class QrCodePreviewController
             'qrCodes' => $data,
         ]);
     }
+
+    /**
+     * Retrieves a QR Visual Config by its ID.
+     *
+     * @param int $id The identifier of the QR Visual Config to retrieve.
+     *
+     * @return JsonResponse Returns a JSON response containing the QR Visual Config details
+     *                      or an error message if the configuration is not found.
+     */
+    #[Route('/admin/qr_visual_configs/{id}', name: 'admin_qr_visual_config_get', methods: ['GET'])]
+    public function getQrVisualConfig(int $id): JsonResponse
+    {
+        $config = $this->qrVisualConfigRepository->findOneBy(['id' => $id]);
+
+        if (!$config) {
+            return new JsonResponse(['error' => 'QR Visual Config not found'], 404);
+        }
+
+        return new JsonResponse([
+            'id' => $config->getId(),
+            'size' => $config->getSize(),
+            'margin' => $config->getMargin(),
+            'backgroundColor' => $config->getBackgroundColor(),
+            'foregroundColor' => $config->getForegroundColor(),
+            'labelText' => $config->getLabelText(),
+            'labelSize' => $config->getLabelSize(),
+            'labelTextColor' => $config->getLabelTextColor(),
+            'labelMarginTop' => $config->getLabelMarginTop(),
+            'labelMarginBottom' => $config->getLabelMarginBottom(),
+            'errorCorrectionLevel' => $config->getErrorCorrectionLevel()->value
+        ]);
+    }
+
 }
