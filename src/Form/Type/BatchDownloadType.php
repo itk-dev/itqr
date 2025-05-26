@@ -2,7 +2,9 @@
 
 namespace App\Form\Type;
 
+use App\Entity\Tenant\QrVisualConfig;
 use Endroid\QrCode\ErrorCorrectionLevel;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
@@ -21,6 +23,12 @@ class BatchDownloadType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $builder->add('design', EntityType::class, [
+            'class' => QrVisualConfig::class,
+            'choice_label' => 'name',
+            'placeholder' => '-- Select a design --',
+            'required' => false
+        ]);
         $builder->add('size', TextType::class, [
             'label' => new TranslatableMessage('Size (px)'),
             'data' => '400',
@@ -41,6 +49,9 @@ class BatchDownloadType extends AbstractType
         $builder->add('labelText', TextType::class, [
             'label' => new TranslatableMessage('Text'),
             'required' => false,
+        ]);
+        $builder->add('labelSize', IntegerType::class, [
+            'label' => new TranslatableMessage('Text size')
         ]);
         $builder->add('labelTextColor', ColorType::class, [
             'label' => new TranslatableMessage('Text color'),
