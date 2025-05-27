@@ -50,9 +50,20 @@
     background-color: #f9f9f9;
     flex: 1;
     height: 475px;
+    height: calc(400px + 30px);
+    position: sticky;
+    top: 70px;
+    z-index: 100;
 
+    #qrCodeContainer {
+        height: 100%;
+    }
     .nav-link {
         color: #000;
+    }
+
+    .nav-link:not(:has(*)) {
+        display: none;
     }
     .nav-link.active {
         color: #000;
@@ -68,4 +79,22 @@
     max-height: 400px;
     display: block;
     margin: 15px auto 0 auto;
+}
+
+
+.qr-edit-visual-config-container,
+.qr-new-visual-config-container {
+    display: flex;
+    flex-direction: row;
+    > div {
+        flex: 1;
+    }
+
+    .form-fieldset-body {
+        > div {
+            > div {
+                width: 100%;
+            }
+        }
+    }
 }
