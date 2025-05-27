@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Tenant\QrVisualConfig;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
+use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -13,7 +14,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Translation\TranslatableMessage;
 
 class QrVisualConfigCrudController extends AbstractCrudController
@@ -29,7 +29,9 @@ class QrVisualConfigCrudController extends AbstractCrudController
             ->setPageTitle('index', new TranslatableMessage('QR Designs'))
             ->setPageTitle('new', new TranslatableMessage('Create QR Design'))
             ->setPageTitle('edit', new TranslatableMessage('Edit QR Design'))
-            ->setEntityLabelInSingular(new TranslatableMessage('QR Design'));
+            ->setEntityLabelInSingular(new TranslatableMessage('QR Design'))
+            ->overrideTemplate('crud/edit', 'admin/qr_visual_config/edit.html.twig')
+            ->overrideTemplate('crud/new', 'admin/qr_visual_config/new.html.twig');
     }
     public function new(AdminContext $context)
     {
@@ -49,6 +51,10 @@ class QrVisualConfigCrudController extends AbstractCrudController
         }
         if (Crud::PAGE_EDIT === $pageName || Crud::PAGE_NEW === $pageName) {
             return [
+                // Id should not be mapped, but we still need the id for the preview generation
+                HiddenField::new('id')
+                    ->setFormTypeOption('mapped', false)
+                    ->setFormTypeOption('data', $this->getContext()->getEntity()->getInstance()->getId()),
                 TextField::new('name')
                     ->setLabel(new TranslatableMessage('Name'))
                     ->setHelp(new TranslatableMessage('Name of the QR design.')),
@@ -78,10 +84,12 @@ class QrVisualConfigCrudController extends AbstractCrudController
                     ->setLabel(new TranslatableMessage('Text margin (top)')),
                 Field::new('labelMarginBottom')
                     ->setLabel(new TranslatableMessage('Text margin (bund)')),
-                ImageField::new('logo', 'Logo')
-                    ->setBasePath('uploads')
-                    ->setUploadDir('public/uploads')
-                    ->setUploadedFileNamePattern('[randomhash].[extension]'),
+                ImageField::new('logo')
+                    ->setBasePath('uploads/qr-logos')
+                    ->setUploadDir('public/uploads/qr-logos')
+                    ->setFormTypeOptions([
+                        'required' => false,
+                    ]),
                 ChoiceField::new('errorCorrectionLevel')
                     ->setLabel(new TranslatableMessage('Error correction level'))
                     ->allowMultipleChoices(false)
