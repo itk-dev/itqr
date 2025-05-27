@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,7 +28,7 @@ class BatchDownloadType extends AbstractType
             'class' => QrVisualConfig::class,
             'choice_label' => 'name',
             'placeholder' => '-- Select a design --',
-            'required' => false
+            'required' => false,
         ]);
         $builder->add('size', TextType::class, [
             'label' => new TranslatableMessage('Size (px)'),
@@ -70,6 +71,10 @@ class BatchDownloadType extends AbstractType
             'label' => new TranslatableMessage('Logo'),
             'required' => false,
         ]);
+        $builder->add('logoPath', HiddenType::class, [
+            'label' => false,
+            'required' => false,
+        ]);
         $builder->add('errorCorrectionLevel', ChoiceType::class, [
             'label' => new TranslatableMessage('Error correction level'),
             'choices' => [
@@ -79,6 +84,7 @@ class BatchDownloadType extends AbstractType
                 'High' => ErrorCorrectionLevel::High->value,
             ],
         ]);
+
         $builder->add('download', SubmitType::class);
     }
 
