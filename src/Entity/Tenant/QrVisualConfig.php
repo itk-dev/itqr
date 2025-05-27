@@ -5,8 +5,8 @@ namespace App\Entity\Tenant;
 use ApiPlatform\Metadata\ApiResource;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use App\Repository\QrVisualConfigRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity(repositoryClass: QrVisualConfigRepository::class)]
 #[ApiResource]
@@ -48,8 +48,8 @@ class QrVisualConfig
     #[ORM\Column(length: 5)]
     private ?int $labelMarginBottom = 0;
 
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private $logo = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $logo = null;
 
     #[ORM\Column(enumType: ErrorCorrectionLevel::class)]
     private ?ErrorCorrectionLevel $errorCorrectionLevel = ErrorCorrectionLevel::Low;
@@ -124,10 +124,9 @@ class QrVisualConfig
         return $this->labelText;
     }
 
-    public function setLabelText(string $labelText): static
+    public function setLabelText(?string $labelText): static
     {
         $this->labelText = $labelText;
-
         return $this;
     }
 
@@ -179,17 +178,23 @@ class QrVisualConfig
         return $this;
     }
 
-    public function getLogo()
+    public function getLogo(): ?string
     {
         return $this->logo;
     }
 
     public function setLogo($logo): static
     {
-        $this->logo = $logo;
+        if ($logo instanceof File) {
+            $this->logo = $logo->getFilename();
+        } else {
+            $this->logo = $logo;
+        }
 
         return $this;
     }
+
+
 
     public function getErrorCorrectionLevel(): ?ErrorCorrectionLevel
     {
