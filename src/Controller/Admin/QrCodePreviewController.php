@@ -22,13 +22,15 @@ readonly class QrCodePreviewController
         private DownloadHelper           $downloadHelper,
         private QrRepository             $qrRepository,
         private QrVisualConfigRepository $qrVisualConfigRepository,
-    ) {
+    )
+    {
     }
-    const QR_LOGO_UPLOAD_DIR = 'uploads/qr_logo/';
 
     /**
      * Handles the generation of QR codes for multiple selected entities.
      * Returns the QR codes as base64-encoded strings in an array.
+     *
+     * Handles preview generation for both configuration of designs and batch download page.
      *
      * @param Request $request the HTTP request containing parameters for the QR codes
      *
@@ -41,40 +43,56 @@ readonly class QrCodePreviewController
     {
         // Extract data from the request
         $data = $request->request->all();
-        $downloadSettings = $data['batch_download'] ?? [];
+        $formName = $data['formName'];
+        $downloadSettings = $data[$formName] ?? [];
 
         $selectedQrCodes = $data['selectedQrCodes'] ?? [];
-        $selectedQrCodes = json_decode($selectedQrCodes, true);
 
-        $logo = $request->files->get('batch_download')['logo'] ?? null;
+        // Can be defined as such to prompt a qr example preview.
+        if ($selectedQrCodes !== 'examplePreview') {
+            $selectedQrCodes = json_decode($selectedQrCodes, true);
+        }
 
-        if (!$logo instanceof UploadedFile) {
-            if (isset($downloadSettings['logoPath'])) {
-                $logo = $downloadSettings['logoPath'];
-            } else {
-                $logo = null;
+        /*
+        Extract logo from the request (When a new image is uploaded either from batch download page or design config page.
+        ImageField places uploaded files in ['logo']['file']
+        FileType places uploaded files in ['logo']
+        */
+        $logo = null;
+        $formData = $request->files->get($formName);
 
+        if ($formData && isset($formData['logo'])) {
+            if ($formData['logo'] instanceof UploadedFile) {
+                $logo = $formData['logo'];
+            } elseif (isset($formData['logo']['file']) && $formData['logo']['file'] instanceof UploadedFile) {
+                $logo = $formData['logo']['file'];
             }
         }
 
-        // Validate selected QR codes
-        if (!is_array($selectedQrCodes) || empty($selectedQrCodes)) {
-            return new JsonResponse([
-                'error' => 'No QR codes selected.',
-            ], 400);
+
+        // If a design is edited, it contains an id from where we can grab the entity.
+        $entity = isset($downloadSettings['id']) && !$logo ? $this->qrVisualConfigRepository->findOneBy(['id' => $downloadSettings['id']]) : null;
+
+        // Uploaded logo > logo from entity > logo from logoPath (only on batch download page)
+        if ($entity && $entity->getLogo()) {
+            $downloadSettings['logoPath'] = $_ENV['APP_BASE_UPLOAD_PATH'] . $entity->getLogo();
+            $logo = $downloadSettings['logoPath'];
+        } elseif (isset($downloadSettings['logoPath']) && !$logo instanceof UploadedFile) {
+            $logo = $downloadSettings['logoPath'];
         }
 
+
         $size = (int)($downloadSettings['size'] ?? 400);
-        $margin = (int) ($downloadSettings['margin'] ?? 0);
+        $margin = (int)($downloadSettings['margin'] ?? 0);
         $backgroundColor = $downloadSettings['backgroundColor'] ?? '#ffffff';
         $backgroundColor = $this->downloadHelper->createColorFromHex($backgroundColor);
         $foregroundColor = $downloadSettings['foregroundColor'] ?? '#000000';
         $foregroundColor = $this->downloadHelper->createColorFromHex($foregroundColor);
         $labelText = $downloadSettings['labelText'] ?? '';
-        $labelFont = $this->downloadHelper->createFontInterface((int) $downloadSettings['labelSize'] ?: 12);
+        $labelFont = $this->downloadHelper->createFontInterface((int)($downloadSettings['labelSize'] ?? 12));
         $labelTextColor = $downloadSettings['labelTextColor'] ?? '#000000';
         $labelTextColor = $this->downloadHelper->createColorFromHex($labelTextColor);
-        $labelMargin = new Margin((int) $downloadSettings['labelMarginTop'] ?: 0, 0, (int) $downloadSettings['labelMarginBottom'] ?: 0, 0);
+        $labelMargin = new Margin((int)($downloadSettings['labelMarginTop'] ?? 0), 0, (int)($downloadSettings['labelMarginBottom'] ?? 0), 0);
         $errorCorrectionLevel = [
             'low' => ErrorCorrectionLevel::Low,
             'medium' => ErrorCorrectionLevel::Medium,
@@ -85,6 +103,34 @@ readonly class QrCodePreviewController
         // Initialize the array for storing base64-encoded QR codes
         $data = [];
 
+        if ($selectedQrCodes === 'examplePreview') {
+            // Generate the QR Code using Endroid QR Code Builder
+            $builder = new Builder();
+            $result = $builder->build(
+                data: "qr visual config example preview",
+                encoding: new Encoding('UTF-8'),
+                errorCorrectionLevel: $errorCorrectionLevel,
+                size: $size,
+                margin: $margin,
+                foregroundColor: $foregroundColor,
+                backgroundColor: $backgroundColor,
+                labelText: $labelText,
+                labelFont: $labelFont,
+                labelAlignment: LabelAlignment::Center,
+                labelMargin: $labelMargin,
+                labelTextColor: $labelTextColor,
+                logoPath: $logo,
+                logoPunchoutBackground: false,
+            );
+
+            // Convert the QR code image to base64 and add to the array
+            $data['examplePreview'] = 'data:image/png;base64,' . base64_encode($result->getString());
+
+        // Respond with the array of QR codes as base64-encoded PNGs
+        return new JsonResponse([
+            'qrCodes' => $data,
+        ]);
+        }
 
         // Loop through each selected QR code entity ID
         foreach ($selectedQrCodes as $qrCodeId) {
@@ -112,7 +158,7 @@ readonly class QrCodePreviewController
                 labelMargin: $labelMargin,
                 labelTextColor: $labelTextColor,
                 logoPath: $logo,
-                logoPunchoutBackground: true,
+                logoPunchoutBackground: false,
             );
 
             // Convert the QR code image to base64 and add to the array
@@ -154,7 +200,7 @@ readonly class QrCodePreviewController
             'labelMarginTop' => $config->getLabelMarginTop(),
             'labelMarginBottom' => $config->getLabelMarginBottom(),
             'errorCorrectionLevel' => $config->getErrorCorrectionLevel()->value,
-            'logo' => $_ENV['APP_BASE_UPLOAD_PATH'] . $config->getLogo(),
+            'logo' => $config->getLogo() ? $_ENV['APP_BASE_UPLOAD_PATH'] . $config->getLogo() : null,
         ]);
     }
 
