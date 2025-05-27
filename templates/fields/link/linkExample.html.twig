@@ -33,7 +33,7 @@
         labelMargin: labelMargin,
         backgroundColor: backgroundColor,
         foregroundColor: foregroundColor,
-        logoPath: "uploads/qr-logos/" ~ entity.instance.logo,
+        logoPath: entity.instance.logo ? ("uploads/qr-logos/" ~ entity.instance.logo) : null,
     }) }}" alt="Generated Image"/>
    </span>
 </a>
