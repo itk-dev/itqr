@@ -1,10 +1,12 @@
 import './styles/app.css';
 
+const uploadBasePath = 'uploads/qr_codes/';
 document.addEventListener('DOMContentLoaded', () => {
     const qrCodeContainer = document.getElementById('qrCodeContainer');
     const tabsContainer = document.getElementById('qrCodeTabs'); // Navigation tabs
     const tabContentContainer = document.getElementById('qrCodeTabContent'); // Tab content
     const form = document.querySelector('.form-wrapper form');
+    const formName = form.getAttribute('name');
     const selectedQrCodes = document.getElementById('selectedQrCodes');
 
     // Ensure all containers and elements exist
@@ -39,7 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     'labelTextColor': '#000000',
                     'labelMarginTop': 0,
                     'labelMarginBottom': 0,
-                    'errorCorrectionLevel': 'medium'
+                    'errorCorrectionLevel': 'medium',
+                    'logo': '',
+                    'logoPath': '',
                 };
 
                 Object.entries(defaultFields).forEach(([field, value]) => {
@@ -57,6 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
             fetch(`/admin/qr_visual_configs/${selectedOption.value}`)
                 .then(response => response.json())
                 .then(design => {
+
+                    console.log(design.logo);
                     // Update form fields with design values
                     const fields = {
                         'size': design.size,
@@ -69,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         'labelMarginTop': design.labelMarginTop,
                         'labelMarginBottom': design.labelMarginBottom,
                         'errorCorrectionLevel': design.errorCorrectionLevel,
-                        'logo': design.logo,
+                        'logoPath': design.logo,
                     };
 
                     // Update each form field
@@ -101,9 +107,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Prepare form data for POST request
         const formData = new FormData(form);
         formData.append('selectedQrCodes', selectedQrCodes.value);
+        formData.append('formName', formName);
 
         updatePromise = (async () => {
             try {
+                formData.forEach((value, key) => {
+                    console.log(key + ': ' + value);
+                });
                 // Fetch the QR codes from the endpoint
                 const response = await fetch(generateQrPath, {
                     method: 'POST',
@@ -137,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         role="tab" 
                                         aria-controls="${tabPaneId}" 
                                         aria-selected="${tabsContainer.children.length === 0}">
-                                    ${title}
+                                    ${title === 'examplePreview' ? '' : title}
                                 </button>
                             `;
                             tabsContainer.appendChild(tabItem);
