@@ -52,7 +52,7 @@ class DownloadHelper
                 'quartile' => ErrorCorrectionLevel::Quartile,
                 'high' => ErrorCorrectionLevel::High,
             ][$downloadSettings['errorCorrectionLevel'] ?? 'medium'] ?? ErrorCorrectionLevel::Medium,
-            'logo' => $this->processLogo($downloadSettings['logo'] ?? null),
+            'logo' => $this->processLogo($downloadSettings['logo'] ?? null) ?? $downloadSettings['logoPath'] ?? null,
         ];
 
         // Based on the number of entities, call the appropriate function
@@ -165,7 +165,7 @@ class DownloadHelper
             labelAlignment: LabelAlignment::Center,
             labelMargin: $settings['labelMargin'],
             labelTextColor: $settings['labelTextColor'],
-            logoPath: $settings['logo'],
+            logoPath: $settings['logo'] ?? $settings['logoPath'],
             logoPunchoutBackground: false,
         );
 
@@ -175,7 +175,7 @@ class DownloadHelper
     /**
      * Process the logo file for QR code generation.
      */
-    private function processLogo(?UploadedFile $logo): ?string
+    public function processLogo(?UploadedFile $logo): ?string
     {
         if ($logo instanceof UploadedFile) {
             // Save the uploaded file and return its path
