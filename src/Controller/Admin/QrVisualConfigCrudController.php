@@ -8,6 +8,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -26,10 +28,10 @@ class QrVisualConfigCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle('index', new TranslatableMessage('QR Designs'))
-            ->setPageTitle('new', new TranslatableMessage('Create QR Design'))
-            ->setPageTitle('edit', new TranslatableMessage('Edit QR Design'))
-            ->setEntityLabelInSingular(new TranslatableMessage('QR Design'))
+            ->setPageTitle('index', new TranslatableMessage('QR Themes'))
+            ->setPageTitle('new', new TranslatableMessage('Create Theme'))
+            ->setPageTitle('edit', new TranslatableMessage('Edit Theme'))
+            ->setEntityLabelInSingular(new TranslatableMessage('QR Theme'))
             ->overrideTemplate('crud/edit', 'admin/qr_visual_config/edit.html.twig')
             ->overrideTemplate('crud/new', 'admin/qr_visual_config/new.html.twig');
     }
@@ -38,13 +40,20 @@ class QrVisualConfigCrudController extends AbstractCrudController
         return parent::new($context);
     }
 
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->update(Crud::PAGE_INDEX, Action::EDIT, fn(Action $action) => $action->setIcon('fa fa-pencil')->setLabel('Edit'))
+            ->update(Crud::PAGE_INDEX, Action::DELETE, fn(Action $action) => $action->setIcon('fa fa-trash')->setLabel('Delete'));
+    }
+
     public function configureFields(string $pageName): iterable
     {
         if (Crud::PAGE_INDEX === $pageName) {
             return [
                 TextField::new('name')->setLabel(new TranslatableMessage('Name')),
                 TextField::new('size')->setLabel(new TranslatableMessage('Size (px)')),
-                Field::new('customUrlButton', new TranslatableMessage('Preview Design'))
+                Field::new('customUrlButton', new TranslatableMessage('Preview '))
                     ->setTemplatePath('fields/link/linkExample.html.twig')
                     ->hideOnForm(),
             ];
@@ -57,7 +66,7 @@ class QrVisualConfigCrudController extends AbstractCrudController
                     ->setFormTypeOption('data', $this->getContext()->getEntity()->getInstance()->getId()),
                 TextField::new('name')
                     ->setLabel(new TranslatableMessage('Name'))
-                    ->setHelp(new TranslatableMessage('Name of the QR design.')),
+                    ->setHelp(new TranslatableMessage('Name of the theme.')),
                 Field::new('size')
                     ->setLabel(new TranslatableMessage('Size'))
                     ->setHelp(new TranslatableMessage('Size of the QR code in pixels.')),
