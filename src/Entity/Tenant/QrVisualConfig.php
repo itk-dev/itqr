@@ -3,9 +3,9 @@
 namespace App\Entity\Tenant;
 
 use ApiPlatform\Metadata\ApiResource;
-use Endroid\QrCode\ErrorCorrectionLevel;
 use App\Repository\QrVisualConfigRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Endroid\QrCode\ErrorCorrectionLevel;
 use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity(repositoryClass: QrVisualConfigRepository::class)]
@@ -27,11 +27,10 @@ class QrVisualConfig
     private ?int $margin = 15;
 
     #[ORM\Column(length: 10)]
-    private ?string $backgroundColor = "#ffffff";
+    private ?string $backgroundColor = '#ffffff';
 
     #[ORM\Column(length: 10)]
-    private ?string $foregroundColor = "#000000";
-
+    private ?string $foregroundColor = '#000000';
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $labelText = null;
@@ -40,7 +39,7 @@ class QrVisualConfig
     private ?int $labelSize = 15;
 
     #[ORM\Column(length: 10)]
-    private ?string $labelTextColor = "#000000";
+    private ?string $labelTextColor = '#000000';
 
     #[ORM\Column(length: 5)]
     private ?int $labelMarginTop = 0;
@@ -127,6 +126,7 @@ class QrVisualConfig
     public function setLabelText(?string $labelText): static
     {
         $this->labelText = $labelText;
+
         return $this;
     }
 
@@ -193,8 +193,6 @@ class QrVisualConfig
 
         return $this;
     }
-
-
 
     public function getErrorCorrectionLevel(): ?ErrorCorrectionLevel
     {

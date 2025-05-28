@@ -18,12 +18,11 @@
     {% set labelFont = create_font_interface(entity.instance.labelSize) %}
 {% endif %}
 
-
 <a href=""
    class="popover-link">
     View
     <span class="popover-content">
-    <img src="{{ qr_code_data_uri(url('app_qr_index', {uuid: "test" }), 'default', {
+    <img src="{{ qr_code_data_uri(url('app_qr_index', {uuid: 'test'}), 'default', {
         size: entity.instance.size * 1,
         margin: entity.instance.margin * 1,
         errorCorrectionLevel: entity.instance.errorCorrectionLevel,
@@ -33,7 +32,7 @@
         labelMargin: labelMargin,
         backgroundColor: backgroundColor,
         foregroundColor: foregroundColor,
-        logoPath: entity.instance.logo ? ("uploads/qr-logos/" ~ entity.instance.logo) : null,
+        logoPath: entity.instance.logo ? ('uploads/qr-logos/' ~ entity.instance.logo) : null,
     }) }}" alt="Generated Image"/>
    </span>
 </a>

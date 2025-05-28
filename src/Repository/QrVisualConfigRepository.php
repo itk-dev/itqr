@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<QrVisualConfig>
+ *
  * @method QrVisualConfig|null findOneBy(array $criteria, array $orderBy = null)
  */
 class QrVisualConfigRepository extends ServiceEntityRepository

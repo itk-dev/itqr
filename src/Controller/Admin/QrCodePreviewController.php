@@ -19,11 +19,10 @@ use Symfony\Component\Routing\Annotation\Route;
 readonly class QrCodePreviewController
 {
     public function __construct(
-        private DownloadHelper           $downloadHelper,
-        private QrRepository             $qrRepository,
+        private DownloadHelper $downloadHelper,
+        private QrRepository $qrRepository,
         private QrVisualConfigRepository $qrVisualConfigRepository,
-    )
-    {
+    ) {
     }
 
     /**
@@ -49,7 +48,7 @@ readonly class QrCodePreviewController
         $selectedQrCodes = $data['selectedQrCodes'] ?? [];
 
         // Can be defined as such to prompt a qr example preview.
-        if ($selectedQrCodes !== 'examplePreview') {
+        if ('examplePreview' !== $selectedQrCodes) {
             $selectedQrCodes = json_decode($selectedQrCodes, true);
         }
 
@@ -69,30 +68,28 @@ readonly class QrCodePreviewController
             }
         }
 
-
         // If a design is edited, it contains an id from where we can grab the entity.
         $entity = isset($downloadSettings['id']) && !$logo ? $this->qrVisualConfigRepository->findOneBy(['id' => $downloadSettings['id']]) : null;
 
         // Uploaded logo > logo from entity > logo from logoPath (only on batch download page)
         if ($entity && $entity->getLogo()) {
-            $downloadSettings['logoPath'] = $_ENV['APP_BASE_UPLOAD_PATH'] . $entity->getLogo();
+            $downloadSettings['logoPath'] = $_ENV['APP_BASE_UPLOAD_PATH'].$entity->getLogo();
             $logo = $downloadSettings['logoPath'];
         } elseif (isset($downloadSettings['logoPath']) && !$logo instanceof UploadedFile) {
             $logo = $downloadSettings['logoPath'];
         }
 
-
-        $size = (int)($downloadSettings['size'] ?? 400);
-        $margin = (int)($downloadSettings['margin'] ?? 0);
+        $size = (int) ($downloadSettings['size'] ?? 400);
+        $margin = (int) ($downloadSettings['margin'] ?? 0);
         $backgroundColor = $downloadSettings['backgroundColor'] ?? '#ffffff';
         $backgroundColor = $this->downloadHelper->createColorFromHex($backgroundColor);
         $foregroundColor = $downloadSettings['foregroundColor'] ?? '#000000';
         $foregroundColor = $this->downloadHelper->createColorFromHex($foregroundColor);
         $labelText = $downloadSettings['labelText'] ?? '';
-        $labelFont = $this->downloadHelper->createFontInterface((int)($downloadSettings['labelSize'] ?? 12));
+        $labelFont = $this->downloadHelper->createFontInterface((int) ($downloadSettings['labelSize'] ?? 12));
         $labelTextColor = $downloadSettings['labelTextColor'] ?? '#000000';
         $labelTextColor = $this->downloadHelper->createColorFromHex($labelTextColor);
-        $labelMargin = new Margin((int)($downloadSettings['labelMarginTop'] ?? 0), 0, (int)($downloadSettings['labelMarginBottom'] ?? 0), 0);
+        $labelMargin = new Margin((int) ($downloadSettings['labelMarginTop'] ?? 0), 0, (int) ($downloadSettings['labelMarginBottom'] ?? 0), 0);
         $errorCorrectionLevel = [
             'low' => ErrorCorrectionLevel::Low,
             'medium' => ErrorCorrectionLevel::Medium,
@@ -103,11 +100,11 @@ readonly class QrCodePreviewController
         // Initialize the array for storing base64-encoded QR codes
         $data = [];
 
-        if ($selectedQrCodes === 'examplePreview') {
+        if ('examplePreview' === $selectedQrCodes) {
             // Generate the QR Code using Endroid QR Code Builder
             $builder = new Builder();
             $result = $builder->build(
-                data: "qr visual config example preview",
+                data: 'qr visual config example preview',
                 encoding: new Encoding('UTF-8'),
                 errorCorrectionLevel: $errorCorrectionLevel,
                 size: $size,
@@ -124,12 +121,12 @@ readonly class QrCodePreviewController
             );
 
             // Convert the QR code image to base64 and add to the array
-            $data['examplePreview'] = 'data:image/png;base64,' . base64_encode($result->getString());
+            $data['examplePreview'] = 'data:image/png;base64,'.base64_encode($result->getString());
 
-        // Respond with the array of QR codes as base64-encoded PNGs
-        return new JsonResponse([
-            'qrCodes' => $data,
-        ]);
+            // Respond with the array of QR codes as base64-encoded PNGs
+            return new JsonResponse([
+                'qrCodes' => $data,
+            ]);
         }
 
         // Loop through each selected QR code entity ID
@@ -162,7 +159,7 @@ readonly class QrCodePreviewController
             );
 
             // Convert the QR code image to base64 and add to the array
-            $data[$qrCodeTitle] = 'data:image/png;base64,' . base64_encode($result->getString());
+            $data[$qrCodeTitle] = 'data:image/png;base64,'.base64_encode($result->getString());
         }
 
         // Respond with the array of QR codes as base64-encoded PNGs
@@ -174,10 +171,10 @@ readonly class QrCodePreviewController
     /**
      * Retrieves a QR Visual Config by its ID.
      *
-     * @param int $id The identifier of the QR Visual Config to retrieve.
+     * @param int $id the identifier of the QR Visual Config to retrieve
      *
-     * @return JsonResponse Returns a JSON response containing the QR Visual Config details
-     *                      or an error message if the configuration is not found.
+     * @return JsonResponse returns a JSON response containing the QR Visual Config details
+     *                      or an error message if the configuration is not found
      */
     #[Route('/admin/qr_visual_configs/{id}', name: 'admin_qr_visual_config_get', methods: ['GET'])]
     public function getQrVisualConfig(int $id): JsonResponse
@@ -200,8 +197,7 @@ readonly class QrCodePreviewController
             'labelMarginTop' => $config->getLabelMarginTop(),
             'labelMarginBottom' => $config->getLabelMarginBottom(),
             'errorCorrectionLevel' => $config->getErrorCorrectionLevel()->value,
-            'logo' => $config->getLogo() ? $_ENV['APP_BASE_UPLOAD_PATH'] . $config->getLogo() : null,
+            'logo' => $config->getLogo() ? $_ENV['APP_BASE_UPLOAD_PATH'].$config->getLogo() : null,
         ]);
     }
-
 }

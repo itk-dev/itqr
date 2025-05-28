@@ -39,7 +39,7 @@ class AdvancedSettingsType extends AbstractType
             'required' => false,
         ]);
         $builder->add('labelSize', IntegerType::class, [
-            'label' => new TranslatableMessage('Text size')
+            'label' => new TranslatableMessage('Text size'),
         ]);
         $builder->add('labelTextColor', ColorType::class, [
             'label' => new TranslatableMessage('Text color'),

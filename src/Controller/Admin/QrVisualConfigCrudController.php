@@ -3,18 +3,18 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Tenant\QrVisualConfig;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
-use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use Endroid\QrCode\ErrorCorrectionLevel;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
+use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Endroid\QrCode\ErrorCorrectionLevel;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Translation\TranslatableMessage;
 
@@ -35,6 +35,7 @@ class QrVisualConfigCrudController extends AbstractCrudController
             ->overrideTemplate('crud/edit', 'admin/qr_visual_config/edit.html.twig')
             ->overrideTemplate('crud/new', 'admin/qr_visual_config/new.html.twig');
     }
+
     public function new(AdminContext $context)
     {
         return parent::new($context);
@@ -43,8 +44,8 @@ class QrVisualConfigCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return $actions
-            ->update(Crud::PAGE_INDEX, Action::EDIT, fn(Action $action) => $action->setIcon('fa fa-pencil')->setLabel('Edit'))
-            ->update(Crud::PAGE_INDEX, Action::DELETE, fn(Action $action) => $action->setIcon('fa fa-trash')->setLabel('Delete'));
+            ->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action) => $action->setIcon('fa fa-pencil')->setLabel('Edit'))
+            ->update(Crud::PAGE_INDEX, Action::DELETE, fn (Action $action) => $action->setIcon('fa fa-trash')->setLabel('Delete'));
     }
 
     public function configureFields(string $pageName): iterable
@@ -106,8 +107,8 @@ class QrVisualConfigCrudController extends AbstractCrudController
                         'Low' => ErrorCorrectionLevel::Low,
                         'Medium' => ErrorCorrectionLevel::Medium,
                         'Quartile' => ErrorCorrectionLevel::Quartile,
-                        'High' => ErrorCorrectionLevel::High
-                    ])
+                        'High' => ErrorCorrectionLevel::High,
+                    ]),
             ];
         }
 

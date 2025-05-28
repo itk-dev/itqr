@@ -112,7 +112,6 @@ class QrCrudController extends AbstractTenantAwareCrudController
             ->setIcon('fa fa-download')
             ->displayAsButton();
 
-
         // Define single download action
         $singleDownloadAction = Action::new('quickDownload', new TranslatableMessage('Quick download'))
             ->linkToCrudAction('quickDownload')
@@ -125,8 +124,8 @@ class QrCrudController extends AbstractTenantAwareCrudController
             ->setIcon('fa fa-link');
 
         return $actions
-            ->update(Crud::PAGE_INDEX, Action::EDIT, fn(Action $action) => $action->setIcon('fa fa-pencil')->setLabel('Edit'))
-            ->update(Crud::PAGE_INDEX, Action::DELETE, fn(Action $action) => $action->setIcon('fa fa-trash')->setLabel('Delete'))
+            ->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action) => $action->setIcon('fa fa-pencil')->setLabel('Edit'))
+            ->update(Crud::PAGE_INDEX, Action::DELETE, fn (Action $action) => $action->setIcon('fa fa-trash')->setLabel('Delete'))
             ->addBatchAction($batchDownloadAction)
             ->addBatchAction($setUrlAction)
             ->add(Crud::PAGE_INDEX, $singleDownloadAction);

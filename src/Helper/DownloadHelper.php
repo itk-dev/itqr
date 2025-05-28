@@ -207,7 +207,7 @@ class DownloadHelper
     /**
      * Create a margin object with specified top and bottom margins.
      *
-     * @param int $top Top margin value
+     * @param int $top    Top margin value
      * @param int $bottom Bottom margin value
      */
     public function createLabelMargin(int $top, int $bottom): Margin
@@ -219,11 +219,11 @@ class DownloadHelper
      * Create a font interface with the specified font size.
      *
      * @param int $size The font size
+     *
      * @return FontInterface The created font interface
      */
     public function createFontInterface(int $size): FontInterface
     {
         return new Font((new OpenSans())->getPath(), $size);
     }
-
 }
