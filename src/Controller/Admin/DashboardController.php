@@ -35,8 +35,7 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud(new TranslatableMessage('QR Codes'), 'fa fa-qrcode', Qr::class);
-        yield MenuItem::linkToCrud(new TranslatableMessage('QR Designs'), 'fa fa-palette', QrVisualConfig::class);
+        yield MenuItem::linkToCrud(new TranslatableMessage('QR Themes'), 'fa fa-palette', QrVisualConfig::class);
     }
 }
