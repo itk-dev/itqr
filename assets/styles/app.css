@@ -50,7 +50,6 @@
     background-color: #f9f9f9;
     flex: 1;
     height: 475px;
-    height: calc(400px + 30px);
     position: sticky;
     top: 70px;
     z-index: 100;
@@ -62,9 +61,7 @@
         color: #000;
     }
 
-    .nav-link:not(:has(*)) {
-        display: none;
-    }
+
     .nav-link.active {
         color: #000;
         font-weight: bold;
@@ -97,4 +94,10 @@
             }
         }
     }
+}
+
+form[name="batch_download"] .accordion-button {
+    box-shadow: none;
+    background-color: #fff;
+    border-bottom: 1px solid #e9e9e9;
 }
