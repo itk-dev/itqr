@@ -8,6 +8,9 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-23](https://github.com/itk-dev/itqr/pull/23)
+    - Seperate visual representation of QR into own config
+    - Live preview of design and download
 [PR-22](https://github.com/itk-dev/itqr/pull/22)
     - Add temporary form login
     - Fix for "tenant null" error on URLs in embedded forms
