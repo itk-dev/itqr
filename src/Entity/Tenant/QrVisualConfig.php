@@ -71,12 +71,14 @@ class QrVisualConfig
     public function setName(string $name): static
     {
         $this->name = $name;
+
         return $this;
     }
 
     public function setSize(int $size): static
     {
         $this->size = $size;
+
         return $this;
     }
 
@@ -88,6 +90,7 @@ class QrVisualConfig
     public function setMargin(int $margin): static
     {
         $this->margin = $margin;
+
         return $this;
     }
 
@@ -99,6 +102,7 @@ class QrVisualConfig
     public function setBackgroundColor(string $backgroundColor): static
     {
         $this->backgroundColor = $backgroundColor;
+
         return $this;
     }
 
@@ -110,6 +114,7 @@ class QrVisualConfig
     public function setForegroundColor(string $foregroundColor): static
     {
         $this->foregroundColor = $foregroundColor;
+
         return $this;
     }
 
@@ -121,6 +126,7 @@ class QrVisualConfig
     public function setLabelText(?string $labelText): static
     {
         $this->labelText = $labelText;
+
         return $this;
     }
 
@@ -132,6 +138,7 @@ class QrVisualConfig
     public function setLabelSize(?int $labelSize): static
     {
         $this->labelSize = $labelSize;
+
         return $this;
     }
 
@@ -143,6 +150,7 @@ class QrVisualConfig
     public function setLabelTextColor(string $labelTextColor): static
     {
         $this->labelTextColor = $labelTextColor;
+
         return $this;
     }
 
@@ -154,6 +162,7 @@ class QrVisualConfig
     public function setLabelMarginTop(int $labelMarginTop): static
     {
         $this->labelMarginTop = $labelMarginTop;
+
         return $this;
     }
 
@@ -165,6 +174,7 @@ class QrVisualConfig
     public function setLabelMarginBottom(int $labelMarginBottom): static
     {
         $this->labelMarginBottom = $labelMarginBottom;
+
         return $this;
     }
 
@@ -180,6 +190,7 @@ class QrVisualConfig
         } else {
             $this->logo = $logo;
         }
+
         return $this;
     }
 
@@ -191,6 +202,7 @@ class QrVisualConfig
     public function setErrorCorrectionLevel(ErrorCorrectionLevel $errorCorrectionLevel): static
     {
         $this->errorCorrectionLevel = $errorCorrectionLevel;
+
         return $this;
     }
 }
