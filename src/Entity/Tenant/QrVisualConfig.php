@@ -1,3 +1,4 @@
+
 <?php
 
 namespace App\Entity\Tenant;
@@ -17,53 +18,53 @@ class QrVisualConfig
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $name = null;
+    #[ORM\Column(length: 50, nullable: false)]
+    private string $name;
 
-    #[ORM\Column(length: 5)]
-    private ?int $size = 400;
+    #[ORM\Column(type: 'integer')]
+    private int $size = 400;
 
-    #[ORM\Column(length: 5)]
-    private ?int $margin = 15;
+    #[ORM\Column(type: 'integer')]
+    private int $margin = 15;
 
-    #[ORM\Column(length: 10)]
-    private ?string $backgroundColor = '#ffffff';
+    #[ORM\Column(length: 10, nullable: false)]
+    private string $backgroundColor = '#ffffff';
 
-    #[ORM\Column(length: 10)]
-    private ?string $foregroundColor = '#000000';
+    #[ORM\Column(length: 10, nullable: false)]
+    private string $foregroundColor = '#000000';
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $labelText = null;
 
-    #[ORM\Column(length: 5, nullable: true)]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $labelSize = 15;
 
-    #[ORM\Column(length: 10)]
-    private ?string $labelTextColor = '#000000';
+    #[ORM\Column(length: 10, nullable: false)]
+    private string $labelTextColor = '#000000';
 
-    #[ORM\Column(length: 5)]
-    private ?int $labelMarginTop = 0;
+    #[ORM\Column(type: 'integer')]
+    private int $labelMarginTop = 0;
 
-    #[ORM\Column(length: 5)]
-    private ?int $labelMarginBottom = 0;
+    #[ORM\Column(type: 'integer')]
+    private int $labelMarginBottom = 0;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $logo = null;
 
-    #[ORM\Column(enumType: ErrorCorrectionLevel::class)]
-    private ?ErrorCorrectionLevel $errorCorrectionLevel = ErrorCorrectionLevel::Low;
+    #[ORM\Column(type: 'string', enumType: ErrorCorrectionLevel::class, nullable: false)]
+    private ErrorCorrectionLevel $errorCorrectionLevel = ErrorCorrectionLevel::Low;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getSize(): ?string
+    public function getSize(): int
     {
         return $this->size;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -71,30 +72,27 @@ class QrVisualConfig
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
-    public function setSize(string $size): static
+    public function setSize(int $size): static
     {
         $this->size = $size;
-
         return $this;
     }
 
-    public function getMargin(): ?string
+    public function getMargin(): int
     {
         return $this->margin;
     }
 
-    public function setMargin(string $margin): static
+    public function setMargin(int $margin): static
     {
         $this->margin = $margin;
-
         return $this;
     }
 
-    public function getBackgroundColor(): ?string
+    public function getBackgroundColor(): string
     {
         return $this->backgroundColor;
     }
@@ -102,11 +100,10 @@ class QrVisualConfig
     public function setBackgroundColor(string $backgroundColor): static
     {
         $this->backgroundColor = $backgroundColor;
-
         return $this;
     }
 
-    public function getForegroundColor(): ?string
+    public function getForegroundColor(): string
     {
         return $this->foregroundColor;
     }
@@ -114,7 +111,6 @@ class QrVisualConfig
     public function setForegroundColor(string $foregroundColor): static
     {
         $this->foregroundColor = $foregroundColor;
-
         return $this;
     }
 
@@ -126,7 +122,6 @@ class QrVisualConfig
     public function setLabelText(?string $labelText): static
     {
         $this->labelText = $labelText;
-
         return $this;
     }
 
@@ -135,14 +130,13 @@ class QrVisualConfig
         return $this->labelSize;
     }
 
-    public function setLabelSize(int $labelSize): static
+    public function setLabelSize(?int $labelSize): static
     {
         $this->labelSize = $labelSize;
-
         return $this;
     }
 
-    public function getLabelTextColor(): ?string
+    public function getLabelTextColor(): string
     {
         return $this->labelTextColor;
     }
@@ -150,31 +144,28 @@ class QrVisualConfig
     public function setLabelTextColor(string $labelTextColor): static
     {
         $this->labelTextColor = $labelTextColor;
-
         return $this;
     }
 
-    public function getLabelMarginTop(): ?string
+    public function getLabelMarginTop(): int
     {
         return $this->labelMarginTop;
     }
 
-    public function setLabelMarginTop(string $labelMarginTop): static
+    public function setLabelMarginTop(int $labelMarginTop): static
     {
         $this->labelMarginTop = $labelMarginTop;
-
         return $this;
     }
 
-    public function getLabelMarginBottom(): ?string
+    public function getLabelMarginBottom(): int
     {
         return $this->labelMarginBottom;
     }
 
-    public function setLabelMarginBottom(string $labelMarginBottom): static
+    public function setLabelMarginBottom(int $labelMarginBottom): static
     {
         $this->labelMarginBottom = $labelMarginBottom;
-
         return $this;
     }
 
@@ -183,18 +174,17 @@ class QrVisualConfig
         return $this->logo;
     }
 
-    public function setLogo($logo): static
+    public function setLogo(File|string|null $logo): static
     {
         if ($logo instanceof File) {
             $this->logo = $logo->getFilename();
         } else {
             $this->logo = $logo;
         }
-
         return $this;
     }
 
-    public function getErrorCorrectionLevel(): ?ErrorCorrectionLevel
+    public function getErrorCorrectionLevel(): ErrorCorrectionLevel
     {
         return $this->errorCorrectionLevel;
     }
@@ -202,7 +192,6 @@ class QrVisualConfig
     public function setErrorCorrectionLevel(ErrorCorrectionLevel $errorCorrectionLevel): static
     {
         $this->errorCorrectionLevel = $errorCorrectionLevel;
-
         return $this;
     }
 }
