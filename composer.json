@@ -9,7 +9,7 @@
         "ext-gd": "*",
         "ext-iconv": "*",
         "ext-zip": "*",
-        "api-platform/core": "^4.0.16",
+        "api-platform/core": "^4.1.12",
         "doctrine/dbal": "^3.9.4",
         "doctrine/doctrine-bundle": "^2.13.2",
         "doctrine/doctrine-migrations-bundle": "^3.4.1",
