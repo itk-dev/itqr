@@ -31,7 +31,3 @@ services:
 
   App\Twig\QrCodeExtension:
     tags: [ 'twig.extension' ]
-
-  App\EventSubscriber\EasyAdminSubscriber:
-    arguments:
-      $uploadsPath: '%kernel.project_dir%/public/uploads/qr-logos'

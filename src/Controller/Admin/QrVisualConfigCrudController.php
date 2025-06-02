@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
@@ -53,7 +54,7 @@ class QrVisualConfigCrudController extends AbstractCrudController
         if (Crud::PAGE_INDEX === $pageName) {
             return [
                 TextField::new('name')->setLabel(new TranslatableMessage('Name')),
-                TextField::new('size')->setLabel(new TranslatableMessage('Size (px)')),
+                IntegerField::new('size')->setLabel(new TranslatableMessage('Size (px)')),
                 Field::new('customUrlButton', new TranslatableMessage('Preview '))
                     ->setTemplatePath('fields/link/linkExample.html.twig')
                     ->hideOnForm(),
@@ -68,10 +69,10 @@ class QrVisualConfigCrudController extends AbstractCrudController
                 TextField::new('name')
                     ->setLabel(new TranslatableMessage('Name'))
                     ->setHelp(new TranslatableMessage('Name of the theme.')),
-                Field::new('size')
+                IntegerField::new('size')
                     ->setLabel(new TranslatableMessage('Size'))
                     ->setHelp(new TranslatableMessage('Size of the QR code in pixels.')),
-                Field::new('margin')
+                IntegerField::new('margin')
                     ->setLabel(new TranslatableMessage('Margin'))
                     ->setHelp(new TranslatableMessage('Margin is the whitespace around the QR code in pixels.')),
                 Field::new('backgroundColor')
