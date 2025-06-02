@@ -181,7 +181,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let typingTimer;
 
     form.addEventListener('input', () => {
-        console.log(isDesignUpdating);
         clearTimeout(typingTimer);
 
         typingTimer = setTimeout(() => {
