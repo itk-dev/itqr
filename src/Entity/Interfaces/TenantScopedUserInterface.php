@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity\Interfaces;
 
 use App\Entity\Tenant;
-use Doctrine\Common\Collections\Collection;
 
 interface TenantScopedUserInterface
 {

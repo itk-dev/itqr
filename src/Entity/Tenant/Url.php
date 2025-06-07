@@ -2,7 +2,6 @@
 
 namespace App\Entity\Tenant;
 
-use App\Entity\AbstractBaseEntity;
 use App\Repository\UrlRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Translation\TranslatableMessage;

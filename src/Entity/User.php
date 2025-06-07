@@ -8,13 +8,8 @@ use App\Entity\Interfaces\TenantScopedUserInterface;
 use App\Entity\Interfaces\UserInterface;
 use App\Enum\UserTypeEnum;
 use App\Repository\UserRepository;
-use App\Utils\Roles;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -23,7 +18,7 @@ class User extends AbstractBaseEntity implements UserInterface, \JsonSerializabl
     #[Assert\NotBlank]
     #[ORM\Column(type: Types::STRING, unique: true)]
     private string $providerId = '';
-    
+
     #[Assert\Email]
     #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     private string $email = '';

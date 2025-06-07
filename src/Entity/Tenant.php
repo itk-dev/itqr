@@ -11,7 +11,7 @@ use Doctrine\DBAL\Types\Types as DoctrineTypes;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TenantRepository::class)]
-#[ORM\UniqueConstraint(name: "name_unique", columns: ["name"])]
+#[ORM\UniqueConstraint(name: 'name_unique', columns: ['name'])]
 class Tenant extends AbstractBaseEntity implements \JsonSerializable
 {
     #[ORM\Column(type: DoctrineTypes::STRING, length: 255, nullable: false, options: ['default' => ''])]

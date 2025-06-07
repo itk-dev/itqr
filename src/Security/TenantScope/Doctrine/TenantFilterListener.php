@@ -6,11 +6,10 @@ namespace App\Security\TenantScope\Doctrine;
 
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Class TenantFilterListener
+ * Class TenantFilterListener.
  *
  * Event listener is to enable and configure the tenant filter for all requests.
  */
@@ -18,7 +17,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 readonly class TenantFilterListener
 {
     public function __construct(
-        private TenantFilterConfigurator $tenantFilterConfigurator
+        private TenantFilterConfigurator $tenantFilterConfigurator,
     ) {
     }
 

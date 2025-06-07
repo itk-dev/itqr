@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 
 /**
- * Class TenantFilter
+ * Class TenantFilter.
  *
  * Doctrine filter to handle tenant scope. Ensures all doctrine queries are filtered by
  * users tenant.
@@ -18,14 +18,12 @@ use Doctrine\ORM\Query\Filter\SQLFilter;
 class TenantFilter extends SQLFilter
 {
     /**
-     * {@inheritdoc}
-     *
      * @throws TenantScopeException
      */
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string
     {
         // Check if the entity implements the required interfaces
-        if (!$targetEntity->getReflectionClass()->implementsInterface(TenantScopedEntityInterface::class) ) {
+        if (!$targetEntity->getReflectionClass()->implementsInterface(TenantScopedEntityInterface::class)) {
             return '';
         }
 
@@ -34,7 +32,7 @@ class TenantFilter extends SQLFilter
         try {
             return sprintf('%s.tenant_id = %s', $targetTableAlias, $this->getParameter('tenant_id'));
         } catch (\Exception $e) {
-            throw new TenantScopeException('Error applying tenant filter constraint: ' . $e->getMessage(), $e->getCode(), $e);
+            throw new TenantScopeException('Error applying tenant filter constraint: '.$e->getMessage(), $e->getCode(), $e);
         }
     }
 }

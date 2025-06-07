@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 
 /**
- * class TenantFilterConfigurator
+ * class TenantFilterConfigurator.
  *
  * Service to configure the TenantFilter with the tenant ID.
  */
@@ -17,7 +17,7 @@ readonly class TenantFilterConfigurator
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private Security $security
+        private Security $security,
     ) {
     }
 
