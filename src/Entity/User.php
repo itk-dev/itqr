@@ -18,12 +18,12 @@ use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User extends AbstractBaseEntity implements UserInterface, PasswordAuthenticatedUserInterface, \JsonSerializable, TenantScopedUserInterface
+class User extends AbstractBaseEntity implements UserInterface, \JsonSerializable, TenantScopedUserInterface
 {
     #[Assert\NotBlank]
     #[ORM\Column(type: Types::STRING, unique: true)]
     private string $providerId = '';
-
+    
     #[Assert\Email]
     #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     private string $email = '';
@@ -32,32 +32,25 @@ class User extends AbstractBaseEntity implements UserInterface, PasswordAuthenti
     #[ORM\Column(type: Types::STRING)]
     private string $fullName = '';
 
-    /**
-     * @var string The hashed password
-     */
-    #[Ignore]
-    #[ORM\Column(type: Types::STRING)]
-    private string $password = '';
-
-    /**
-     * @var Collection<int, UserRoleTenant>
-     */
-    #[ORM\OneToMany(targetEntity: UserRoleTenant::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private Collection $userRoleTenants;
-
     #[ORM\Column(type: Types::STRING)]
     private string $provider = '';
 
     #[ORM\Column(type: Types::STRING, enumType: UserTypeEnum::class)]
     private UserTypeEnum $userType;
 
-    private ?Tenant $activeTenant = null;
+    #[ORM\ManyToOne(cascade: ['persist'], fetch: 'EAGER', inversedBy: 'users')]
+    #[ORM\JoinColumn(nullable: false)]
+    private Tenant $tenant;
 
-    public function __construct()
+    #[ORM\Column(type: Types::JSON)]
+    private array $roles = [];
+
+    public function __construct(string $email, Tenant $tenant)
     {
         parent::__construct();
 
-        $this->userRoleTenants = new ArrayCollection();
+        $this->email = $email;
+        $this->tenant = $tenant;
     }
 
     public function getEmail(): string
@@ -105,70 +98,18 @@ class User extends AbstractBaseEntity implements UserInterface, PasswordAuthenti
      */
     public function getRoles(): array
     {
-        // @TODO remove once OIDC tenants implemented
-        $fallBack = $this->getTenants()->first();
-        $this->setActiveTenant($fallBack);
-
-        // If no active Tenant set user has no access.
-        if (!isset($this->activeTenant)) {
-            return [Roles::ROLE_USER];
-        }
-
-        $roleTenants = $this->getUserRoleTenants();
-
-        $roles = [];
-
-        if (!$roleTenants->isEmpty()) {
-            foreach ($roleTenants as $roleTenant) {
-                if ($roleTenant->getTenant() === $this->getActiveTenant()) {
-                    $roles = $roleTenant->getRoles();
-                    break;
-                }
-            }
-        }
-
+        $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = Roles::ROLE_USER;
+        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
 
-    public function getTenants(): Collection
+    public function setRoles(array $roles): static
     {
-        $tenants = new ArrayCollection();
-
-        foreach ($this->userRoleTenants as $userRoleTenant) {
-            /* @var UserRoleTenant $userRoleTenant */
-            $tenants->add($userRoleTenant->getTenant());
-        }
-
-        return $tenants;
-    }
-
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
+        $this->roles = $roles;
 
         return $this;
-    }
-
-    /**
-     * Returning a salt is only needed, if you are not using a modern
-     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
-     *
-     * @see UserInterface
-     */
-    public function getSalt(): ?string
-    {
-        return null;
     }
 
     /**
@@ -178,97 +119,6 @@ class User extends AbstractBaseEntity implements UserInterface, PasswordAuthenti
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    public function getActiveTenant(): Tenant
-    {
-        if (null !== $this->activeTenant) {
-            return $this->activeTenant;
-        }
-
-        return $this->userRoleTenants->first()->getTenant();
-    }
-
-    public function setActiveTenant(Tenant $activeTenant): self
-    {
-        foreach ($this->userRoleTenants as $userRoleTenant) {
-            /** @var UserRoleTenant $userRoleTenant */
-            if ($activeTenant === $userRoleTenant->getTenant()) {
-                $this->activeTenant = $activeTenant;
-                break;
-            }
-        }
-
-        if ($this->activeTenant !== $activeTenant) {
-            throw new \InvalidArgumentException('Active Tenant cannot be set. User does not have access to Tenant: '.$activeTenant->getTenantKey());
-        }
-
-        return $this;
-    }
-
-    public function getUserRoleTenants(): Collection
-    {
-        return $this->userRoleTenants;
-    }
-
-    public function setRoleTenant(array $roles, Tenant $tenant): self
-    {
-        $userRoleTenant = $this->getUserRoleTenant($tenant);
-
-        if (null === $userRoleTenant) {
-            $userRoleTenant = new UserRoleTenant($this, $tenant);
-
-            $this->addUserRoleTenant($userRoleTenant);
-        }
-
-        $userRoleTenant->setRoles($roles);
-
-        return $this;
-    }
-
-    public function setUserRoleTenants(Collection $userRoleTenants): self
-    {
-        $this->userRoleTenants->clear();
-
-        foreach ($userRoleTenants as $userRoleTenant) {
-            $this->addUserRoleTenant($userRoleTenant);
-        }
-
-        return $this;
-    }
-
-    public function addUserRoleTenant(UserRoleTenant $userRoleTenant): self
-    {
-        if (!$this->userRoleTenants->contains($userRoleTenant)) {
-            $this->userRoleTenants[] = $userRoleTenant;
-            $userRoleTenant->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUserRoleTenant(UserRoleTenant $userRoleTenant): self
-    {
-        if ($this->userRoleTenants->removeElement($userRoleTenant)) {
-            // set the owning side to null (unless already changed)
-            if ($userRoleTenant->getUser() === $this) {
-                $userRoleTenant->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    private function getUserRoleTenant(Tenant $tenant): ?UserRoleTenant
-    {
-        foreach ($this->userRoleTenants as $userRoleTenant) {
-            /** @var UserRoleTenant $userRoleTenant */
-            if ($userRoleTenant->getTenant() === $tenant) {
-                return $userRoleTenant;
-            }
-        }
-
-        return null;
     }
 
     public function getProvider(): ?string
@@ -310,11 +160,24 @@ class User extends AbstractBaseEntity implements UserInterface, PasswordAuthenti
             'email' => $this->getEmail(),
             'type' => $this->getUserType()->value,
             'providerId' => $this->providerId,
+            'tenant' => $this->getTenant(),
         ];
     }
 
     public function getBlamableIdentifier(): string
     {
         return $this->getEmail();
+    }
+
+    public function getTenant(): Tenant
+    {
+        return $this->tenant;
+    }
+
+    public function setTenant(Tenant $tenant): static
+    {
+        $this->tenant = $tenant;
+
+        return $this;
     }
 }

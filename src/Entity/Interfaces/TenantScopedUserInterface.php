@@ -9,11 +9,7 @@ use Doctrine\Common\Collections\Collection;
 
 interface TenantScopedUserInterface
 {
-    public function getActiveTenant(): Tenant;
+    public function getTenant(): Tenant;
 
-    public function setActiveTenant(Tenant $activeTenant): self;
-
-    public function getTenants(): Collection;
-
-    public function getUserRoleTenants(): Collection;
+    public function setTenant(Tenant $tenant): self;
 }

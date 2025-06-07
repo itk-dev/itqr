@@ -23,19 +23,11 @@ class TenantRepository extends ServiceEntityRepository
         parent::__construct($registry, Tenant::class);
     }
 
-    /**
-     * Find Tenants from list of tenant keys. Return
-     * collection indexed by tenant key.
-     *
-     * @throws QueryException
-     */
-    public function findByKeys(array $keys): array
+    public function save(Tenant $entity, bool $flush = false): void
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.tenantKey IN (:tenantKeys)')
-            ->setParameter('tenantKeys', $keys)
-            ->indexBy('t', 't.tenantKey')
-            ->getQuery()
-            ->getResult();
+        $this->getEntityManager()->persist($entity);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 }
