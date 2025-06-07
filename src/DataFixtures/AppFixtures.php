@@ -59,6 +59,7 @@ class AppFixtures extends Fixture
             $url = new Url();
             $url->setUrl('http://localhost/loremipsum/long_url/'.$i);
             $url->setQr($qr);
+            $url->setTenant($qr->getTenant());
             $this->setCreatedModified($url);
 
             $manager->persist($url);
