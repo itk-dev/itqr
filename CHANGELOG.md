@@ -8,6 +8,11 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-24](https://github.com/itk-dev/itqr/pull/24)
+    - Removed temporary form based login
+    - Added OIDC authentication
+    - Removed unneeded multi-tenant functionality
+    - Added doctrine filters to add tenant scope to all doctrine queries
 [PR-22](https://github.com/itk-dev/itqr/pull/22)
     - Add temporary form login
     - Fix for "tenant null" error on URLs in embedded forms
