@@ -81,26 +81,4 @@ class Tenant extends AbstractBaseEntity implements \JsonSerializable
     {
         return $this->users;
     }
-
-    public function addUser(User $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->setTenant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): static
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getTenant() === $this) {
-                $user->setTenant(null);
-            }
-        }
-
-        return $this;
-    }
 }

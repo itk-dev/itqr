@@ -20,14 +20,12 @@ class TenantFilter extends SQLFilter
     /**
      * @throws TenantScopeException
      */
-    public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string
+    public function addFilterConstraint(ClassMetadata $targetEntity, string $targetTableAlias): string
     {
         // Check if the entity implements the required interfaces
         if (!$targetEntity->getReflectionClass()->implementsInterface(TenantScopedEntityInterface::class)) {
             return '';
         }
-
-        $tenantId = $this->getParameter('tenant_id');
 
         try {
             return sprintf('%s.tenant_id = %s', $targetTableAlias, $this->getParameter('tenant_id'));
