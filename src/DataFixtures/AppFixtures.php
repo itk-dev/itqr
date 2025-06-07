@@ -21,7 +21,7 @@ class AppFixtures extends Fixture
         // Create Tenants and Users
         $tenantAbc = new Tenant();
         $tenantAbc->setTenantKey('ABC');
-        $tenantAbc->setTitle('Tenant ABC');
+        $tenantAbc->setName('Tenant ABC');
         $this->setCreatedModified($tenantAbc);
         $manager->persist($tenantAbc);
 
@@ -36,7 +36,7 @@ class AppFixtures extends Fixture
 
         $tenantDef = new Tenant();
         $tenantDef->setTenantKey('DEF');
-        $tenantDef->setTitle('Tenant DEF');
+        $tenantDef->setName('Tenant DEF');
         $this->setCreatedModified($tenantDef);
         $manager->persist($tenantDef);
 

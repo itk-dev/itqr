@@ -158,7 +158,7 @@ class AddTenantCommand extends Command
         // Create the user and hash its password.
         $tenant = new Tenant();
         $tenant->setTenantKey($tenantKey);
-        $tenant->setTitle($title);
+        $tenant->setName($title);
         $tenant->setDescription($description);
         $tenant->setCreatedBy('CLI');
 
