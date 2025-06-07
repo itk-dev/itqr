@@ -25,7 +25,7 @@ abstract class AbstractTenantAwareCrudController extends AbstractCrudController
 
             assert($user instanceof TenantScopedUserInterface);
 
-            $entity->setTenant($user->getActiveTenant());
+            $entity->setTenant($user->getTenant());
         }
     }
 }

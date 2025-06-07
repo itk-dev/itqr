@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UrlRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Url extends AbstractBaseEntity
+class Url extends AbstractTenantScopedEntity
 {
     #[Assert\NotBlank(message: new TranslatableMessage('The URL field cannot be empty.'))]
     #[Assert\Url(message: new TranslatableMessage('The value "{{ value }}" is not a valid URL.'))]
