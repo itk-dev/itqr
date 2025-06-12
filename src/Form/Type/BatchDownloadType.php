@@ -28,12 +28,12 @@ class BatchDownloadType extends AbstractType
                 'placeholder' => '-- Select a design --',
                 'required' => false,
             ])
-            ->add('size', TextType::class, [
+            ->add('size', IntegerType::class, [
                 'label' => new TranslatableMessage('Size (px)'),
-                'data' => '400',
+                'data' => 400,
                 'attr' => ['data-controller' => 'advanced-settings'],
             ])
-            ->add('margin', TextType::class, [
+            ->add('margin', IntegerType::class, [
                 'label' => new TranslatableMessage('Margin (px)'),
                 'data' => '0',
                 'attr' => ['data-controller' => 'advanced-settings'],
@@ -55,6 +55,7 @@ class BatchDownloadType extends AbstractType
             ])
             ->add('labelSize', IntegerType::class, [
                 'label' => new TranslatableMessage('Text size'),
+                'data' => 15,
                 'attr' => ['data-controller' => 'advanced-settings'],
             ])
             ->add('labelTextColor', ColorType::class, [
@@ -84,10 +85,10 @@ class BatchDownloadType extends AbstractType
             ->add('errorCorrectionLevel', ChoiceType::class, [
                 'label' => new TranslatableMessage('Error correction level'),
                 'choices' => [
-                    'Low' => ErrorCorrectionLevel::Low->value,
-                    'Medium' => ErrorCorrectionLevel::Medium->value,
-                    'Quartile' => ErrorCorrectionLevel::Quartile->value,
-                    'High' => ErrorCorrectionLevel::High->value,
+                    ErrorCorrectionLevel::Low->name => ErrorCorrectionLevel::Low->value,
+                    ErrorCorrectionLevel::Medium->name => ErrorCorrectionLevel::Medium->value,
+                    ErrorCorrectionLevel::Quartile->name => ErrorCorrectionLevel::Quartile->value,
+                    ErrorCorrectionLevel::High->name => ErrorCorrectionLevel::High->value,
                 ],
                 'attr' => ['data-controller' => 'advanced-settings'],
             ])
