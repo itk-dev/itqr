@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(response => response.json())
                 .then(design => {
 
-                    console.log(design.logo);
                     // Update form fields with design values
                     const fields = {
                         'size': design.size,
