@@ -20,10 +20,10 @@ class QrCodePreviewService
 
     // Values correspond to default select values in form.
     private const array ERROR_CORRECTION_LEVELS = [
-        0 => ErrorCorrectionLevel::Low,
-        1 => ErrorCorrectionLevel::Medium,
-        2 => ErrorCorrectionLevel::Quartile,
-        3 => ErrorCorrectionLevel::High,
+        ErrorCorrectionLevel::Low->value => ErrorCorrectionLevel::Low,
+        ErrorCorrectionLevel::Medium->value => ErrorCorrectionLevel::Medium,
+        ErrorCorrectionLevel::Quartile->value => ErrorCorrectionLevel::Quartile,
+        ErrorCorrectionLevel::High->value => ErrorCorrectionLevel::High,
     ];
     public function __construct(
         private readonly DownloadHelper $downloadHelper,
