@@ -16,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Endroid\QrCode\ErrorCorrectionLevel;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Translation\TranslatableMessage;
 
@@ -97,18 +98,21 @@ class QrVisualConfigCrudController extends AbstractCrudController
                     ->setLabel(new TranslatableMessage('Text margin (bund)')),
                 ImageField::new('logo')
                     ->setBasePath('uploads/qr-logos')
+                    ->setUploadedFileNamePattern('[ulid]-[slug].[extension]')
                     ->setUploadDir('public/uploads/qr-logos')
                     ->setFormTypeOptions([
                         'required' => false,
                     ]),
                 ChoiceField::new('errorCorrectionLevel')
                     ->setLabel(new TranslatableMessage('Error correction level'))
-                    ->allowMultipleChoices(false)
-                    ->setChoices([
-                        'Low' => ErrorCorrectionLevel::Low,
-                        'Medium' => ErrorCorrectionLevel::Medium,
-                        'Quartile' => ErrorCorrectionLevel::Quartile,
-                        'High' => ErrorCorrectionLevel::High,
+                    ->setHelp('Error correction level determines how much of the QR code can be damaged while still being readable.')
+                    ->setFormType(ChoiceType::class)
+                    ->setFormTypeOptions([
+                        'class' => ErrorCorrectionLevel::class,
+                        'choice_label' => function (ErrorCorrectionLevel $choice) {
+                            return $choice->name;
+                        },
+                        'choices' => ErrorCorrectionLevel::cases(),
                     ]),
             ];
         }
