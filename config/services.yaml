@@ -31,3 +31,7 @@ services:
 
   App\Twig\QrCodeExtension:
     tags: [ 'twig.extension' ]
+
+  App\Service\QrCodePreviewService:
+    arguments:
+      $uploadPathConfig: '%env(APP_BASE_UPLOAD_PATH)%'

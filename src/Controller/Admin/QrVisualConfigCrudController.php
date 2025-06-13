@@ -104,13 +104,13 @@ class QrVisualConfigCrudController extends AbstractCrudController
                         'required' => false,
                     ]),
                 ChoiceField::new('errorCorrectionLevel')
-                    ->setLabel(new TranslatableMessage('Error correction level'))
-                    ->setHelp('Error correction level determines how much of the QR code can be damaged while still being readable.')
+                    ->setLabel(new TranslatableMessage('error_correction.label'))
+                    ->setHelp(new TranslatableMessage('error_correction.help'))
                     ->setFormType(ChoiceType::class)
                     ->setFormTypeOptions([
                         'class' => ErrorCorrectionLevel::class,
                         'choice_label' => function (ErrorCorrectionLevel $choice) {
-                            return $choice->name;
+                            return new TranslatableMessage('error_correction.'.$choice->name);
                         },
                         'choices' => ErrorCorrectionLevel::cases(),
                     ]),

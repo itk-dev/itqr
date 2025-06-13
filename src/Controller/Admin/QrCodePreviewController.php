@@ -13,7 +13,7 @@ readonly class QrCodePreviewController
 {
     public function __construct(
         private QrVisualConfigRepository $qrVisualConfigRepository,
-        private QrCodePreviewService $qrCodePreviewService,
+        private QrCodePreviewService $qrCodePreviewService
     ) {
     }
 
@@ -85,7 +85,7 @@ readonly class QrCodePreviewController
             'labelMarginTop' => $config->getLabelMarginTop(),
             'labelMarginBottom' => $config->getLabelMarginBottom(),
             'errorCorrectionLevel' => $config->getErrorCorrectionLevel()->value,
-            'logo' => $config->getLogo() ? $_ENV['APP_BASE_UPLOAD_PATH'].$config->getLogo() : null,
+            'logo' => $this->qrCodePreviewService->getLogoPath($config),
         ]);
     }
 }
