@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-25](https://github.com/itk-dev/itqr/pull/25)
+    - Qr hit counter
 [PR-23](https://github.com/itk-dev/itqr/pull/23)
     - Seperate visual representation of QR into own config
     - Live preview of design and download
