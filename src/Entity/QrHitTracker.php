@@ -19,13 +19,14 @@ class QrHitTracker
     #[ORM\JoinColumn(nullable: true)]
     private ?Qr $qr = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $timestamp = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: false)]
+    private \DateTimeInterface $timestamp;
 
     public function getId(): ?int
     {
         return $this->id;
     }
+
     public function getQr(): Qr
     {
         return $this->qr;
