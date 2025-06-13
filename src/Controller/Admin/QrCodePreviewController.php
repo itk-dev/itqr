@@ -13,7 +13,7 @@ readonly class QrCodePreviewController
 {
     public function __construct(
         private QrVisualConfigRepository $qrVisualConfigRepository,
-        private QrCodePreviewService $qrCodePreviewService
+        private QrCodePreviewService $qrCodePreviewService,
     ) {
     }
 
@@ -53,7 +53,6 @@ readonly class QrCodePreviewController
         return new JsonResponse([
             'qrCodes' => $generatedQrCodes,
         ]);
-
     }
 
     /**

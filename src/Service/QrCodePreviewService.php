@@ -13,7 +13,6 @@ use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\Label\LabelAlignment;
 use Endroid\QrCode\Label\Margin\Margin;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class QrCodePreviewService
@@ -37,11 +36,11 @@ class QrCodePreviewService
     /**
      * Generates QR code data using provided files, selected QR codes, and download settings.
      *
-     * @param array $files Array of files uploaded in the request.
-     * @param array $selectedQrCodes Array of QR codes selected for generation.
-     * @param array $downloadSettings Configuration data for QR generation.
+     * @param array $files            array of files uploaded in the request
+     * @param array $selectedQrCodes  array of QR codes selected for generation
+     * @param array $downloadSettings configuration data for QR generation
      *
-     * @return array Returns generated QR code data based on the provided settings.
+     * @return array returns generated QR code data based on the provided settings
      */
     public function generateQrCode(array $files, array $selectedQrCodes, array $downloadSettings): array
     {
@@ -147,10 +146,10 @@ class QrCodePreviewService
 
     public function getLogoPath(QrVisualConfig $qrVisualConfig): ?string
     {
-        if (!$qrVisualConfig->getLogo())
-        {
+        if (!$qrVisualConfig->getLogo()) {
             return null;
         }
+
         return $this->uploadPathConfig.$qrVisualConfig->getLogo();
     }
 }
