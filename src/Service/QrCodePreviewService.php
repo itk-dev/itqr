@@ -37,26 +37,12 @@ class QrCodePreviewService
      *
      * @param Request $request the HTTP request containing QR code generation details
      *
-     * @return JsonResponse the JSON response containing generated QR code data
+     * @return array the JSON response containing generated QR code data
      *
      * @throws \Exception
      */
-    public function generateQrCode(Request $request): JsonResponse
+    public function generateQrCode(array $files, array $selectedQrCodes, array $downloadSettings): array
     {
-        $data = $request->request->all();
-        $formName = $data['formName'];
-        $files = $request->files->get($formName);
-
-        $downloadSettings = $data[$formName] ?? [];
-        $selectedQrCodes = $data['selectedQrCodes'];
-
-        // Can be defined as such to prompt a qr example preview.
-        if ('examplePreview' !== $selectedQrCodes) {
-            $selectedQrCodes = json_decode($selectedQrCodes, true);
-        } else {
-            $selectedQrCodes = (array) $selectedQrCodes;
-        }
-
         /*
        Extract logo from the request (When a new image is uploaded either from batch download page or design config page.
        ImageField places uploaded files in ['logo']['file']
@@ -114,11 +100,11 @@ class QrCodePreviewService
      * @param DownloadSettingsDTO $downloadSettingsDTO data transfer object containing settings for QR code generation
      * @param string|null         $logo                optional path to a logo image to include in the QR code
      *
-     * @return JsonResponse JSON response containing an array of QR codes as base64-encoded PNG images
+     * @return array JSON response containing an array of QR codes as base64-encoded PNG images
      *
      * @throws \Exception if no QR codes are found or processed
      */
-    private function generateQrCodeData(array $selectedQrCodes, DownloadSettingsDTO $downloadSettingsDTO, ?string $logo = null): JsonResponse
+    private function generateQrCodeData(array $selectedQrCodes, DownloadSettingsDTO $downloadSettingsDTO, ?string $logo = null): array
     {
         $data = [];
         // Loop through each selected QR code entity ID
@@ -154,8 +140,6 @@ class QrCodePreviewService
             $data[$qrCodeTitle] = 'data:image/png;base64,'.base64_encode($result->getString());
         }
 
-        return new JsonResponse([
-            'qrCodes' => $data,
-        ]);
+        return $data;
     }
 }

@@ -33,8 +33,27 @@ readonly class QrCodePreviewController
     #[Route('/admin/generate-qr-codes', name: 'admin_generate_qr_codes', methods: ['POST'])]
     public function generateQrCode(Request $request): JsonResponse
     {
-        // Send request data to service to handle generation
-        return $this->qrCodePreviewService->generateQrCode($request);
+        $data = $request->request->all();
+        $formName = $data['formName'];
+        $files = $request->files->get($formName);
+
+        $downloadSettings = $data[$formName] ?? [];
+        $selectedQrCodes = $data['selectedQrCodes'];
+
+        // Can be defined as such to prompt a qr example preview.
+        if ('examplePreview' !== $selectedQrCodes) {
+            $selectedQrCodes = json_decode($selectedQrCodes, true);
+        } else {
+            $selectedQrCodes = (array) $selectedQrCodes;
+        }
+
+        // Pass form data to service to generate qr code(s)
+        $generatedQrCodes = $this->qrCodePreviewService->generateQrCode($files, $selectedQrCodes, $downloadSettings);
+
+        return new JsonResponse([
+            'qrCodes' => $generatedQrCodes,
+        ]);
+
     }
 
     /**
