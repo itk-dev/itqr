@@ -33,13 +33,13 @@ class QrCodePreviewService
     }
 
     /**
-     * Generates QR code data based on the provided request parameters.
+     * Generates QR code data using provided files, selected QR codes, and download settings.
      *
-     * @param Request $request the HTTP request containing QR code generation details
+     * @param array $files Array of files uploaded in the request.
+     * @param array $selectedQrCodes Array of QR codes selected for generation.
+     * @param array $downloadSettings Configuration data for QR generation.
      *
-     * @return array the JSON response containing generated QR code data
-     *
-     * @throws \Exception
+     * @return array Returns generated QR code data based on the provided settings.
      */
     public function generateQrCode(array $files, array $selectedQrCodes, array $downloadSettings): array
     {
