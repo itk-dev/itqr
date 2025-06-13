@@ -1,2 +1,37 @@
 frontpage:
-    hello_world: 'Hej Verden!'
+  hello_world: 'Hej Verden!'
+
+qr:
+  size:
+    label: 'Størrelse'
+    help: 'QR-kodens størrelse defineret i pixels'
+  margin:
+    label: 'Margin'
+    help: 'QR-kodens margin defineret i pixels'
+  code_background: 'Baggrund'
+  code_color: 'QR-kode farve'
+  select_design: '-- Vælg et design --'
+  download: 'Download'
+
+text:
+  label: 'Tekst'
+  size: 'Tekststørrelse'
+  color: 'Tekstfarve'
+  margin:
+    top:
+      label: 'Øvre tekstmargin'
+      help: 'Margin over tekst defineret i pixels'
+    bottom:
+      label: 'Nedre tekstmargin'
+      help: 'Margin under tekst defineret i pixels'
+
+logo:
+  label: 'Logo'
+
+error_correction:
+  label: 'Fejlkorrektionsniveau'
+  Low: 'Lav'
+  Medium: 'Medium'
+  Quartile: 'Mellemhøjt'
+  High: 'Højt'
+  help: 'Højere niveau giver bedre fejlkorrektion men større QR-kode'

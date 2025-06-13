@@ -25,55 +25,59 @@ class BatchDownloadType extends AbstractType
             ->add('design', EntityType::class, [
                 'class' => QrVisualConfig::class,
                 'choice_label' => 'name',
-                'placeholder' => '-- Select a design --',
+                'placeholder' => new TranslatableMessage('qr.select_design'),
                 'required' => false,
             ])
             ->add('size', IntegerType::class, [
-                'label' => new TranslatableMessage('Size (px)'),
+                'label' => new TranslatableMessage('qr.size.label'),
                 'data' => 400,
                 'attr' => ['data-controller' => 'advanced-settings'],
+                'help' => new TranslatableMessage('qr.size.help'),
             ])
             ->add('margin', IntegerType::class, [
-                'label' => new TranslatableMessage('Margin (px)'),
+                'label' => new TranslatableMessage('qr.margin.label'),
                 'data' => '0',
                 'attr' => ['data-controller' => 'advanced-settings'],
+                'help' => new TranslatableMessage('qr.margin.help'),
             ])
             ->add('backgroundColor', ColorType::class, [
-                'label' => new TranslatableMessage('Code background'),
+                'label' => new TranslatableMessage('qr.code_background'),
                 'data' => '#ffffff',
                 'attr' => ['data-controller' => 'advanced-settings'],
             ])
             ->add('foregroundColor', ColorType::class, [
-                'label' => new TranslatableMessage('Code color'),
+                'label' => new TranslatableMessage('qr.code_color'),
                 'data' => '#000000',
                 'attr' => ['data-controller' => 'advanced-settings'],
             ])
             ->add('labelText', TextType::class, [
-                'label' => new TranslatableMessage('Text'),
+                'label' => new TranslatableMessage('text.label'),
                 'required' => false,
                 'attr' => ['data-controller' => 'advanced-settings'],
             ])
             ->add('labelSize', IntegerType::class, [
-                'label' => new TranslatableMessage('Text size'),
+                'label' => new TranslatableMessage('text.size'),
                 'data' => 15,
                 'attr' => ['data-controller' => 'advanced-settings'],
             ])
             ->add('labelTextColor', ColorType::class, [
-                'label' => new TranslatableMessage('Text color'),
+                'label' => new TranslatableMessage('text.color'),
                 'attr' => ['data-controller' => 'advanced-settings'],
             ])
             ->add('labelMarginTop', IntegerType::class, [
-                'label' => new TranslatableMessage('Text margin (top)'),
+                'label' => new TranslatableMessage('text.margin.top.label'),
                 'data' => 15,
                 'attr' => ['data-controller' => 'advanced-settings'],
+                'help' => new TranslatableMessage('text.margin.top.help'),
             ])
             ->add('labelMarginBottom', IntegerType::class, [
-                'label' => new TranslatableMessage('Text margin (bottom)'),
+                'label' => new TranslatableMessage('text.margin.bottom.label'),
                 'data' => 15,
                 'attr' => ['data-controller' => 'advanced-settings'],
+                'help' => new TranslatableMessage('text.margin.bottom.help'),
             ])
             ->add('logo', FileType::class, [
-                'label' => new TranslatableMessage('Logo'),
+                'label' => new TranslatableMessage('logo.label'),
                 'required' => false,
                 'attr' => ['data-controller' => 'advanced-settings'],
             ])
@@ -83,17 +87,22 @@ class BatchDownloadType extends AbstractType
                 'attr' => ['data-controller' => 'advanced-settings'],
             ])
             ->add('errorCorrectionLevel', ChoiceType::class, [
-                'label' => new TranslatableMessage('Error correction level'),
+                'label' => new TranslatableMessage('error_correction.label'),
                 'choices' => [
-                    ErrorCorrectionLevel::Low->name => ErrorCorrectionLevel::Low->value,
-                    ErrorCorrectionLevel::Medium->name => ErrorCorrectionLevel::Medium->value,
-                    ErrorCorrectionLevel::Quartile->name => ErrorCorrectionLevel::Quartile->value,
-                    ErrorCorrectionLevel::High->name => ErrorCorrectionLevel::High->value,
+                    'error_correction.Low' => ErrorCorrectionLevel::Low->value,
+                    'error_correction.Medium' => ErrorCorrectionLevel::Medium->value,
+                    'error_correction.Quartile' => ErrorCorrectionLevel::Quartile->value,
+                    'error_correction.High' => ErrorCorrectionLevel::High->value,
                 ],
+                'choice_translation_domain' => true,
                 'attr' => ['data-controller' => 'advanced-settings'],
+                'help' => new TranslatableMessage('error_correction.help'),
             ])
-            ->add('download', SubmitType::class);
+            ->add('download', SubmitType::class, [
+                'label' => new TranslatableMessage('qr.download'),
+            ]);
     }
+
 
     public function configureOptions(OptionsResolver $resolver): void
     {

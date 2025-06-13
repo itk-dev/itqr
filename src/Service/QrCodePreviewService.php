@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\DTO\DownloadSettingsDTO;
+use App\Entity\Tenant\QrVisualConfig;
 use App\Helper\DownloadHelper;
 use App\Repository\QrRepository;
 use App\Repository\QrVisualConfigRepository;
@@ -29,6 +30,7 @@ class QrCodePreviewService
         private readonly DownloadHelper $downloadHelper,
         private readonly QrVisualConfigRepository $qrVisualConfigRepository,
         private readonly QrRepository $qrRepository,
+        private string $uploadPathConfig,
     ) {
     }
 
@@ -63,7 +65,7 @@ class QrCodePreviewService
 
         // Uploaded logo > logo from entity > logo from logoPath (only on batch download page)
         if ($entity && $entity->getLogo()) {
-            $downloadSettings['logoPath'] = $_ENV['APP_BASE_UPLOAD_PATH'].$entity->getLogo();
+            $downloadSettings['logoPath'] = $this->getLogoPath($entity);
             $logo = $downloadSettings['logoPath'];
         } elseif (isset($downloadSettings['logoPath']) && !$logo instanceof UploadedFile) {
             $logo = $downloadSettings['logoPath'];
@@ -141,5 +143,14 @@ class QrCodePreviewService
         }
 
         return $data;
+    }
+
+    public function getLogoPath(QrVisualConfig $qrVisualConfig): ?string
+    {
+        if (!$qrVisualConfig->getLogo())
+        {
+            return null;
+        }
+        return $this->uploadPathConfig.$qrVisualConfig->getLogo();
     }
 }
