@@ -2,18 +2,9 @@
 
 namespace App\Controller\Admin;
 
-use App\DTO\DownloadSettingsDTO;
-use App\Helper\DownloadHelper;
-use App\Repository\QrRepository;
 use App\Repository\QrVisualConfigRepository;
 use App\Service\QrCodePreviewService;
-use Endroid\QrCode\Builder\Builder;
-use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\Exception\ValidationException;
-use Endroid\QrCode\Label\LabelAlignment;
-use Endroid\QrCode\Label\Margin\Margin;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,8 +12,6 @@ use Symfony\Component\Routing\Annotation\Route;
 readonly class QrCodePreviewController
 {
     public function __construct(
-        private DownloadHelper $downloadHelper,
-        private QrRepository $qrRepository,
         private QrVisualConfigRepository $qrVisualConfigRepository,
         private QrCodePreviewService $qrCodePreviewService,
     ) {

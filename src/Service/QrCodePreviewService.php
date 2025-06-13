@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class QrCodePreviewService
 {
-
     // Values correspond to default select values in form.
     private const array ERROR_CORRECTION_LEVELS = [
         ErrorCorrectionLevel::Low->value => ErrorCorrectionLevel::Low,
@@ -25,25 +24,25 @@ class QrCodePreviewService
         ErrorCorrectionLevel::Quartile->value => ErrorCorrectionLevel::Quartile,
         ErrorCorrectionLevel::High->value => ErrorCorrectionLevel::High,
     ];
+
     public function __construct(
         private readonly DownloadHelper $downloadHelper,
         private readonly QrVisualConfigRepository $qrVisualConfigRepository,
         private readonly QrRepository $qrRepository,
-    )
-    {
+    ) {
     }
 
     /**
      * Generates QR code data based on the provided request parameters.
      *
-     * @param Request $request The HTTP request containing QR code generation details.
+     * @param Request $request the HTTP request containing QR code generation details
      *
-     * @return JsonResponse The JSON response containing generated QR code data.
+     * @return JsonResponse the JSON response containing generated QR code data
+     *
      * @throws \Exception
      */
     public function generateQrCode(Request $request): JsonResponse
     {
-
         $data = $request->request->all();
         $formName = $data['formName'];
         $files = $request->files->get($formName);
@@ -84,7 +83,6 @@ class QrCodePreviewService
             $logo = $downloadSettings['logoPath'];
         }
 
-
         $backgroundColor = $downloadSettings['backgroundColor'];
         $foregroundColor = $downloadSettings['foregroundColor'];
         $labelSize = $downloadSettings['labelSize'];
@@ -112,19 +110,19 @@ class QrCodePreviewService
      * Generates QR Code data for a list of selected QR Code IDs, returning the QR codes
      * as base64-encoded PNG images in a JSON response.
      *
-     * @param array $selectedQrCodes List of QR code entity IDs to process.
-     * @param DownloadSettingsDTO $downloadSettingsDTO Data transfer object containing settings for QR code generation.
-     * @param string|null $logo Optional path to a logo image to include in the QR code.
+     * @param array               $selectedQrCodes     list of QR code entity IDs to process
+     * @param DownloadSettingsDTO $downloadSettingsDTO data transfer object containing settings for QR code generation
+     * @param string|null         $logo                optional path to a logo image to include in the QR code
      *
-     * @return JsonResponse JSON response containing an array of QR codes as base64-encoded PNG images.
+     * @return JsonResponse JSON response containing an array of QR codes as base64-encoded PNG images
      *
-     * @throws \Exception If no QR codes are found or processed.
+     * @throws \Exception if no QR codes are found or processed
      */
-    private function generateQrCodeData(array $selectedQrCodes, DownloadSettingsDTO $downloadSettingsDTO, string $logo = null): JsonResponse
+    private function generateQrCodeData(array $selectedQrCodes, DownloadSettingsDTO $downloadSettingsDTO, ?string $logo = null): JsonResponse
     {
+        $data = [];
         // Loop through each selected QR code entity ID
         foreach ($selectedQrCodes as $qrCodeId) {
-
             // Replace this with logic to retrieve the URL (or string) for each QR code entity
             $qrCodeUrl = 'examplePreview' === $qrCodeId ? 'qr visual config example preview' : $this->qrRepository->findOneBy(['id' => $qrCodeId])->getUrls()->first()->getUrl();
             $qrCodeTitle = 'examplePreview' === $qrCodeId ? 'examplePreview' : $this->qrRepository->findOneBy(['id' => $qrCodeId])->getTitle();
@@ -153,14 +151,9 @@ class QrCodePreviewService
             );
 
             // Convert the QR code image to base64 and add to the array
-            $data[$qrCodeTitle] = 'data:image/png;base64,' . base64_encode($result->getString());
+            $data[$qrCodeTitle] = 'data:image/png;base64,'.base64_encode($result->getString());
         }
 
-
-        // Respond with the array of QR codes as base64-encoded PNGs
-        if (!$data) {
-            throw new \Exception('No QR codes found');
-        }
         return new JsonResponse([
             'qrCodes' => $data,
         ]);
