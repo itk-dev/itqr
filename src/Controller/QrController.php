@@ -47,6 +47,6 @@ final class QrController extends AbstractController
 
         // Redirect to the first URL
         // @TODO enable "kiosk mode" for codes with multiple urls
-        return new RedirectResponse((string)$urls[0]);
+        return new RedirectResponse((string) $urls[0]);
     }
 }
