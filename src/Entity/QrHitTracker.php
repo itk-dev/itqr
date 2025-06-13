@@ -15,7 +15,7 @@ class QrHitTracker
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Qr::class, inversedBy: 'urls')]
+    #[ORM\ManyToOne(targetEntity: Qr::class, inversedBy: 'hitTrackers')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Qr $qr = null;
 

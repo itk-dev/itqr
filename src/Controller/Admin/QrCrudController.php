@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\CrudControllerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
@@ -24,6 +25,7 @@ use Endroid\QrCode\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Translation\TranslatableMessage;
+use App\Repository\QrHitTrackerRepository;
 
 /**
  * @template TData of CrudControllerInterface
@@ -32,6 +34,8 @@ class QrCrudController extends AbstractTenantAwareCrudController
 {
     public function __construct(
         private readonly DownloadHelper $downloadHelper,
+        private readonly QrHitTrackerRepository $hitTrackerRepository
+
     ) {
     }
 
@@ -66,6 +70,15 @@ class QrCrudController extends AbstractTenantAwareCrudController
                     ->renderAsNativeWidget(),
                 Field::new('customUrlButton', new TranslatableMessage('qr.preview'))
                     ->setTemplatePath('fields/link/link.html.twig')
+                    ->hideOnForm(),
+                IntegerField::new('hitCount', new TranslatableMessage('Hits'))
+                    ->setVirtual(true)
+                    ->formatValue(function ($value, $entity) use ($hitTrackerRepository) {
+                        if (null === $entity) {
+                            return 0;
+                        }
+                        return $hitTrackerRepository->getHitCount($entity);
+                    })
                     ->hideOnForm(),
             ];
         }

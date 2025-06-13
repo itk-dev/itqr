@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\QrHitTracker;
+use App\Entity\Tenant\Qr;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +17,9 @@ class QrHitTrackerRepository extends ServiceEntityRepository
         parent::__construct($registry, QrHitTracker::class);
     }
 
-    //    /**
-    //     * @return QrHitTracker[] Returns an array of QrHitTracker objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('q')
-    //            ->andWhere('q.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('q.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function getHitCount(Qr $qr): int
+    {
+        return $this->count(['qr' => $qr]);
+    }
 
-    //    public function findOneBySomeField($value): ?QrHitTracker
-    //    {
-    //        return $this->createQueryBuilder('q')
-    //            ->andWhere('q.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

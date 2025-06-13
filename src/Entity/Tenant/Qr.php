@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Uid\UuidV7;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\QrHitTracker;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: QrRepository::class)]
@@ -45,11 +46,15 @@ class Qr extends AbstractTenantScopedEntity
     #[Assert\Valid]
     private Collection $urls;
 
+    #[ORM\OneToMany(mappedBy: 'qr', targetEntity: QrHitTracker::class)]
+    private Collection $hitTrackers;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->urls = new ArrayCollection();
+        $this->hitTrackers = new ArrayCollection();
         $this->uuid = Uuid::v7();
     }
 
@@ -142,5 +147,10 @@ class Qr extends AbstractTenantScopedEntity
         foreach ($this->urls as $url) {
             $this->removeUrl($url);
         }
+    }
+
+    public function getHitTrackers(): Collection
+    {
+        return $this->hitTrackers;
     }
 }
