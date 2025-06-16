@@ -46,7 +46,10 @@ class Qr extends AbstractTenantScopedEntity
     #[Assert\Valid]
     private Collection $urls;
 
-    #[ORM\OneToMany(mappedBy: 'qr', targetEntity: QrHitTracker::class)]
+    /**
+     * @var Collection<int, QrHitTracker>
+     */
+    #[ORM\OneToMany(targetEntity: QrHitTracker::class, mappedBy: 'qr')]
     private Collection $hitTrackers;
 
     public function __construct()
