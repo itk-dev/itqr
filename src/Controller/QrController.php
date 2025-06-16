@@ -2,11 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\QrHitTracker;
 use App\Enum\QrModeEnum;
 use App\Repository\QrRepository;
-use App\Repository\UrlRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\QrService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,11 +15,12 @@ final class QrController extends AbstractController
 {
     public function __construct(
         private readonly QrRepository $qrRepository,
+        private readonly QrService $QrService,
     ) {
     }
 
     #[Route('/qr/{uuid}', name: 'app_qr_index')]
-    public function index(string $uuid, UrlRepository $urlRepository, EntityManagerInterface $entityManager): Response
+    public function index(string $uuid): Response
     {
         // Find the QR entity by UUID
         $uuid = UuidV7::fromString($uuid);
@@ -31,16 +30,13 @@ final class QrController extends AbstractController
             throw $this->createNotFoundException('QR code not found');
         }
 
-        // Create QR hit tracker entry
-        $qrHitTracker = new QrHitTracker();
-        $qrHitTracker->setQr($qr);
-        $qrHitTracker->setTimestamp(new \DateTimeImmutable());
-        $entityManager->persist($qrHitTracker);
-        $entityManager->flush();
+        // Count qr code hit.
+        $this->QrService->qrHitTrackerCount($qr);
 
-        $urls = $qr->getUrls();
-
+        // Default qr codes get redirected to the destination url.
         if (QrModeEnum::DEFAULT === $qr->getMode()) {
+            $urls = $qr->getUrls();
+
             if ($urls->isEmpty()) {
                 throw $this->createNotFoundException('No URLs found for the given QR code');
             }
@@ -48,6 +44,7 @@ final class QrController extends AbstractController
             return new RedirectResponse((string) $urls[0]);
         }
 
+        // Static qr codes get rendered via static template.
         if (QrModeEnum::STATIC === $qr->getMode()) {
             return $this->render('static.html.twig', [
                 'title' => $qr->getTitle(),
@@ -55,6 +52,7 @@ final class QrController extends AbstractController
             ]);
         }
 
+        // If no modes match, something is wrong.
         throw $this->createNotFoundException('Invalid QR mode');
     }
 }
