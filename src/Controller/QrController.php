@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Enum\QrModeEnum;
 use App\Repository\QrRepository;
 use App\Service\QrService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +14,7 @@ final class QrController extends AbstractController
 {
     public function __construct(
         private readonly QrRepository $qrRepository,
-        private readonly QrService $QrService,
+        private readonly QrService $qrService,
     ) {
     }
 
@@ -23,36 +22,24 @@ final class QrController extends AbstractController
     public function index(string $uuid): Response
     {
         // Find the QR entity by UUID
-        $uuid = UuidV7::fromString($uuid);
-        $qr = $this->qrRepository->findOneBy(['uuid' => $uuid]);
+        $qr = $this->qrRepository->findOneBy(['uuid' => UuidV7::fromString($uuid)]);
 
         if (!$qr) {
             throw $this->createNotFoundException('QR code not found');
         }
 
-        // Count qr code hit.
-        $this->QrService->qrHitTrackerCount($qr);
+        try {
+            $data = $this->qrService->handleQrResponse($qr);
 
-        // Default qr codes get redirected to the destination url.
-        if (QrModeEnum::DEFAULT === $qr->getMode()) {
-            $urls = $qr->getUrls();
-
-            if ($urls->isEmpty()) {
-                throw $this->createNotFoundException('No URLs found for the given QR code');
+            // If we have a URL, it's a default mode QR code
+            if (isset($data['url'])) {
+                return new RedirectResponse($data['url']);
             }
 
-            return new RedirectResponse((string) $urls[0]);
+            // Otherwise, it's a static mode QR code
+            return $this->render('static.html.twig', $data);
+        } catch (\RuntimeException $e) {
+            throw $this->createNotFoundException($e->getMessage());
         }
-
-        // Static qr codes get rendered via static template.
-        if (QrModeEnum::STATIC === $qr->getMode()) {
-            return $this->render('static.html.twig', [
-                'title' => $qr->getTitle(),
-                'description' => $qr->getDescription(),
-            ]);
-        }
-
-        // If no modes match, something is wrong.
-        throw $this->createNotFoundException('Invalid QR mode');
     }
 }
