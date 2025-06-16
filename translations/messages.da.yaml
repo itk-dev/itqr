@@ -18,18 +18,29 @@ qr:
   code_color: 'QR-kode farve'
   select_design: '-- Vælg et design --'
   download: 'Download'
+  configure_download: 'Konfigurer download af markerede'
+  quick_download: 'Download uden konfiguration'
+  set_url: 'Ret destination på markerede'
+  edit: 'Ret QR-kode'
+  delete: 'Slet QR-kode'
+  text:
+    label: 'Tekst'
+    size: 'Tekststørrelse'
+    color: 'Tekstfarve'
+    margin:
+      top:
+        label: 'Øvre tekstmargin'
+        help: 'Margin over tekst defineret i pixels'
+      bottom:
+        label: 'Nedre tekstmargin'
+        help: 'Margin under tekst defineret i pixels'
 
-text:
-  label: 'Tekst'
-  size: 'Tekststørrelse'
-  color: 'Tekstfarve'
-  margin:
-    top:
-      label: 'Øvre tekstmargin'
-      help: 'Margin over tekst defineret i pixels'
-    bottom:
-      label: 'Nedre tekstmargin'
-      help: 'Margin under tekst defineret i pixels'
+visual:
+  index: 'QR designs'
+  new: 'Opret QR design'
+  delete: 'Slet QR design'
+  edit: 'Rediger QR design'
+  label_singular: 'QR design'
 
 logo:
   label: 'Logo'

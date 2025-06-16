@@ -126,26 +126,26 @@ class QrCrudController extends AbstractTenantAwareCrudController
     public function configureActions(Actions $actions): Actions
     {
         // Define batch download action
-        $batchDownloadAction = Action::new('download', new TranslatableMessage('Configure download'))
+        $batchDownloadAction = Action::new('download', new TranslatableMessage('qr.configure_download'))
             ->linkToCrudAction('batchDownload')
             ->addCssClass('btn btn-success')
             ->setIcon('fa fa-download')
             ->displayAsButton();
 
         // Define single download action
-        $singleDownloadAction = Action::new('quickDownload', new TranslatableMessage('Quick download'))
+        $singleDownloadAction = Action::new('quickDownload', new TranslatableMessage('qr.quick_download'))
             ->linkToCrudAction('quickDownload')
             ->setIcon('fa fa-download');
 
         // Define batch url change action
-        $setUrlAction = Action::new('setUrl', new TranslatableMessage('Set URL'))
+        $setUrlAction = Action::new('setUrl', new TranslatableMessage('qr.set_url'))
             ->linkToCrudAction('setUrl')
             ->addCssClass('btn btn-primary')
             ->setIcon('fa fa-link');
 
         return $actions
-            ->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action) => $action->setIcon('fa fa-pencil')->setLabel('Edit'))
-            ->update(Crud::PAGE_INDEX, Action::DELETE, fn (Action $action) => $action->setIcon('fa fa-trash')->setLabel('Delete'))
+            ->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action) => $action->setIcon('fa fa-pencil')->setLabel('qr.edit'))
+            ->update(Crud::PAGE_INDEX, Action::DELETE, fn (Action $action) => $action->setIcon('fa fa-trash')->setLabel('qr.delete'))
             ->addBatchAction($batchDownloadAction)
             ->addBatchAction($setUrlAction)
             ->add(Crud::PAGE_INDEX, $singleDownloadAction);

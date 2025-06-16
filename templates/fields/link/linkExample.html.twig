@@ -20,7 +20,7 @@
 
 <a href=""
    class="popover-link">
-    View
+    {{ 'qr.view'|trans }}
     <span class="popover-content">
     <img src="{{ qr_code_data_uri(url('app_qr_index', {uuid: 'test'}), 'default', {
         size: entity.instance.size * 1,

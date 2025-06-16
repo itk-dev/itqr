@@ -30,10 +30,10 @@ class QrVisualConfigCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle('index', new TranslatableMessage('QR Themes'))
-            ->setPageTitle('new', new TranslatableMessage('Create Theme'))
-            ->setPageTitle('edit', new TranslatableMessage('Edit Theme'))
-            ->setEntityLabelInSingular(new TranslatableMessage('QR Theme'))
+            ->setPageTitle('index', new TranslatableMessage('visual.index'))
+            ->setPageTitle('new', new TranslatableMessage('visual.new'))
+            ->setPageTitle('edit', new TranslatableMessage('visual.edit'))
+            ->setEntityLabelInSingular(new TranslatableMessage('visual.label_singular'))
             ->overrideTemplate('crud/edit', 'admin/qr_visual_config/edit.html.twig')
             ->overrideTemplate('crud/new', 'admin/qr_visual_config/new.html.twig');
     }
@@ -46,17 +46,17 @@ class QrVisualConfigCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return $actions
-            ->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action) => $action->setIcon('fa fa-pencil')->setLabel('Edit'))
-            ->update(Crud::PAGE_INDEX, Action::DELETE, fn (Action $action) => $action->setIcon('fa fa-trash')->setLabel('Delete'));
+            ->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action) => $action->setIcon('fa fa-pencil')->setLabel('visual.edit'))
+            ->update(Crud::PAGE_INDEX, Action::DELETE, fn (Action $action) => $action->setIcon('fa fa-trash')->setLabel('visual.delete'));
     }
 
     public function configureFields(string $pageName): iterable
     {
         if (Crud::PAGE_INDEX === $pageName) {
             return [
-                TextField::new('name')->setLabel(new TranslatableMessage('Name')),
-                IntegerField::new('size')->setLabel(new TranslatableMessage('Size (px)')),
-                Field::new('customUrlButton', new TranslatableMessage('Preview '))
+                TextField::new('name')->setLabel(new TranslatableMessage('qr.title')),
+                IntegerField::new('size')->setLabel(new TranslatableMessage('qr.size.label')),
+                Field::new('customUrlButton', new TranslatableMessage('qr.preview'))
                     ->setTemplatePath('fields/link/linkExample.html.twig')
                     ->hideOnForm(),
             ];
@@ -68,34 +68,36 @@ class QrVisualConfigCrudController extends AbstractCrudController
                     ->setFormTypeOption('mapped', false)
                     ->setFormTypeOption('data', $this->getContext()->getEntity()->getInstance()->getId()),
                 TextField::new('name')
-                    ->setLabel(new TranslatableMessage('Name'))
+                    ->setLabel(new TranslatableMessage('qr.title'))
                     ->setHelp(new TranslatableMessage('Name of the theme.')),
                 IntegerField::new('size')
-                    ->setLabel(new TranslatableMessage('Size'))
-                    ->setHelp(new TranslatableMessage('Size of the QR code in pixels.')),
+                    ->setLabel(new TranslatableMessage('qr.size.label'))
+                    ->setHelp(new TranslatableMessage('qr.size.help')),
                 IntegerField::new('margin')
-                    ->setLabel(new TranslatableMessage('Margin'))
-                    ->setHelp(new TranslatableMessage('Margin is the whitespace around the QR code in pixels.')),
+                    ->setLabel(new TranslatableMessage('qr.margin.label'))
+                    ->setHelp(new TranslatableMessage('qr.margin.help')),
                 Field::new('backgroundColor')
                     ->setFormType(ColorType::class)
-                    ->setLabel(new TranslatableMessage('Background color')),
+                    ->setLabel(new TranslatableMessage('qr.code_background')),
                 Field::new('foregroundColor')
                     ->setFormType(ColorType::class)
-                    ->setLabel(new TranslatableMessage('Code color')),
+                    ->setLabel(new TranslatableMessage('qr.code_color')),
                 TextField::new('labelText')
-                    ->setLabel(new TranslatableMessage('Label'))
+                    ->setLabel(new TranslatableMessage('qr.text.label'))
                     ->setHelp(new TranslatableMessage('Label is a text that is displayed below the QR code.'))
                     ->setRequired(false),
                 Field::new('labelSize')
-                    ->setLabel(new TranslatableMessage('Text size'))
+                    ->setLabel(new TranslatableMessage('qr.text.size'))
                     ->setHelp(new TranslatableMessage('Text size is the size of the label in pixels.')),
                 Field::new('labelTextColor')
                     ->setFormType(ColorType::class)
-                    ->setLabel(new TranslatableMessage('Text color')),
+                    ->setLabel(new TranslatableMessage('qr.text.color')),
                 Field::new('labelMarginTop')
-                    ->setLabel(new TranslatableMessage('Text margin (top)')),
+                    ->setLabel(new TranslatableMessage('qr.text.margin.top.label'))
+                    ->setHelp(new TranslatableMessage('qr.text.margin.top.help')),
                 Field::new('labelMarginBottom')
-                    ->setLabel(new TranslatableMessage('Text margin (bund)')),
+                    ->setLabel(new TranslatableMessage('qr.text.margin.bottom.label'))
+                    ->setHelp(new TranslatableMessage('qr.text.margin.bottom.help')),
                 ImageField::new('logo')
                     ->setBasePath('uploads/qr-logos')
                     ->setUploadedFileNamePattern('[ulid]-[slug].[extension]')
@@ -110,7 +112,7 @@ class QrVisualConfigCrudController extends AbstractCrudController
                     ->setFormTypeOptions([
                         'class' => ErrorCorrectionLevel::class,
                         'choice_label' => function (ErrorCorrectionLevel $choice) {
-                            return new TranslatableMessage('error_correction.'.$choice->name);
+                            return new TranslatableMessage('error_correction.' . $choice->name);
                         },
                         'choices' => ErrorCorrectionLevel::cases(),
                     ]),
