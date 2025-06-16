@@ -2,6 +2,12 @@ frontpage:
   hello_world: 'Hej Verden!'
 
 qr:
+  title: 'Titel'
+  description: 'Beskrivelse'
+  mode: 'Type'
+  urls: 'Destination'
+  preview: 'Forhåndsvisning'
+  view: 'Vis'
   size:
     label: 'Størrelse'
     help: 'QR-kodens størrelse defineret i pixels'
@@ -35,3 +41,5 @@ error_correction:
   Quartile: 'Mellemhøjt'
   High: 'Højt'
   help: 'Højere niveau giver bedre fejlkorrektion men større QR-kode'
+
+DEFAULT: 'Standard'

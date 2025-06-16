@@ -1,5 +1,5 @@
 <a href="{{ path('qr_code_generate', {builder: 'default', data: entity.instance.uuid}) }}" target="_blank" class="popover-link">
-    View
+    {{ "qr.view"|trans }}
     <span class="popover-content">
        <img src="{{ path('qr_code_generate', {builder: 'default', data: url('app_qr_index', {uuid: entity.instance.uuid})}) }}" alt="Generated Image" />
    </span>

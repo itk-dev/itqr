@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\Embed\UrlCrudController;
 use App\Entity\Tenant\Qr;
+use App\Enum\QrModeEnum;
 use App\Helper\DownloadHelper;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -21,6 +22,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use Endroid\QrCode\Exception\ValidationException;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Translation\TranslatableMessage;
@@ -55,35 +57,53 @@ class QrCrudController extends AbstractTenantAwareCrudController
     {
         if (Crud::PAGE_INDEX === $pageName) {
             return [
-                TextField::new('title', new TranslatableMessage('Title')),
-                TextEditorField::new('description', new TranslatableMessage('Description')),
-                CollectionField::new('urls', new TranslatableMessage('URLs'))
+                TextField::new('title', new TranslatableMessage('qr.title')),
+                TextEditorField::new('description', new TranslatableMessage('qr.description')),
+                CollectionField::new('urls', new TranslatableMessage('qr.urls'))
                     ->allowAdd()
                     ->allowDelete()
                     ->renderExpanded()
                     ->useEntryCrudForm(UrlCrudController::class),
-                ChoiceField::new('mode', new TranslatableMessage('Mode'))
+                ChoiceField::new('mode', new TranslatableMessage('qr.mode'))
                     ->renderAsNativeWidget(),
-                Field::new('customUrlButton', new TranslatableMessage('Open Resource'))
+                Field::new('customUrlButton', new TranslatableMessage('qr.preview'))
                     ->setTemplatePath('fields/link/link.html.twig')
                     ->hideOnForm(),
             ];
         }
 
-        if (Crud::PAGE_EDIT === $pageName || Crud::PAGE_NEW === $pageName) {
+        if (Crud::PAGE_EDIT === $pageName) {
             return [
                 IdField::new('id', 'ID')
                     ->setDisabled()
                     ->hideOnForm(),
-                TextField::new('title', new TranslatableMessage('Title')),
-                ChoiceField::new('mode', new TranslatableMessage('Mode'))
+                TextField::new('title', new TranslatableMessage('qr.title')),
+                ChoiceField::new('mode', new TranslatableMessage('qr.mode'))
                     ->renderAsNativeWidget(),
-                TextEditorField::new('description', new TranslatableMessage('Description')),
-                CollectionField::new('urls', new TranslatableMessage('URLs'))
+                TextEditorField::new('description', new TranslatableMessage('qr.description')),
+                CollectionField::new('urls', new TranslatableMessage('qr.urls'))
                     ->allowAdd()
                     ->allowDelete()
                     ->renderExpanded()
                     ->useEntryCrudForm(UrlCrudController::class),
+            ];
+        }
+
+        if (Crud::PAGE_NEW === $pageName) {
+            return [
+                IdField::new('id', 'ID')
+                    ->setDisabled()
+                    ->hideOnForm(),
+                TextField::new('title', new TranslatableMessage('qr.title')),
+                ChoiceField::new('mode', new TranslatableMessage('qr.mode'))
+                    ->renderAsNativeWidget(),
+                TextEditorField::new('description', new TranslatableMessage('qr.description')),
+                CollectionField::new('urls', new TranslatableMessage('qr.urls'))
+                    ->allowAdd()
+                    ->allowDelete()
+                    ->renderExpanded()
+                    ->useEntryCrudForm(UrlCrudController::class),
+
             ];
         }
 
