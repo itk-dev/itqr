@@ -5,6 +5,7 @@ namespace App\Enum;
 enum QrModeEnum: string
 {
     case DEFAULT = 'default';
+    case STATIC = 'static';
 
     /**
      * @return array<string,string>

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\QrHitTracker;
+use App\Enum\QrModeEnum;
 use App\Repository\QrRepository;
 use App\Repository\UrlRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,14 +40,23 @@ final class QrController extends AbstractController
 
         $urls = $qr->getUrls();
 
-        // @TODO: Add what happens if a qr has multiple urls with certain modes.
 
-        if ($urls->isEmpty()) {
-            throw $this->createNotFoundException('No URLs found for the given QR code');
+
+        if ($qr->getMode() === QrModeEnum::DEFAULT) {
+            if ($urls->isEmpty()) {
+                throw $this->createNotFoundException('No URLs found for the given QR code');
+            }
+
+            return new RedirectResponse((string)$urls[0]);
         }
 
-        // Redirect to the first URL
-        // @TODO enable "kiosk mode" for codes with multiple urls
-        return new RedirectResponse((string) $urls[0]);
+        if ($qr->getMode() === QrModeEnum::STATIC) {
+            return $this->render('static.html.twig', [
+                'title' => $qr->getTitle(),
+                'description' => $qr->getDescription()
+            ]);
+        }
+
+        throw $this->createNotFoundException('Invalid QR mode');
     }
 }

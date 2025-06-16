@@ -4,7 +4,9 @@ frontpage:
 qr:
   title: 'Titel'
   description: 'Beskrivelse'
-  mode: 'Type'
+  mode:
+    title: 'Type'
+    help: '<b>Standard</b>: Qr-koden leder videre til destinationen.<br><b>Statisk sidevisning</b>: En dedikeret side vises med titlen og beskrivelsen.'
   urls: 'Destination'
   preview: 'Forhåndsvisning'
   view: 'Vis'
@@ -54,3 +56,4 @@ error_correction:
   help: 'Højere niveau giver bedre fejlkorrektion men større QR-kode'
 
 DEFAULT: 'Standard'
+STATIC: 'Statisk sidevisning'
