@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\Embed\UrlCrudController;
+use App\Entity\QrHitTracker;
 use App\Entity\Tenant\Qr;
 use App\Helper\DownloadHelper;
 use App\Repository\QrHitTrackerRepository;
@@ -73,10 +74,11 @@ class QrCrudController extends AbstractTenantAwareCrudController
                 IntegerField::new('hitTrackers', new TranslatableMessage('Hits'))
                     ->formatValue(function ($value, $entity) {
                         if (null === $entity) {
-                            return '0';
+                            return 0;
                         }
 
                         return $this->hitTrackerRepository->getHitCount($entity);
+
                     })
                     ->hideOnForm(),
             ];
@@ -113,6 +115,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
                     ->allowDelete()
                     ->renderExpanded()
                     ->useEntryCrudForm(UrlCrudController::class),
+
             ];
         }
 
