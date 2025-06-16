@@ -4,7 +4,6 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\Embed\UrlCrudController;
 use App\Entity\Tenant\Qr;
-use App\Enum\QrModeEnum;
 use App\Helper\DownloadHelper;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -22,7 +21,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use Endroid\QrCode\Exception\ValidationException;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Translation\TranslatableMessage;
@@ -103,7 +101,6 @@ class QrCrudController extends AbstractTenantAwareCrudController
                     ->allowDelete()
                     ->renderExpanded()
                     ->useEntryCrudForm(UrlCrudController::class),
-
             ];
         }
 

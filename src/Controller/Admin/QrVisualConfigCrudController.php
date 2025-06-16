@@ -112,7 +112,7 @@ class QrVisualConfigCrudController extends AbstractCrudController
                     ->setFormTypeOptions([
                         'class' => ErrorCorrectionLevel::class,
                         'choice_label' => function (ErrorCorrectionLevel $choice) {
-                            return new TranslatableMessage('error_correction.' . $choice->name);
+                            return new TranslatableMessage('error_correction.'.$choice->name);
                         },
                         'choices' => ErrorCorrectionLevel::cases(),
                     ]),
