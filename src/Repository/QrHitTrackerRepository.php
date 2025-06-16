@@ -21,5 +21,4 @@ class QrHitTrackerRepository extends ServiceEntityRepository
     {
         return $this->count(['qr' => $qr]);
     }
-
 }

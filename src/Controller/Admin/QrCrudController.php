@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\Embed\UrlCrudController;
-use App\Entity\QrHitTracker;
 use App\Entity\Tenant\Qr;
 use App\Helper\DownloadHelper;
 use App\Repository\QrHitTrackerRepository;
@@ -78,10 +77,8 @@ class QrCrudController extends AbstractTenantAwareCrudController
                         }
 
                         return $this->hitTrackerRepository->getHitCount($entity);
-
                     })
                     ->hideOnForm(),
-
             ];
         }
 
