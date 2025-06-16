@@ -3,8 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\Embed\UrlCrudController;
+use App\Entity\QrHitTracker;
 use App\Entity\Tenant\Qr;
 use App\Helper\DownloadHelper;
+use App\Repository\QrHitTrackerRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -13,11 +15,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\CrudControllerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
@@ -25,7 +27,6 @@ use Endroid\QrCode\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Translation\TranslatableMessage;
-use App\Repository\QrHitTrackerRepository;
 
 /**
  * @template TData of CrudControllerInterface
@@ -34,8 +35,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
 {
     public function __construct(
         private readonly DownloadHelper $downloadHelper,
-        private readonly QrHitTrackerRepository $hitTrackerRepository
-
+        private readonly QrHitTrackerRepository $hitTrackerRepository,
     ) {
     }
 
@@ -71,15 +71,17 @@ class QrCrudController extends AbstractTenantAwareCrudController
                 Field::new('customUrlButton', new TranslatableMessage('qr.preview'))
                     ->setTemplatePath('fields/link/link.html.twig')
                     ->hideOnForm(),
-                IntegerField::new('hitCount', new TranslatableMessage('Hits'))
-                    ->setVirtual(true)
-                    ->formatValue(function ($value, $entity) use ($hitTrackerRepository) {
+                IntegerField::new('hitTrackers', new TranslatableMessage('Hits'))
+                    ->formatValue(function ($value, $entity) {
                         if (null === $entity) {
-                            return 0;
+                            return '0';
                         }
-                        return $hitTrackerRepository->getHitCount($entity);
+
+                        return $this->hitTrackerRepository->getHitCount($entity);
+
                     })
                     ->hideOnForm(),
+
             ];
         }
 

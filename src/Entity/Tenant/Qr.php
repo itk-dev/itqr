@@ -6,6 +6,7 @@ use ApiPlatform\Doctrine\Orm\Filter\BackedEnumFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use App\Entity\QrHitTracker;
 use App\Enum\QrModeEnum;
 use App\Repository\QrRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,7 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Uid\UuidV7;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Entity\QrHitTracker;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: QrRepository::class)]
