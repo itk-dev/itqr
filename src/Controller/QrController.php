@@ -40,20 +40,18 @@ final class QrController extends AbstractController
 
         $urls = $qr->getUrls();
 
-
-
-        if ($qr->getMode() === QrModeEnum::DEFAULT) {
+        if (QrModeEnum::DEFAULT === $qr->getMode()) {
             if ($urls->isEmpty()) {
                 throw $this->createNotFoundException('No URLs found for the given QR code');
             }
 
-            return new RedirectResponse((string)$urls[0]);
+            return new RedirectResponse((string) $urls[0]);
         }
 
-        if ($qr->getMode() === QrModeEnum::STATIC) {
+        if (QrModeEnum::STATIC === $qr->getMode()) {
             return $this->render('static.html.twig', [
                 'title' => $qr->getTitle(),
-                'description' => $qr->getDescription()
+                'description' => $qr->getDescription(),
             ]);
         }
 
