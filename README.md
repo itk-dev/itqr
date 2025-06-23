@@ -32,7 +32,7 @@ Below are directions to set up, run, and maintain the project effectively.
    You can now login with `user-a@example.com` as username and `password` as password.
 
    ```bash
-   task console doctrine:fixtures:load
+   task apply-fixtures
    ```
   
 4. **Optinional: Create more Tenants/Users**  
