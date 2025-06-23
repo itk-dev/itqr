@@ -1,0 +1,38 @@
+{% if entity.instance.backgroundColor %}
+    {% set backgroundColor = create_color_from_hex(entity.instance.backgroundColor) %}
+{% endif %}
+
+{% if entity.instance.foregroundColor %}
+    {% set foregroundColor = create_color_from_hex(entity.instance.foregroundColor) %}
+{% endif %}
+
+{% if entity.instance.labelTextColor %}
+    {% set labelTextColor = create_color_from_hex(entity.instance.labelTextColor) %}
+{% endif %}
+
+{% if entity.instance.labelMarginTop is defined or entity.instance.labelMarginBottom is defined %}
+    {% set labelMargin = create_label_margin(entity.instance.labelMarginTop|default(0), entity.instance.labelMarginBottom|default(0)) %}
+{% endif %}
+
+{% if entity.instance.labelSize %}
+    {% set labelFont = create_font_interface(entity.instance.labelSize) %}
+{% endif %}
+
+<a href=""
+   class="popover-link">
+    {{ 'qr.view'|trans }}
+    <span class="popover-content">
+    <img src="{{ qr_code_data_uri(url('app_qr_index', {uuid: 'test'}), 'default', {
+        size: entity.instance.size * 1,
+        margin: entity.instance.margin * 1,
+        errorCorrectionLevel: entity.instance.errorCorrectionLevel,
+        labelText: entity.instance.labelText,
+        labelFont: labelFont,
+        labelTextColor: labelTextColor,
+        labelMargin: labelMargin,
+        backgroundColor: backgroundColor,
+        foregroundColor: foregroundColor,
+        logoPath: entity.instance.logo ? ('uploads/qr-logos/' ~ entity.instance.logo) : null,
+    }) }}" alt="Generated Image"/>
+   </span>
+</a>

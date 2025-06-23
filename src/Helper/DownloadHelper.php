@@ -8,6 +8,9 @@ use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\Exception\ValidationException;
+use Endroid\QrCode\Label\Font\Font;
+use Endroid\QrCode\Label\Font\FontInterface;
+use Endroid\QrCode\Label\Font\OpenSans;
 use Endroid\QrCode\Label\LabelAlignment;
 use Endroid\QrCode\Label\Margin\Margin;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -40,20 +43,16 @@ class DownloadHelper
             'backgroundColor' => $this->createColorFromHex($downloadSettings['backgroundColor'] ?? '#ffffff'),
             'foregroundColor' => $this->createColorFromHex($downloadSettings['foregroundColor'] ?? '#000000'),
             'labelText' => $downloadSettings['labelText'] ?? '',
+            'labelFont' => $this->createFontInterface((int) ($downloadSettings['labelSize'] ?? 12)),
             'labelTextColor' => $this->createColorFromHex($downloadSettings['labelTextColor'] ?? '#000000'),
-            'labelMargin' => new Margin(
-                (int) ($downloadSettings['labelMarginTop'] ?? 0),
-                0,
-                (int) ($downloadSettings['labelMarginBottom'] ?? 0),
-                0
-            ),
+            'labelMargin' => $this->createLabelMargin((int) ($downloadSettings['labelMarginTop'] ?? 0), (int) ($downloadSettings['labelMarginBottom'] ?? 0)),
             'errorCorrectionLevel' => [
                 'low' => ErrorCorrectionLevel::Low,
                 'medium' => ErrorCorrectionLevel::Medium,
                 'quartile' => ErrorCorrectionLevel::Quartile,
                 'high' => ErrorCorrectionLevel::High,
             ][$downloadSettings['errorCorrectionLevel'] ?? 'medium'] ?? ErrorCorrectionLevel::Medium,
-            'logo' => $this->processLogo($downloadSettings['logo'] ?? null),
+            'logo' => $this->processLogo($downloadSettings['logo'] ?? null) ?? $downloadSettings['logoPath'] ?? null,
         ];
 
         // Based on the number of entities, call the appropriate function
@@ -162,10 +161,11 @@ class DownloadHelper
             foregroundColor: $settings['foregroundColor'],
             backgroundColor: $settings['backgroundColor'],
             labelText: $settings['labelText'],
+            labelFont: $settings['labelFont'],
             labelAlignment: LabelAlignment::Center,
             labelMargin: $settings['labelMargin'],
             labelTextColor: $settings['labelTextColor'],
-            logoPath: $settings['logo'],
+            logoPath: $settings['logo'] ?? $settings['logoPath'],
             logoPunchoutBackground: false,
         );
 
@@ -175,7 +175,7 @@ class DownloadHelper
     /**
      * Process the logo file for QR code generation.
      */
-    private function processLogo(?UploadedFile $logo): ?string
+    public function processLogo(?UploadedFile $logo): ?string
     {
         if ($logo instanceof UploadedFile) {
             // Save the uploaded file and return its path
@@ -202,5 +202,28 @@ class DownloadHelper
         [$r, $g, $b] = sscanf($hexColor, '#%02x%02x%02x');
 
         return new Color($r, $g, $b);
+    }
+
+    /**
+     * Create a margin object with specified top and bottom margins.
+     *
+     * @param int $top    Top margin value
+     * @param int $bottom Bottom margin value
+     */
+    public function createLabelMargin(int $top, int $bottom): Margin
+    {
+        return new Margin($top, 0, $bottom, 0);
+    }
+
+    /**
+     * Create a font interface with the specified font size.
+     *
+     * @param int $size The font size
+     *
+     * @return FontInterface The created font interface
+     */
+    public function createFontInterface(int $size): FontInterface
+    {
+        return new Font((new OpenSans())->getPath(), $size);
     }
 }

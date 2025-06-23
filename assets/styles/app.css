@@ -26,11 +26,10 @@
     transform: translateX(-50%);
     background-color: white;
     border: 1px solid #ccc;
-    border-radius: 5px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 5px;
     z-index: 1000;
     white-space: nowrap;
+    pointer-events: none;
 }
 
 .popover-content img {
@@ -51,10 +50,18 @@
     background-color: #f9f9f9;
     flex: 1;
     height: 475px;
+    position: sticky;
+    top: 70px;
+    z-index: 100;
 
+    #qrCodeContainer {
+        height: 100%;
+    }
     .nav-link {
         color: #000;
     }
+
+
     .nav-link.active {
         color: #000;
         font-weight: bold;
@@ -66,7 +73,31 @@
 }
 
 .qr-preview .qr-code-image {
-    max-width: 100%;
+    max-height: 400px;
     display: block;
     margin: 15px auto 0 auto;
+}
+
+
+.qr-edit-visual-config-container,
+.qr-new-visual-config-container {
+    display: flex;
+    flex-direction: row;
+    > div {
+        flex: 1;
+    }
+
+    .form-fieldset-body {
+        > div {
+            > div {
+                width: 100%;
+            }
+        }
+    }
+}
+
+form[name="batch_download"] .accordion-button {
+    box-shadow: none;
+    background-color: #fff;
+    border-bottom: 1px solid #e9e9e9;
 }
