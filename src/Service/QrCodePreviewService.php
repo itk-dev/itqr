@@ -14,6 +14,7 @@ use Endroid\QrCode\Label\LabelAlignment;
 use Endroid\QrCode\Label\Margin\Margin;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class QrCodePreviewService
 {
@@ -30,6 +31,7 @@ class QrCodePreviewService
         private readonly QrVisualConfigRepository $qrVisualConfigRepository,
         private readonly QrRepository $qrRepository,
         private string $uploadPathConfig,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -110,8 +112,8 @@ class QrCodePreviewService
         $data = [];
         // Loop through each selected QR code entity ID
         foreach ($selectedQrCodes as $qrCodeId) {
-            // Replace this with logic to retrieve the URL (or string) for each QR code entity
-            $qrCodeUrl = 'examplePreview' === $qrCodeId ? 'qr visual config example preview' : $this->qrRepository->findOneBy(['id' => $qrCodeId])->getUrls()->first()->getUrl();
+            $qrCodeUrl = 'examplePreview' === $qrCodeId ? 'qr visual config example preview' :
+                $this->urlGenerator->generate('app_qr_index', ['uuid' => $this->qrRepository->findOneBy(['id' => $qrCodeId])->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL);
             $qrCodeTitle = 'examplePreview' === $qrCodeId ? 'examplePreview' : $this->qrRepository->findOneBy(['id' => $qrCodeId])->getTitle();
 
             if (!$qrCodeUrl) {

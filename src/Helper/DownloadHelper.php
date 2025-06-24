@@ -51,7 +51,7 @@ class DownloadHelper
                 'medium' => ErrorCorrectionLevel::Medium,
                 'quartile' => ErrorCorrectionLevel::Quartile,
                 'high' => ErrorCorrectionLevel::High,
-            ][$downloadSettings['errorCorrectionLevel'] ?? 'medium'] ?? ErrorCorrectionLevel::Medium,
+            ][$downloadSettings['errorCorrectionLevel'] ?? 'low'] ?? ErrorCorrectionLevel::Low,
             'logo' => $this->processLogo($downloadSettings['logo'] ?? null) ?? $downloadSettings['logoPath'] ?? null,
         ];
 
@@ -149,7 +149,7 @@ class DownloadHelper
         array $settings,
     ): string {
         $uuid = $qrEntity->getUuid();
-        $qrContent = $this->urlGenerator->generate('app_qr_index', ['uuid' => $uuid]);
+        $qrContent = $this->urlGenerator->generate('app_qr_index', ['uuid' => $uuid], UrlGeneratorInterface::ABSOLUTE_URL);
 
         // Use the Endroid QR Code Builder to generate the QR Code
         $result = (new Builder())->build(
@@ -165,7 +165,7 @@ class DownloadHelper
             labelAlignment: LabelAlignment::Center,
             labelMargin: $settings['labelMargin'],
             labelTextColor: $settings['labelTextColor'],
-            logoPath: $settings['logo'] ?? $settings['logoPath'],
+            logoPath: $settings['logo'] ?? $settings['logoPath'] ?? '',
             logoPunchoutBackground: false,
         );
 
