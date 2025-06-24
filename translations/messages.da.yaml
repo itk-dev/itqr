@@ -6,7 +6,7 @@ qr:
   description: 'Beskrivelse'
   mode:
     title: 'Type'
-    help: '<b>Standard</b>: Qr-koden leder videre til destinationen.<br><b>Statisk sidevisning</b>: En dedikeret side vises med titlen og beskrivelsen.'
+    help: '<b>Standard</b>: Qr-koden leder videre til destinationen.<br><b>Statisk sidevisning</b>: En dedikeret side vises med titlen og beskrivelsen.' # @TODO Find a way to exclude html from translation.
   urls: 'Destination'
   preview: 'Forhåndsvisning'
   view: 'Vis'
