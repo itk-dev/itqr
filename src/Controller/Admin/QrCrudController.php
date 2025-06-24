@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Controller\Admin\Embed\UrlCrudController;
 use App\Entity\Tenant\Qr;
 use App\Helper\DownloadHelper;
+use App\Repository\QrHitTrackerRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -17,6 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
@@ -32,6 +34,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
 {
     public function __construct(
         private readonly DownloadHelper $downloadHelper,
+        private readonly QrHitTrackerRepository $hitTrackerRepository,
     ) {
     }
 
@@ -66,6 +69,15 @@ class QrCrudController extends AbstractTenantAwareCrudController
                     ->renderAsNativeWidget(),
                 Field::new('customUrlButton', new TranslatableMessage('qr.preview'))
                     ->setTemplatePath('fields/link/link.html.twig')
+                    ->hideOnForm(),
+                IntegerField::new('hitTrackers', new TranslatableMessage('Hits'))
+                    ->formatValue(function ($value, $entity) {
+                        if (null === $entity) {
+                            return '0';
+                        }
+
+                        return $this->hitTrackerRepository->getHitCount($entity);
+                    })
                     ->hideOnForm(),
             ];
         }

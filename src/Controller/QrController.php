@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\QrHitTracker;
 use App\Repository\QrRepository;
 use App\Repository\UrlRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +20,7 @@ final class QrController extends AbstractController
     }
 
     #[Route('/qr/{uuid}', name: 'app_qr_index')]
-    public function index(string $uuid, UrlRepository $urlRepository): Response
+    public function index(string $uuid, UrlRepository $urlRepository, EntityManagerInterface $entityManager): Response
     {
         // Find the QR entity by UUID
         $uuid = UuidV7::fromString($uuid);
@@ -27,6 +29,13 @@ final class QrController extends AbstractController
         if (!$qr) {
             throw $this->createNotFoundException('QR code not found');
         }
+
+        // Create QR hit tracker entry
+        $qrHitTracker = new QrHitTracker();
+        $qrHitTracker->setQr($qr);
+        $qrHitTracker->setTimestamp(new \DateTimeImmutable());
+        $entityManager->persist($qrHitTracker);
+        $entityManager->flush();
 
         $urls = $qr->getUrls();
 

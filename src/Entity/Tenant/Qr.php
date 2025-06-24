@@ -6,6 +6,7 @@ use ApiPlatform\Doctrine\Orm\Filter\BackedEnumFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use App\Entity\QrHitTracker;
 use App\Enum\QrModeEnum;
 use App\Repository\QrRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -45,11 +46,18 @@ class Qr extends AbstractTenantScopedEntity
     #[Assert\Valid]
     private Collection $urls;
 
+    /**
+     * @var Collection<int, QrHitTracker>
+     */
+    #[ORM\OneToMany(targetEntity: QrHitTracker::class, mappedBy: 'qr')]
+    private Collection $hitTrackers;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->urls = new ArrayCollection();
+        $this->hitTrackers = new ArrayCollection();
         $this->uuid = Uuid::v7();
     }
 
@@ -142,5 +150,10 @@ class Qr extends AbstractTenantScopedEntity
         foreach ($this->urls as $url) {
             $this->removeUrl($url);
         }
+    }
+
+    public function getHitTrackers(): Collection
+    {
+        return $this->hitTrackers;
     }
 }
