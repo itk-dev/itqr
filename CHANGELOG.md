@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-27](https://github.com/itk-dev/itqr/pull/27)
+    - Minor corrections and additions
 [PR-26](https://github.com/itk-dev/itqr/pull/26)
     - Add static-page mode to qr entity
 [PR-25](https://github.com/itk-dev/itqr/pull/25)
