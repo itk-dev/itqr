@@ -65,7 +65,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
                     ->allowDelete()
                     ->renderExpanded()
                     ->useEntryCrudForm(UrlCrudController::class),
-                ChoiceField::new('mode', new TranslatableMessage('qr.mode'))
+                ChoiceField::new('mode', new TranslatableMessage('qr.mode.title'))
                     ->renderAsNativeWidget(),
                 Field::new('customUrlButton', new TranslatableMessage('qr.preview'))
                     ->setTemplatePath('fields/link/link.html.twig')
@@ -73,7 +73,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
                 IntegerField::new('hitTrackers', new TranslatableMessage('Hits'))
                     ->formatValue(function ($value, $entity) {
                         if (null === $entity) {
-                            return '0';
+                            return 0;
                         }
 
                         return $this->hitTrackerRepository->getHitCount($entity);
@@ -88,7 +88,8 @@ class QrCrudController extends AbstractTenantAwareCrudController
                     ->setDisabled()
                     ->hideOnForm(),
                 TextField::new('title', new TranslatableMessage('qr.title')),
-                ChoiceField::new('mode', new TranslatableMessage('qr.mode'))
+                ChoiceField::new('mode', new TranslatableMessage('qr.mode.title'))
+                    ->setHelp(new TranslatableMessage('qr.mode.help'))
                     ->renderAsNativeWidget(),
                 TextEditorField::new('description', new TranslatableMessage('qr.description')),
                 CollectionField::new('urls', new TranslatableMessage('qr.urls'))
@@ -105,7 +106,8 @@ class QrCrudController extends AbstractTenantAwareCrudController
                     ->setDisabled()
                     ->hideOnForm(),
                 TextField::new('title', new TranslatableMessage('qr.title')),
-                ChoiceField::new('mode', new TranslatableMessage('qr.mode'))
+                ChoiceField::new('mode', new TranslatableMessage('qr.mode.title'))
+                    ->setHelp(new TranslatableMessage('qr.mode.help'))
                     ->renderAsNativeWidget(),
                 TextEditorField::new('description', new TranslatableMessage('qr.description')),
                 CollectionField::new('urls', new TranslatableMessage('qr.urls'))

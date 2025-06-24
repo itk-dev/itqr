@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\QrHitTracker;
 use App\Repository\QrRepository;
-use App\Repository\UrlRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\QrService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,37 +14,32 @@ final class QrController extends AbstractController
 {
     public function __construct(
         private readonly QrRepository $qrRepository,
+        private readonly QrService $qrService,
     ) {
     }
 
     #[Route('/qr/{uuid}', name: 'app_qr_index')]
-    public function index(string $uuid, UrlRepository $urlRepository, EntityManagerInterface $entityManager): Response
+    public function index(string $uuid): Response
     {
         // Find the QR entity by UUID
-        $uuid = UuidV7::fromString($uuid);
-        $qr = $this->qrRepository->findOneBy(['uuid' => $uuid]);
+        $qr = $this->qrRepository->findOneBy(['uuid' => UuidV7::fromString($uuid)]);
 
         if (!$qr) {
             throw $this->createNotFoundException('QR code not found');
         }
 
-        // Create QR hit tracker entry
-        $qrHitTracker = new QrHitTracker();
-        $qrHitTracker->setQr($qr);
-        $qrHitTracker->setTimestamp(new \DateTimeImmutable());
-        $entityManager->persist($qrHitTracker);
-        $entityManager->flush();
+        try {
+            $data = $this->qrService->handleQrResponse($qr);
 
-        $urls = $qr->getUrls();
+            // If we have a URL, it's a default mode QR code
+            if (isset($data['url'])) {
+                return new RedirectResponse($data['url']);
+            }
 
-        // @TODO: Add what happens if a qr has multiple urls with certain modes.
-
-        if ($urls->isEmpty()) {
-            throw $this->createNotFoundException('No URLs found for the given QR code');
+            // Otherwise, it's a static mode QR code
+            return $this->render('static.html.twig', $data);
+        } catch (\RuntimeException $e) {
+            throw $this->createNotFoundException($e->getMessage());
         }
-
-        // Redirect to the first URL
-        // @TODO enable "kiosk mode" for codes with multiple urls
-        return new RedirectResponse((string) $urls[0]);
     }
 }
