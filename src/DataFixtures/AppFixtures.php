@@ -52,6 +52,7 @@ class AppFixtures extends Fixture
             $qr->setTitle('qr '.$i);
             $qr->setTenant(0 == $i % 2 ? $tenants['0'] : $tenants['1']);
             $qr->setMode(QrModeEnum::DEFAULT);
+            $qr->setDepartment($tenants[array_rand($tenants)]->getTenantKey());
             $this->setCreatedModified($qr);
 
             $manager->persist($qr);
