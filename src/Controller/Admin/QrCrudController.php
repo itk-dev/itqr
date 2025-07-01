@@ -5,8 +5,10 @@ namespace App\Controller\Admin;
 use App\Controller\Admin\Embed\UrlCrudController;
 use App\Entity\Tenant\Qr;
 use App\Helper\DownloadHelper;
+use App\Repository\QrHitTrackerRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
@@ -16,6 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
@@ -31,6 +34,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
 {
     public function __construct(
         private readonly DownloadHelper $downloadHelper,
+        private readonly QrHitTrackerRepository $hitTrackerRepository,
     ) {
     }
 
@@ -54,31 +58,59 @@ class QrCrudController extends AbstractTenantAwareCrudController
     {
         if (Crud::PAGE_INDEX === $pageName) {
             return [
-                TextField::new('title', new TranslatableMessage('Title')),
-                TextEditorField::new('description', new TranslatableMessage('Description')),
-                CollectionField::new('urls', new TranslatableMessage('URLs'))
+                TextField::new('title', new TranslatableMessage('qr.title')),
+                TextEditorField::new('description', new TranslatableMessage('qr.description')),
+                CollectionField::new('urls', new TranslatableMessage('qr.urls'))
                     ->allowAdd()
                     ->allowDelete()
                     ->renderExpanded()
                     ->useEntryCrudForm(UrlCrudController::class),
-                ChoiceField::new('mode', new TranslatableMessage('Mode'))
+                ChoiceField::new('mode', new TranslatableMessage('qr.mode.title'))
                     ->renderAsNativeWidget(),
-                Field::new('customUrlButton', new TranslatableMessage('Open Resource'))
+                Field::new('customUrlButton', new TranslatableMessage('qr.preview'))
                     ->setTemplatePath('fields/link/link.html.twig')
+                    ->hideOnForm(),
+                IntegerField::new('hitTrackers', new TranslatableMessage('Hits'))
+                    ->formatValue(function ($value, $entity) {
+                        if (null === $entity) {
+                            return 0;
+                        }
+
+                        return $this->hitTrackerRepository->getHitCount($entity);
+                    })
                     ->hideOnForm(),
             ];
         }
 
-        if (Crud::PAGE_EDIT === $pageName || Crud::PAGE_NEW === $pageName) {
+        if (Crud::PAGE_EDIT === $pageName) {
             return [
                 IdField::new('id', 'ID')
                     ->setDisabled()
                     ->hideOnForm(),
-                TextField::new('title', new TranslatableMessage('Title')),
-                ChoiceField::new('mode', new TranslatableMessage('Mode'))
+                TextField::new('title', new TranslatableMessage('qr.title')),
+                ChoiceField::new('mode', new TranslatableMessage('qr.mode.title'))
+                    ->setHelp(new TranslatableMessage('qr.mode.help'))
                     ->renderAsNativeWidget(),
-                TextEditorField::new('description', new TranslatableMessage('Description')),
-                CollectionField::new('urls', new TranslatableMessage('URLs'))
+                TextEditorField::new('description', new TranslatableMessage('qr.description')),
+                CollectionField::new('urls', new TranslatableMessage('qr.urls'))
+                    ->allowAdd()
+                    ->allowDelete()
+                    ->renderExpanded()
+                    ->useEntryCrudForm(UrlCrudController::class),
+            ];
+        }
+
+        if (Crud::PAGE_NEW === $pageName) {
+            return [
+                IdField::new('id', 'ID')
+                    ->setDisabled()
+                    ->hideOnForm(),
+                TextField::new('title', new TranslatableMessage('qr.title')),
+                ChoiceField::new('mode', new TranslatableMessage('qr.mode.title'))
+                    ->setHelp(new TranslatableMessage('qr.mode.help'))
+                    ->renderAsNativeWidget(),
+                TextEditorField::new('description', new TranslatableMessage('qr.description')),
+                CollectionField::new('urls', new TranslatableMessage('qr.urls'))
                     ->allowAdd()
                     ->allowDelete()
                     ->renderExpanded()
@@ -105,22 +137,26 @@ class QrCrudController extends AbstractTenantAwareCrudController
     public function configureActions(Actions $actions): Actions
     {
         // Define batch download action
-        $batchDownloadAction = Action::new('download', new TranslatableMessage('Configure download'))
+        $batchDownloadAction = Action::new('download', new TranslatableMessage('qr.configure_download'))
             ->linkToCrudAction('batchDownload')
             ->addCssClass('btn btn-success')
-            ->setIcon('fa fa-download');
+            ->setIcon('fa fa-download')
+            ->displayAsButton();
+
         // Define single download action
-        $singleDownloadAction = Action::new('quickDownload', new TranslatableMessage('Quick download'))
-            ->linkToCrudAction('quickDownload');
+        $singleDownloadAction = Action::new('quickDownload', new TranslatableMessage('qr.quick_download'))
+            ->linkToCrudAction('quickDownload')
+            ->setIcon('fa fa-download');
 
         // Define batch url change action
-        $setUrlAction = Action::new('setUrl', new TranslatableMessage('Set URL'))
+        $setUrlAction = Action::new('setUrl', new TranslatableMessage('qr.set_url'))
             ->linkToCrudAction('setUrl')
             ->addCssClass('btn btn-primary')
             ->setIcon('fa fa-link');
 
-        // Set actions
         return $actions
+            ->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action) => $action->setIcon('fa fa-pencil')->setLabel('qr.edit'))
+            ->update(Crud::PAGE_INDEX, Action::DELETE, fn (Action $action) => $action->setIcon('fa fa-trash')->setLabel('qr.delete'))
             ->addBatchAction($batchDownloadAction)
             ->addBatchAction($setUrlAction)
             ->add(Crud::PAGE_INDEX, $singleDownloadAction);
@@ -158,5 +194,11 @@ class QrCrudController extends AbstractTenantAwareCrudController
     public function batchDownload(BatchActionDto $batchActionDto): RedirectResponse
     {
         return $this->redirectToRoute('admin_batch_download', $batchActionDto->getEntityIds());
+    }
+
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $assets
+            ->addWebpackEncoreEntry('app');
     }
 }

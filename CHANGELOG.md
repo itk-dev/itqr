@@ -8,11 +8,20 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-27](https://github.com/itk-dev/itqr/pull/27)
+    - Minor corrections and additions
+[PR-26](https://github.com/itk-dev/itqr/pull/26)
+    - Add static-page mode to qr entity
+[PR-25](https://github.com/itk-dev/itqr/pull/25)
+    - Qr hit counter
 [PR-24](https://github.com/itk-dev/itqr/pull/24)
     - Removed temporary form based login
     - Added OIDC authentication
     - Removed unneeded multi-tenant functionality
     - Added doctrine filters to add tenant scope to all doctrine queries
+[PR-23](https://github.com/itk-dev/itqr/pull/23)
+    - Seperate visual representation of QR into own config
+    - Live preview of design and download
 [PR-22](https://github.com/itk-dev/itqr/pull/22)
     - Add temporary form login
     - Fix for "tenant null" error on URLs in embedded forms

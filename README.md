@@ -32,15 +32,15 @@ Below are directions to set up, run, and maintain the project effectively.
    You can now login with `user-a@example.com` as username and `password` as password.
 
    ```bash
-   task console -- doctrine:fixtures:load
+   task apply-fixtures
    ```
   
 4. **Optinional: Create more Tenants/Users**  
    Run the following commands to create a Tenant and User
 
    ```bash
-   task console -- app:tenant:add
-   task console -- app:user:add
+   task console app:tenant:add
+   task console app:user:add
    ```
 
    Note: Form login and manual user management is a temporary solution while we wait for OIDC
