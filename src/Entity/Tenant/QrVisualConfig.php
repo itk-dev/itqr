@@ -10,13 +10,8 @@ use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity(repositoryClass: QrVisualConfigRepository::class)]
 #[ApiResource]
-class QrVisualConfig
+class QrVisualConfig extends AbstractTenantScopedEntity
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[ORM\Column(length: 50, nullable: false)]
     private string $name;
 
@@ -53,10 +48,6 @@ class QrVisualConfig
     #[ORM\Column(type: 'string', enumType: ErrorCorrectionLevel::class, nullable: false)]
     private ErrorCorrectionLevel $errorCorrectionLevel = ErrorCorrectionLevel::Low;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getSize(): int
     {
