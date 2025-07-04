@@ -8,6 +8,9 @@ use App\Entity\Interfaces\TenantScopedEntityInterface;
 use App\Security\TenantScope\TenantScopeException;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Factory\FilterFactory;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Contracts\Service\Attribute\Required;
 
 /**
  * Class TenantFilter.
@@ -24,6 +27,10 @@ class TenantFilter extends SQLFilter
     {
         // Check if the entity implements the required interfaces
         if (!$targetEntity->getReflectionClass()->implementsInterface(TenantScopedEntityInterface::class)) {
+            return '';
+        }
+
+        if (!$this->hasParameter('tenant_id')){
             return '';
         }
 
