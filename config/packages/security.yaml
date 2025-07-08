@@ -38,6 +38,9 @@ security:
     access_control:
         - { path: ^/admin, roles: ROLE_EDITOR }
 
+    access_decision_manager:
+        strategy: unanimous
+
 when@test:
     security:
         password_hashers:

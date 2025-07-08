@@ -127,6 +127,14 @@ class Qr extends AbstractTenantScopedEntity
         if (!$this->urls->contains($url)) {
             $this->urls[] = $url;
             $url->setQr($this);
+
+            /*
+             * We have to set the tenant here because there is no central place to hook into and do it for embedded
+             * entities. The "createEntity() function is not called when the EasyAdmin crud controller is used as an
+             * embedded controller. EasyAdmin and doctrines events are also useless because validation is run before
+             * them, and if validation fails, an error is shown to the user.
+             */
+            $url->setTenant($this->getTenant());
         }
 
         return $this;

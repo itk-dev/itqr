@@ -8,6 +8,9 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-30](https://github.com/itk-dev/itqr/pull/30)
+    - Apply tenant concept to visualConfig
+    - Configure tenant enforcement across solution
 [PR-27](https://github.com/itk-dev/itqr/pull/27)
     - Minor corrections and additions
 [PR-26](https://github.com/itk-dev/itqr/pull/26)
