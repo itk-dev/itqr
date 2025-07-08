@@ -56,7 +56,6 @@ tasks:
   check-code:
     desc: "Check coding standards"
     cmds:
-      - docker run --rm --volume "$PWD:/md" itkdev/markdownlint markdownlint '**/*.md' --fix
       - docker run --rm --volume "$PWD:/md" itkdev/markdownlint markdownlint '**/*.md'
       - task composer -- validate composer.json --strict
       - task composer -- normalize --dry-run
@@ -66,6 +65,7 @@ tasks:
   coding-standards-apply:
     desc: "Apply coding standards"
     cmds:
+      - docker run --rm --volume "$PWD:/md" itkdev/markdownlint markdownlint '**/*.md' --fix
       - task composer -- normalize
       - task composer -- coding-standards-apply
 
