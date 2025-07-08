@@ -3,8 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Controller\Admin\Embed\UrlCrudController;
-use App\Entity\Interfaces\TenantScopedEntityInterface;
-use App\Entity\Interfaces\TenantScopedUserInterface;
 use App\Entity\Tenant\Qr;
 use App\Helper\DownloadHelper;
 use App\Repository\QrHitTrackerRepository;

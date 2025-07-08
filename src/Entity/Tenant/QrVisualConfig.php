@@ -48,7 +48,6 @@ class QrVisualConfig extends AbstractTenantScopedEntity
     #[ORM\Column(type: 'string', enumType: ErrorCorrectionLevel::class, nullable: false)]
     private ErrorCorrectionLevel $errorCorrectionLevel = ErrorCorrectionLevel::Low;
 
-
     public function getSize(): int
     {
         return $this->size;

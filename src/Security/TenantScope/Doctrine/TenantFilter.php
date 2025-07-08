@@ -8,8 +8,6 @@ use App\Entity\Interfaces\TenantScopedEntityInterface;
 use App\Security\TenantScope\TenantScopeException;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
-use EasyCorp\Bundle\EasyAdminBundle\Factory\FilterFactory;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
@@ -30,7 +28,7 @@ class TenantFilter extends SQLFilter
             return '';
         }
 
-        if (!$this->hasParameter('tenant_id')){
+        if (!$this->hasParameter('tenant_id')) {
             return '';
         }
 

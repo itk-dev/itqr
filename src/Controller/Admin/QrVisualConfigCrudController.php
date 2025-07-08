@@ -21,7 +21,6 @@ use Symfony\Component\Translation\TranslatableMessage;
 
 class QrVisualConfigCrudController extends AbstractTenantAwareCrudController
 {
-
     public static function getEntityFqcn(): string
     {
         return QrVisualConfig::class;
