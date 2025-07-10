@@ -88,6 +88,9 @@
     "itk-dev/openid-connect-bundle": {
         "version": "4.0.1"
     },
+    "itk-dev/tidy-feedback": {
+        "version": "1.0.0-RC1"
+    },
     "phpstan/phpstan": {
         "version": "2.1",
         "recipe": {
