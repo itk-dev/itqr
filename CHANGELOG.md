@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-07-10
+
 [PR-33](https://github.com/itk-dev/itqr/pull/33)
     - Fixes and Tidy feedback
 [PR-30](https://github.com/itk-dev/itqr/pull/30)
@@ -67,4 +69,5 @@ See [keep a changelog] for information about writing changes to this log.
     - Added project baseline with easy admin 4.x
 
 [keep a changelog]: https://keepachangelog.com/en/1.1.0/
-[unreleased]: https://github.com/itk-dev/event-database-api/compare/main...develop
+[Unreleased]: https://github.com/itk-dev/event-database-api/compare/1.1.0...HEAD
+[1.1.0]: https://github.com/itk-dev/event-database-api/releases/tag/1.1.0
