@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Enum\UserTypeEnum;
 use App\Repository\TenantRepository;
 use App\Repository\UserRepository;
+use App\Utils\Roles;
 use Doctrine\ORM\EntityManagerInterface;
 use ItkDev\OpenIdConnect\Exception\ItkOpenIdConnectException;
 use ItkDev\OpenIdConnectBundle\Exception\InvalidProviderException;
@@ -123,10 +124,10 @@ class AzureOIDCAuthenticator extends OpenIdLoginAuthenticator
     private function normalizeRoleName(string $role): string
     {
         return match ($role) {
-            'superadministrator' => 'ROLE_SUPER_ADMIN',
-            'administrator' => 'ROLE_ADMIN',
-            'redaktør' => 'ROLE_EDITOR',
-            default => 'ROLE_USER',
+            'superadministrator' => Roles::ROLE_SUPER_ADMIN,
+            'administrator' => Roles::ROLE_ADMIN,
+            'redaktør', 'redaktoer' => Roles::ROLE_EDITOR,
+            default => Roles::ROLE_USER,
         };
     }
 }

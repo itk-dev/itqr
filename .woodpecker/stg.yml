@@ -31,6 +31,8 @@ steps:
         - itkdev-docker-compose-server exec phpfpm composer install --no-dev -o --classmap-authoritative
         - itkdev-docker-compose-server exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
         - itkdev-docker-compose-server exec phpfpm bin/console cache:clear
+        # https://github.com/itk-dev/tidy-feedback/tree/main?tab=readme-ov-file#create-tidy-feedback-database
+        - itkdev-docker-compose-server exec phpfpm bin/console tidy-feedback:doctrine:schema-update || true
         - docker compose run --rm node npm clean-install
         - docker compose run --rm node npm run build
         - docker compose run --rm node rm -rf node_modules

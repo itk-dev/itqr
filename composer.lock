@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e21a05bf9e32eb61f21765164d09d854",
+    "content-hash": "a555cbf38ebe65651ab9f27ea14b545a",
     "packages": [
         {
             "name": "api-platform/core",
@@ -2356,6 +2356,52 @@
                 "source": "https://github.com/itk-dev/openid-connect-bundle/tree/4.0.1"
             },
             "time": "2025-01-16T21:14:01+00:00"
+        },
+        {
+            "name": "itk-dev/tidy-feedback",
+            "version": "1.0.0-RC3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/itk-dev/tidy-feedback.git",
+                "reference": "6ccfcd2ce56b2144991ce9eee523f145844a9b6c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/itk-dev/tidy-feedback/zipball/6ccfcd2ce56b2144991ce9eee523f145844a9b6c",
+                "reference": "6ccfcd2ce56b2144991ce9eee523f145844a9b6c",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "^3 || ^4",
+                "doctrine/orm": "^2.8 || ^3",
+                "symfony/cache": "^6 || ^7",
+                "symfony/http-kernel": "^6 || ^7",
+                "twig/twig": "^3"
+            },
+            "require-dev": {
+                "drupal/coder": "^8.3",
+                "ergebnis/composer-normalize": "^2.47",
+                "friendsofphp/php-cs-fixer": "^3.75",
+                "rector/rector": "^2.0",
+                "vincentlanglet/twig-cs-fixer": "^3.8"
+            },
+            "type": "drupal-module",
+            "autoload": {
+                "psr-4": {
+                    "ItkDev\\TidyFeedback\\": "src/",
+                    "ItkDev\\TidyFeedbackBundle\\": "symfony/src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Tidy feedback",
+            "support": {
+                "issues": "https://github.com/itk-dev/tidy-feedback/issues",
+                "source": "https://github.com/itk-dev/tidy-feedback/tree/1.0.0-RC3"
+            },
+            "time": "2025-07-10T13:08:35+00:00"
         },
         {
             "name": "league/oauth2-client",
@@ -10693,7 +10739,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "RC",
     "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
