@@ -60,7 +60,8 @@ class QrCrudController extends AbstractTenantAwareCrudController
     {
         if (Crud::PAGE_INDEX === $pageName) {
             return [
-                TextField::new('title', new TranslatableMessage('qr.title')),
+                TextField::new('title', new TranslatableMessage('qr.title'))
+                    ->setTemplatePath('fields/link/link_to_edit.html.twig'),
                 TextEditorField::new('description', new TranslatableMessage('qr.description')),
                 CollectionField::new('urls', new TranslatableMessage('qr.urls'))
                     ->allowAdd()
@@ -141,13 +142,16 @@ class QrCrudController extends AbstractTenantAwareCrudController
         // Define batch download action
         $batchDownloadAction = Action::new('download', new TranslatableMessage('qr.configure_download'))
             ->linkToCrudAction('batchDownload')
-            ->addCssClass('btn btn-success')
+            ->addCssClass('btn btn-success disable-confirm')
             ->setIcon('fa fa-download')
             ->displayAsButton();
 
         // Define single download action
-        $singleDownloadAction = Action::new('quickDownload', new TranslatableMessage('qr.quick_download'))
-            ->linkToCrudAction('quickDownload')
+        $singleDownloadActionNoConfig = Action::new('downloadWithoutConfig', new TranslatableMessage('qr.quick_download_without_config'))
+            ->linkToCrudAction('downloadWithoutConfig')
+            ->setIcon('fa fa-download');
+        $singleDownloadActionConfig = Action::new('downloadWithConfig', new TranslatableMessage('qr.quick_download_with_config'))
+            ->linkToCrudAction('downloadWithConfig')
             ->setIcon('fa fa-download');
 
         // Define batch url change action
@@ -162,7 +166,8 @@ class QrCrudController extends AbstractTenantAwareCrudController
             ->update(Crud::PAGE_INDEX, Action::DELETE, fn (Action $action) => $action->setIcon('fa fa-trash')->setLabel('qr.delete'))
             ->addBatchAction($batchDownloadAction)
             ->addBatchAction($setUrlAction)
-            ->add(Crud::PAGE_INDEX, $singleDownloadAction);
+            ->add(Crud::PAGE_INDEX, $singleDownloadActionNoConfig)
+            ->add(Crud::PAGE_INDEX, $singleDownloadActionConfig);
     }
 
     public function setUrl(BatchActionDto $batchActionDto): RedirectResponse
@@ -179,11 +184,18 @@ class QrCrudController extends AbstractTenantAwareCrudController
      *
      * @throws ValidationException
      */
-    public function quickDownload(AdminContext $context): StreamedResponse
+    public function downloadWithoutConfig(AdminContext $context): StreamedResponse
     {
         $qrEntity = $context->getEntity()->getInstance();
 
         return $this->downloadHelper->generateQrCodes([$qrEntity], []);
+    }
+
+    public function downloadWithConfig(AdminContext $context): RedirectResponse
+    {
+        $entityId = ['id' => $context->getEntity()->getInstance()->getId()];
+
+        return $this->redirectToRoute('admin_batch_download', $entityId);
     }
 
     /**

@@ -188,3 +188,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     updateQRCode();
 });
+
+function handleBatchDisableConfirm() {
+    document.querySelectorAll('.disable-confirm').forEach(actionBtn => {
+        actionBtn.addEventListener('click', function() {
+            let modal = document.getElementById('modal-batch-action');
+            document.querySelector('.modal-backdrop').classList.add('invisible');
+            modal.classList.add('invisible');
+            modal.querySelector('#modal-batch-action-button').click();
+        });
+    });
+}
+
+document.addEventListener('readystatechange', function(event) {
+    if ('complete' === document.readyState) {
+        handleBatchDisableConfirm();
+    }
+});
