@@ -8,6 +8,9 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-36](https://github.com/itk-dev/itqr/pull/36)
+    - Fixed issue with set url
+    - Batch set url only for admins
 [PR-33](https://github.com/itk-dev/itqr/pull/33)
     - Fixes and Tidy feedback
 [PR-30](https://github.com/itk-dev/itqr/pull/30)
