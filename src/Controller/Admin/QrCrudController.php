@@ -96,9 +96,9 @@ class QrCrudController extends AbstractTenantAwareCrudController
                     ->renderAsNativeWidget(),
                 TextEditorField::new('description', new TranslatableMessage('qr.description')),
                 CollectionField::new('urls', new TranslatableMessage('qr.urls'))
-                    ->allowAdd()
-                    ->allowDelete()
-                    ->renderExpanded()
+                    ->allowAdd(false)
+                    ->allowDelete(false)
+                    ->renderExpanded(false)
                     ->useEntryCrudForm(UrlCrudController::class),
             ];
         }
