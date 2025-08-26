@@ -8,6 +8,9 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-37](https://github.com/itk-dev/itqr/pull/37)
+    - Rename "theme" to "design" in general
+    - Rename "delete" to "archive" in general
 [PR-36](https://github.com/itk-dev/itqr/pull/36)
     - Fixed issue with set url
     - Batch set url only for admins
