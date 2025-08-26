@@ -68,7 +68,7 @@ class QrVisualConfigCrudController extends AbstractTenantAwareCrudController
                     ->setFormTypeOption('data', $this->getContext()->getEntity()->getInstance()->getId()),
                 TextField::new('name')
                     ->setLabel(new TranslatableMessage('qr.title'))
-                    ->setHelp(new TranslatableMessage('Name of the theme.')),
+                    ->setHelp(new TranslatableMessage('Name of the design.')),
                 IntegerField::new('size')
                     ->setLabel(new TranslatableMessage('qr.size.label'))
                     ->setHelp(new TranslatableMessage('qr.size.help')),
