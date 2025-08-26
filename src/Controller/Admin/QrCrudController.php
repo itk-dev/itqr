@@ -144,7 +144,6 @@ class QrCrudController extends AbstractTenantAwareCrudController
             ->setIcon('fa fa-download')
             ->displayAsButton();
 
-
         // Define single download action
         $singleDownloadActionNoConfig = Action::new('downloadWithoutConfig', new TranslatableMessage('qr.quick_download_without_config'))
             ->linkToCrudAction('downloadWithoutConfig')
@@ -193,6 +192,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
     public function downloadWithConfig(AdminContext $context): RedirectResponse
     {
         $entityId = ['id' => $context->getEntity()->getInstance()->getId()];
+
         return $this->redirectToRoute('admin_batch_download', $entityId);
     }
 
