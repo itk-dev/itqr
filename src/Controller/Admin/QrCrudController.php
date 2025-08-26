@@ -4,7 +4,6 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\Embed\UrlCrudController;
 use App\Entity\Tenant\Qr;
-use App\Entity\User;
 use App\Helper\DownloadHelper;
 use App\Repository\QrHitTrackerRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -153,7 +152,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
         $setUrlAction = Action::new('setUrl', new TranslatableMessage('qr.set_url'))
             ->linkToCrudAction('setUrl')
             ->addCssClass('btn btn-primary')
-            ->displayIf(fn() => $this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_SUPER_ADMIN'))
+            ->displayIf(fn () => $this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_SUPER_ADMIN'))
             ->setIcon('fa fa-link');
 
         return $actions
