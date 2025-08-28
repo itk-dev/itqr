@@ -3,8 +3,7 @@ import './styles/app.css';
 const uploadBasePath = 'uploads/qr_codes/';
 
 document.addEventListener('DOMContentLoaded', () => {
-
-
+    // Enforce only one URL per QR code.
     handleQrUrlCollection();
 
     const qrCodeContainer = document.getElementById('qrCodeContainer');
