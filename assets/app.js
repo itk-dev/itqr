@@ -1,17 +1,22 @@
 import './styles/app.css';
 
 const uploadBasePath = 'uploads/qr_codes/';
+
 document.addEventListener('DOMContentLoaded', () => {
+
+
+    handleQrUrlCollection();
+
     const qrCodeContainer = document.getElementById('qrCodeContainer');
     const tabsContainer = document.getElementById('qrCodeTabs'); // Navigation tabs
     const tabContentContainer = document.getElementById('qrCodeTabContent'); // Tab content
     const form = document.querySelector('.form-wrapper form');
-    const formName = form.getAttribute('name');
+    const formName = form ? form.getAttribute('name') : '';
     const selectedQrCodes = document.getElementById('selectedQrCodes');
 
     // Ensure all containers and elements exist
     if (!qrCodeContainer || !tabsContainer || !tabContentContainer || !form) {
-        console.error('Required elements not found!');
+        console.log('Required elements not found');
         return;
     }
 
@@ -198,6 +203,32 @@ function handleBatchDisableConfirm() {
             modal.querySelector('#modal-batch-action-button').click();
         });
     });
+}
+
+function handleQrUrlCollection() {
+    const qrUrlCollectionParent = document.querySelector('.qr-urls-collection');
+    const qrUrlCollectionAddButton = document.querySelector('.qr-urls-collection .field-collection-add-button');
+    const urlCollectionCount = qrUrlCollectionParent ? qrUrlCollectionParent.getAttribute('data-num-items') : null;
+
+    if (qrUrlCollectionAddButton) {
+        setTimeout(() => {
+            qrUrlCollectionAddButton.click();
+        }, 1)
+
+        if (parseInt(urlCollectionCount) === 1) {
+            qrUrlCollectionAddButton.classList.add('d-none');
+        }
+
+        qrUrlCollectionAddButton.addEventListener('click', () => {
+            setTimeout(() => {
+                const urlCollectionCount = qrUrlCollectionParent.getAttribute('data-num-items');
+
+                if (parseInt(urlCollectionCount) === 1) {
+                    qrUrlCollectionAddButton.classList.add('d-none');
+                }
+            }, 1)
+        });
+    }
 }
 
 document.addEventListener('readystatechange', function(event) {
