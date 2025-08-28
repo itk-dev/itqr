@@ -121,7 +121,6 @@ class QrCrudController extends AbstractTenantAwareCrudController
                     ->useEntryCrudForm(UrlCrudController::class)
                     ->renderExpanded()
                     ->addCssClass('qr-urls-collection'),
-
             ];
         }
 
