@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\Embed\UrlCrudController;
 use App\Entity\Tenant\Qr;
+use App\Entity\Tenant\Url;
 use App\Helper\DownloadHelper;
 use App\Repository\QrHitTrackerRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -96,10 +97,11 @@ class QrCrudController extends AbstractTenantAwareCrudController
                     ->renderAsNativeWidget(),
                 TextEditorField::new('description', new TranslatableMessage('qr.description')),
                 CollectionField::new('urls', new TranslatableMessage('qr.urls'))
-                    ->allowAdd(false)
+                    ->allowAdd()
                     ->allowDelete(false)
                     ->renderExpanded(false)
-                    ->useEntryCrudForm(UrlCrudController::class),
+                    ->useEntryCrudForm(UrlCrudController::class)
+                    ->addCssClass('qr-urls-collection'),
             ];
         }
 
@@ -115,9 +117,11 @@ class QrCrudController extends AbstractTenantAwareCrudController
                 TextEditorField::new('description', new TranslatableMessage('qr.description')),
                 CollectionField::new('urls', new TranslatableMessage('qr.urls'))
                     ->allowAdd()
-                    ->allowDelete()
+                    ->allowDelete(false)
+                    ->useEntryCrudForm(UrlCrudController::class)
                     ->renderExpanded()
-                    ->useEntryCrudForm(UrlCrudController::class),
+                    ->addCssClass('qr-urls-collection'),
+
             ];
         }
 
