@@ -63,7 +63,8 @@ class QrCrudController extends AbstractTenantAwareCrudController
             return [
                 TextField::new('title', new TranslatableMessage('qr.title'))
                     ->setTemplatePath('fields/link/link_to_edit.html.twig'),
-                TextEditorField::new('description', new TranslatableMessage('qr.description')),
+                TextEditorField::new('description', new TranslatableMessage('qr.description'))
+                ->formatValue(fn ($value) => nl2br($value)),
                 CollectionField::new('urls', new TranslatableMessage('qr.urls'))
                     ->allowAdd()
                     ->allowDelete()
