@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-40](https://github.com/itk-dev/itqr/pull/40)
+    - Added styling to static page.
 [PR-39](https://github.com/itk-dev/itqr/pull/39)
     - Added various help texts and in-platform-documentation.
 [PR-38](https://github.com/itk-dev/itqr/pull/38)
