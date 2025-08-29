@@ -207,17 +207,22 @@ function handleBatchDisableConfirm() {
 function handleQrUrlCollection() {
     const qrUrlCollectionParent = document.querySelector('.qr-urls-collection');
     const qrUrlCollectionAddButton = document.querySelector('.qr-urls-collection .field-collection-add-button');
-    const urlCollectionCount = qrUrlCollectionParent ? qrUrlCollectionParent.getAttribute('data-num-items') : null;
+    const urlCollectionCount = qrUrlCollectionParent ? parseInt(qrUrlCollectionParent.getAttribute('data-num-items')) : null;
 
+    // If the button exists, and no URL is added - add it!
     if (qrUrlCollectionAddButton) {
         setTimeout(() => {
-            qrUrlCollectionAddButton.click();
+            if (urlCollectionCount !== null && urlCollectionCount === 0) {
+                qrUrlCollectionAddButton.click();
+            }
         }, 1)
 
+        // Hide the add-button if there is already an URL added.
         if (parseInt(urlCollectionCount) === 1) {
             qrUrlCollectionAddButton.classList.add('d-none');
         }
 
+        // Handle the click event and hide add-button if an URL was added and the number of URLs is 1.
         qrUrlCollectionAddButton.addEventListener('click', () => {
             setTimeout(() => {
                 const urlCollectionCount = qrUrlCollectionParent.getAttribute('data-num-items');

@@ -99,7 +99,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
                 CollectionField::new('urls', new TranslatableMessage('qr.urls'))
                     ->allowAdd()
                     ->allowDelete(false)
-                    ->renderExpanded(false)
+                    ->renderExpanded(true)
                     ->useEntryCrudForm(UrlCrudController::class)
                     ->addCssClass('qr-urls-collection'),
             ];
