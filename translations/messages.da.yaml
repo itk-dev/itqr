@@ -2,12 +2,18 @@ frontpage:
   hello_world: 'Hej Verden!'
 
 qr:
-  title: 'Titel'
-  description: 'Beskrivelse'
+  title:
+    label: 'Titel'
+    help: 'Giv QR-koden en beskrivende titel, så andre brugere nemt kan forstå formålet med den. <br> Hvis QR-koden har typen "Statisk sidevisning", er dette felt overskriften.'
+  description:
+    label: 'Beskrivelse'
+    help: 'Beskrivelsen kan hjælpe med yderligere at beskrive QR-kodens formål. <br> Hvis QR-koden har typen "Statisk sidevisning", er dette felt brødteksten.'
   mode:
-    title: 'Type'
-    help: '<b>Standard</b>: Qr-koden leder videre til destinationen.<br><b>Statisk sidevisning</b>: En dedikeret side vises med titlen og beskrivelsen.' # @TODO Find a way to exclude html from translation.
-  urls: 'Destination'
+    label: 'Type'
+    help: '<b>Standard</b>: Qr-koden leder videre til destinationen.<br><b>Statisk sidevisning</b>: En dedikeret statisk side vises med titlen og beskrivelsen.' # @TODO Find a way to exclude html from translation.
+  url:
+    label: 'Destination'
+    help: 'Dette felt definerer hvilken URL QR-koden skal lede videre til (f.eks. https://aarhus.dk). <br> Hvis QR-koden har typen "Statisk sidevisning", ignoreres dette felt.'
   preview: 'Forhåndsvisning'
   view: 'Vis'
   size:

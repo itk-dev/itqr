@@ -92,17 +92,20 @@ class QrCrudController extends AbstractTenantAwareCrudController
                 IdField::new('id', 'ID')
                     ->setDisabled()
                     ->hideOnForm(),
-                TextField::new('title', new TranslatableMessage('qr.title')),
-                ChoiceField::new('mode', new TranslatableMessage('qr.mode.title'))
+                TextField::new('title', new TranslatableMessage('qr.title.label'))
+                ->setHelp(new TranslatableMessage('qr.title.help')),
+                ChoiceField::new('mode', new TranslatableMessage('qr.mode.label'))
                     ->setHelp(new TranslatableMessage('qr.mode.help'))
                     ->renderAsNativeWidget(),
-                TextEditorField::new('description', new TranslatableMessage('qr.description')),
-                CollectionField::new('urls', new TranslatableMessage('qr.urls'))
+                TextEditorField::new('description', new TranslatableMessage('qr.description.label'))
+                    ->setHelp(new TranslatableMessage('qr.description.help')),
+                CollectionField::new('urls', new TranslatableMessage('qr.url.label'))
                     ->allowAdd()
                     ->allowDelete(false)
                     ->renderExpanded(true)
                     ->useEntryCrudForm(UrlCrudController::class)
-                    ->addCssClass('qr-urls-collection'),
+                    ->addCssClass('qr-urls-collection')
+                    ->setHelp(new TranslatableMessage('qr.url.help')),
             ];
         }
 
@@ -111,17 +114,20 @@ class QrCrudController extends AbstractTenantAwareCrudController
                 IdField::new('id', 'ID')
                     ->setDisabled()
                     ->hideOnForm(),
-                TextField::new('title', new TranslatableMessage('qr.title')),
-                ChoiceField::new('mode', new TranslatableMessage('qr.mode.title'))
+                TextField::new('title', new TranslatableMessage('qr.title.label'))
+                    ->setHelp(new TranslatableMessage('qr.title.help')),
+                ChoiceField::new('mode', new TranslatableMessage('qr.mode.label'))
                     ->setHelp(new TranslatableMessage('qr.mode.help'))
                     ->renderAsNativeWidget(),
-                TextEditorField::new('description', new TranslatableMessage('qr.description')),
-                CollectionField::new('urls', new TranslatableMessage('qr.urls'))
+                TextEditorField::new('description', new TranslatableMessage('qr.description.label'))
+                    ->setHelp(new TranslatableMessage('qr.description.help')),
+                CollectionField::new('urls', new TranslatableMessage('qr.url.label'))
                     ->allowAdd()
                     ->allowDelete(false)
                     ->useEntryCrudForm(UrlCrudController::class)
                     ->renderExpanded()
-                    ->addCssClass('qr-urls-collection'),
+                    ->addCssClass('qr-urls-collection')
+                    ->setHelp(new TranslatableMessage('qr.url.help')),
             ];
         }
 
