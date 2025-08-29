@@ -1,4 +1,102 @@
-<div class="container py-4">
-    <h1>{{ title }}</h1>
-    <p>{{ description|raw }}</p>
+<div class="container">
+        <h1>{{ title }}</h1>
+        <p>{{ description|raw }}</p>
 </div>
+
+<style>
+    :root {
+        --spacer-md: 1rem;
+        --spacer-lg: calc(var(--spacer-md) * 2);
+        --shadow-color: 240deg 27% 62%;
+        --shadow-elevation-low:
+                0.3px 0.3px 0.4px hsl(var(--shadow-color) / 0.34),
+                0.4px 0.4px 0.6px -1.7px hsl(var(--shadow-color) / 0.28),
+                0.9px 1px 1.3px -3.5px hsl(var(--shadow-color) / 0.21);
+        --shadow-elevation-medium:
+                0.3px 0.3px 0.4px hsl(var(--shadow-color) / 0.29),
+                0.5px 0.6px 0.8px -0.9px hsl(var(--shadow-color) / 0.25),
+                1px 1.2px 1.5px -1.7px hsl(var(--shadow-color) / 0.22),
+                2.2px 2.6px 3.3px -2.6px hsl(var(--shadow-color) / 0.19),
+                4.5px 5.2px 6.7px -3.5px hsl(var(--shadow-color) / 0.16);
+        --shadow-elevation-high:
+                0.3px 0.3px 0.4px hsl(var(--shadow-color) / 0.27),
+                0.7px 0.8px 1px -0.4px hsl(var(--shadow-color) / 0.25),
+                1.2px 1.4px 1.8px -0.8px hsl(var(--shadow-color) / 0.24),
+                1.9px 2.2px 2.8px -1.2px hsl(var(--shadow-color) / 0.22),
+                2.9px 3.4px 4.4px -1.6px hsl(var(--shadow-color) / 0.21),
+                4.5px 5.2px 6.7px -1.9px hsl(var(--shadow-color) / 0.19),
+                6.7px 7.8px 10px -2.3px hsl(var(--shadow-color) / 0.18),
+                9.7px 11.3px 14.5px -2.7px hsl(var(--shadow-color) / 0.16),
+                13.6px 16px 20.5px -3.1px hsl(var(--shadow-color) / 0.14),
+                18.7px 21.9px 28.1px -3.5px hsl(var(--shadow-color) / 0.13);
+    }
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    * {
+        margin: 0;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        html {
+            interpolate-size: allow-keywords;
+        }
+    }
+
+    body {
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        font-family: 'Roboto', sans-serif;
+        background-color: ghostwhite;
+    }
+
+    img, picture, video, canvas, svg {
+        display: block;
+        max-width: 100%;
+    }
+
+    input, button, textarea, select {
+        font: inherit;
+    }
+
+    p, h1, h2, h3, h4, h5, h6 {
+        overflow-wrap: break-word;
+    }
+
+    p {
+        text-wrap: pretty;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        text-wrap: balance;
+    }
+
+    #root, #__next {
+        isolation: isolate;
+    }
+
+    .container {
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 var(--spacer-md);
+        > h1 {
+            font-size: clamp(1.75rem, 4.5vw, 3rem);
+            margin: var(--spacer-md) 0;
+        }
+
+        > p {
+
+        }
+    }
+
+    @media screen and (min-width: 800px) {
+        .container {
+            padding: 0 var(--spacer-lg);
+        }
+    }
+</style>
