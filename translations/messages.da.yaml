@@ -2,6 +2,11 @@ frontpage:
   hello_world: 'Hej Verden!'
 
 qr:
+  index:
+    label: 'QR koder'
+    description: 'Her kan du se en oversigt over alle QR-koder i dit magistrat. <br>Du kan tilføje en ny, redigere eller arkivere eksisterende samt downloade en eller flere QR koder, både med og uden design.'
+  new: 'Opret QR kode'
+  label_singular: 'QR kode'
   title:
     label: 'Titel'
     help: 'Giv QR-koden en beskrivende titel, så andre brugere nemt kan forstå formålet med den. <br> Hvis QR-koden har typen "Statisk sidevisning", er dette felt overskriften.'

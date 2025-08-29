@@ -49,7 +49,10 @@ class QrCrudController extends AbstractTenantAwareCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setDefaultSort(['modifiedAt' => 'DESC']);
+            ->setDefaultSort(['modifiedAt' => 'DESC'])
+            ->setPageTitle('index', new TranslatableMessage('qr.index.label'))
+            ->setEntityLabelInSingular(new TranslatableMessage('qr.label_singular'))
+            ->overrideTemplate('crud/index', 'admin/qr/index.html.twig');
     }
 
     public function new(AdminContext $context)
