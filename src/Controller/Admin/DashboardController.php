@@ -16,7 +16,8 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        return $this->render('@EasyAdmin/page/content.html.twig');
+        // Redirect to the qr crud page until dashboad functionality is implemented
+        return $this->redirectToRoute('qr_index');
     }
 
     public function configureDashboard(): Dashboard
