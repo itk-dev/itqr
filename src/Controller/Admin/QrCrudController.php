@@ -61,16 +61,16 @@ class QrCrudController extends AbstractTenantAwareCrudController
     {
         if (Crud::PAGE_INDEX === $pageName) {
             return [
-                TextField::new('title', new TranslatableMessage('qr.title'))
+                TextField::new('title', new TranslatableMessage('qr.title.label'))
                     ->setTemplatePath('fields/link/link_to_edit.html.twig'),
-                TextEditorField::new('description', new TranslatableMessage('qr.description'))
+                TextEditorField::new('description', new TranslatableMessage('qr.description.label'))
                 ->formatValue(fn ($value) => nl2br($value)),
-                CollectionField::new('urls', new TranslatableMessage('qr.urls'))
+                CollectionField::new('urls', new TranslatableMessage('qr.url.label'))
                     ->allowAdd()
                     ->allowDelete()
                     ->renderExpanded()
                     ->useEntryCrudForm(UrlCrudController::class),
-                ChoiceField::new('mode', new TranslatableMessage('qr.mode.title'))
+                ChoiceField::new('mode', new TranslatableMessage('qr.mode.label'))
                     ->renderAsNativeWidget(),
                 Field::new('customUrlButton', new TranslatableMessage('qr.preview'))
                     ->setTemplatePath('fields/link/link.html.twig')
