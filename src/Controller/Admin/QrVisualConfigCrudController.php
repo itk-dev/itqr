@@ -34,7 +34,9 @@ class QrVisualConfigCrudController extends AbstractTenantAwareCrudController
             ->setPageTitle('edit', new TranslatableMessage('visual.edit'))
             ->setEntityLabelInSingular(new TranslatableMessage('visual.label_singular'))
             ->overrideTemplate('crud/edit', 'admin/qr_visual_config/edit.html.twig')
-            ->overrideTemplate('crud/new', 'admin/qr_visual_config/new.html.twig');
+            ->overrideTemplate('crud/new', 'admin/qr_visual_config/new.html.twig')
+            ->setPageTitle('index', new TranslatableMessage('design.index.label'))
+            ->overrideTemplate('crud/index', 'admin/design/index.html.twig');
     }
 
     public function new(AdminContext $context)
@@ -67,42 +69,42 @@ class QrVisualConfigCrudController extends AbstractTenantAwareCrudController
                     ->setFormTypeOption('mapped', false)
                     ->setFormTypeOption('data', $this->getContext()->getEntity()->getInstance()->getId()),
                 TextField::new('name')
-                    ->setLabel(new TranslatableMessage('qr.design.name.label'))
-                    ->setHelp(new TranslatableMessage('qr.design.name.help')),
+                    ->setLabel(new TranslatableMessage('design.name.label'))
+                    ->setHelp(new TranslatableMessage('design.name.help')),
                 IntegerField::new('size')
-                    ->setLabel(new TranslatableMessage('qr.design.size.label'))
-                    ->setHelp(new TranslatableMessage('qr.design.size.help')),
+                    ->setLabel(new TranslatableMessage('design.size.label'))
+                    ->setHelp(new TranslatableMessage('design.size.help')),
                 IntegerField::new('margin')
-                    ->setLabel(new TranslatableMessage('qr.design.margin.label'))
-                    ->setHelp(new TranslatableMessage('qr.design.margin.help')),
+                    ->setLabel(new TranslatableMessage('design.margin.label'))
+                    ->setHelp(new TranslatableMessage('design.margin.help')),
                 Field::new('backgroundColor')
                     ->setFormType(ColorType::class)
-                    ->setLabel(new TranslatableMessage('qr.design.background_color.label'))
-                    ->setHelp(new TranslatableMessage('qr.design.background_color.help')),
+                    ->setLabel(new TranslatableMessage('design.background_color.label'))
+                    ->setHelp(new TranslatableMessage('design.background_color.help')),
                 Field::new('foregroundColor')
                     ->setFormType(ColorType::class)
-                    ->setLabel(new TranslatableMessage('qr.design.foreground_color.label'))
-                    ->setHelp(new TranslatableMessage('qr.design.foreground_color.help')),
+                    ->setLabel(new TranslatableMessage('design.foreground_color.label'))
+                    ->setHelp(new TranslatableMessage('design.foreground_color.help')),
                 TextField::new('labelText')
-                    ->setLabel(new TranslatableMessage('qr.design.label_text.label'))
-                    ->setHelp(new TranslatableMessage('qr.design.label_text.help'))
+                    ->setLabel(new TranslatableMessage('design.label_text.label'))
+                    ->setHelp(new TranslatableMessage('design.label_text.help'))
                     ->setRequired(false),
                 Field::new('labelSize')
-                    ->setLabel(new TranslatableMessage('qr.design.label_size.label'))
-                    ->setHelp(new TranslatableMessage('qr.design.label_size.help')),
+                    ->setLabel(new TranslatableMessage('design.label_size.label'))
+                    ->setHelp(new TranslatableMessage('design.label_size.help')),
                 Field::new('labelTextColor')
                     ->setFormType(ColorType::class)
-                    ->setLabel(new TranslatableMessage('qr.design.label_text_color.label'))
-                    ->setHelp(new TranslatableMessage('qr.design.label_text_color.help')),
+                    ->setLabel(new TranslatableMessage('design.label_text_color.label'))
+                    ->setHelp(new TranslatableMessage('design.label_text_color.help')),
                 Field::new('labelMarginTop')
-                    ->setLabel(new TranslatableMessage('qr.design.label_margin_top.label'))
-                    ->setHelp(new TranslatableMessage('qr.design.label_margin_top.help')),
+                    ->setLabel(new TranslatableMessage('design.label_margin_top.label'))
+                    ->setHelp(new TranslatableMessage('design.label_margin_top.help')),
                 Field::new('labelMarginBottom')
-                    ->setLabel(new TranslatableMessage('qr.design.label_margin_bottom.label'))
-                    ->setHelp(new TranslatableMessage('qr.design.label_margin_bottom.help')),
+                    ->setLabel(new TranslatableMessage('design.label_margin_bottom.label'))
+                    ->setHelp(new TranslatableMessage('design.label_margin_bottom.help')),
                 ImageField::new('logo')
-                    ->setLabel(new TranslatableMessage('qr.design.logo.label'))
-                    ->setHelp(new TranslatableMessage('qr.design.logo.help'))
+                    ->setLabel(new TranslatableMessage('design.logo.label'))
+                    ->setHelp(new TranslatableMessage('design.logo.help'))
                     ->setBasePath('uploads/qr-logos')
                     ->setUploadedFileNamePattern('[ulid]-[slug].[extension]')
                     ->setUploadDir('public/uploads/qr-logos')
@@ -110,13 +112,13 @@ class QrVisualConfigCrudController extends AbstractTenantAwareCrudController
                         'required' => false,
                     ]),
                 ChoiceField::new('errorCorrectionLevel')
-                    ->setLabel(new TranslatableMessage('qr.design.error_correction_level.label'))
-                    ->setHelp(new TranslatableMessage('qr.design.error_correction_level.help'))
+                    ->setLabel(new TranslatableMessage('design.error_correction_level.label'))
+                    ->setHelp(new TranslatableMessage('design.error_correction_level.help'))
                     ->setFormType(ChoiceType::class)
                     ->setFormTypeOptions([
                         'class' => ErrorCorrectionLevel::class,
                         'choice_label' => function (ErrorCorrectionLevel $choice) {
-                            return new TranslatableMessage('error_correction.'.$choice->name);
+                            return new TranslatableMessage('error_correction.' . $choice->name);
                         },
                         'choices' => ErrorCorrectionLevel::cases(),
                     ]),

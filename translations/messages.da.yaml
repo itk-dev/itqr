@@ -48,43 +48,46 @@ qr:
       bottom:
         label: 'Nedre tekstmargin'
         help: 'Margin under tekst defineret i pixels'
-  design:
-    name:
-      label: 'Navn'
-      help: 'Giv designet et beskrivende navn, så andre brugere nemt kan forstå formålet med det.'
-    size:
-      label: 'Størrelse'
-      help: 'QR-kodens størrelse defineret i pixels.'
-    margin:
-      label: 'Margin'
-      help: 'QR-kodens margin defineret i pixels.'
-    background_color:
-      label: 'Baggrundsfarve'
-      help: 'Farven på baggrunden omkring QR-koden.'
-    foreground_color:
-      label: 'QR-kode farve'
-      help: 'Farven på selve QR-koden.'
-    label_text:
-      label: 'Tekst'
-      help: 'Tekst der vises under QR-koden.'
-    label_size:
-      label: 'Tekststørrelse'
-      help: 'Størrelsen på teksten i pixels.'
-    label_text_color:
-      label: 'Tekstfarve'
-      help: 'Farven på teksten under QR-koden.'
-    label_margin_top:
-      label: 'Øvre tekstmargin'
-      help: 'Margin over teksten defineret i pixels.'
-    label_margin_bottom:
-      label: 'Nedre tekstmargin'
-      help: 'Margin under teksten defineret i pixels.'
-    logo:
-      label: 'Logo'
-      help: 'Upload et logo der skal vises på QR-koden.'
-    error_correction_level:
-      label: 'Fejlkorrektionsniveau'
-      help: 'Højere niveau giver bedre fejlkorrektion men større QR-kode.'
+design:
+  index:
+    label: 'Designs'
+    description: 'Her kan du se en oversigt over alle designs i dit magistrat. <br>Du kan tilføje et nyt design, redigere eller slette eksisterende.'
+  name:
+    label: 'Navn'
+    help: 'Giv designet et beskrivende navn, så andre brugere nemt kan forstå formålet med det.'
+  size:
+    label: 'Størrelse'
+    help: 'QR-kodens størrelse defineret i pixels.'
+  margin:
+    label: 'Margin'
+    help: 'QR-kodens margin defineret i pixels.'
+  background_color:
+    label: 'Baggrundsfarve'
+    help: 'Farven på baggrunden omkring QR-koden.'
+  foreground_color:
+    label: 'QR-kode farve'
+    help: 'Farven på selve QR-koden.'
+  label_text:
+    label: 'Tekst'
+    help: 'Tekst der vises under QR-koden.'
+  label_size:
+    label: 'Tekststørrelse'
+    help: 'Størrelsen på teksten i pixels.'
+  label_text_color:
+    label: 'Tekstfarve'
+    help: 'Farven på teksten under QR-koden.'
+  label_margin_top:
+    label: 'Øvre tekstmargin'
+    help: 'Margin over teksten defineret i pixels.'
+  label_margin_bottom:
+    label: 'Nedre tekstmargin'
+    help: 'Margin under teksten defineret i pixels.'
+  logo:
+    label: 'Logo'
+    help: 'Upload et logo der skal vises på QR-koden.'
+  error_correction_level:
+    label: 'Fejlkorrektionsniveau'
+    help: 'Højere niveau giver bedre fejlkorrektion men større QR-kode.'
 
 
 visual:
@@ -94,6 +97,12 @@ visual:
   edit: 'Rediger design'
   label_singular: 'design'
 
+download:
+  batch:
+    advancedsettings: 'Avancerede indstillinger'
+    title:
+      label: 'Design og download'
+      description: 'Vælg et eksisterende design eller opret et nyt design til dine QR-koder. <br>Se en forhåndsvisning af hver QR-kode i fanerne til højre og download dine QR-koder med det valgte design.'
 logo:
   label: 'Logo'
 

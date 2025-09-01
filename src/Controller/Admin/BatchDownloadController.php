@@ -5,17 +5,22 @@ namespace App\Controller\Admin;
 use App\Form\Type\BatchDownloadType;
 use App\Helper\DownloadHelper;
 use App\Repository\QrRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Translation\TranslatableMessage;
+use function GuzzleHttp\json_encode;
 
 final class BatchDownloadController extends DashboardController
 {
     public function __construct(
-        private readonly RequestStack $requestStack,
-        private readonly QrRepository $qrRepository,
+        private readonly RequestStack   $requestStack,
+        private readonly QrRepository   $qrRepository,
         private readonly DownloadHelper $downloadHelper,
-    ) {
+    )
+    {
     }
 
     /**
@@ -25,7 +30,6 @@ final class BatchDownloadController extends DashboardController
     public function index(): Response
     {
         $form = $this->createForm(BatchDownloadType::class);
-
         $request = $this->requestStack->getCurrentRequest();
 
         $form->handleRequest($request);
@@ -39,7 +43,7 @@ final class BatchDownloadController extends DashboardController
                 throw $this->createNotFoundException('No QR codes found');
             }
 
-            return $this->downloadHelper->generateQrCodes($qrEntities, (array) $data);
+            return $this->downloadHelper->generateQrCodes($qrEntities, (array)$data);
         }
 
         return $this->render('form/batchDownload.html.twig', [
