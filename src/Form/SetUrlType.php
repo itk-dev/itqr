@@ -7,6 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatableMessage;
 
 /**
  * @extends AbstractType<SetUrlType>
@@ -18,7 +19,9 @@ class SetUrlType extends AbstractType
         $builder->add('url', UrlType::class, [
             'default_protocol' => 'https',
         ]);
-        $builder->add('Continue', SubmitType::class);
+        $builder->add('Continue', SubmitType::class, [
+            'label' => new TranslatableMessage('batch.seturl.do'),
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

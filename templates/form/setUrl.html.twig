@@ -1,21 +1,20 @@
 {% extends '@EasyAdmin/content.html.twig' %}
 {% form_theme form '@EasyAdmin/crud/form_theme.html.twig' %}
 
-{% block main %}
-  <div id="modal-batch-action" class="modal fade show" tabindex="-1" style="display: block;" aria-modal="true" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-body">
-          <a class="text-right d-block text-black" href="{{ ea_url()
-            .setController('App\\Controller\\Admin\\QrCrudController')
-            .setAction('index')
-          }}">
-            <span class="fa fa-window-close"></span>
-          </a>
-          {{ form(form) }}
-        </div>
-      </div>
+{% block content_header %}
+    <div class="content-header-title">
+        <h1 class="title">Batch change URL</h1>
     </div>
-  </div>
-  <div class="modal-backdrop fade show"></div>
+{% endblock %}
+
+{% block main %}
+    <div>
+        <p>Du er ved at ændre destinations URL'en på {{ count }} QR koder.<br>Bemærk at denne handling ikke kan fortrydes. </p>
+    </div>
+    <br>
+    <div id="batch-action-container">
+        <div class="form-wrapper">
+            {{ form(form) }}
+        </div>
+    </div>
 {% endblock %}

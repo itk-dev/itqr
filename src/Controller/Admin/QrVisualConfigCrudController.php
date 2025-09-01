@@ -36,7 +36,8 @@ class QrVisualConfigCrudController extends AbstractTenantAwareCrudController
             ->overrideTemplate('crud/edit', 'admin/qr_visual_config/edit.html.twig')
             ->overrideTemplate('crud/new', 'admin/qr_visual_config/new.html.twig')
             ->setPageTitle('index', new TranslatableMessage('design.index.label'))
-            ->overrideTemplate('crud/index', 'admin/design/index.html.twig');
+            ->overrideTemplate('crud/index', 'admin/design/index.html.twig')
+            ->setSearchFields(null);
     }
 
     public function new(AdminContext $context)

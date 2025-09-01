@@ -54,16 +54,17 @@ final class SetUrlController extends DashboardController
 
             // Create redirect url.
             $redirectUrl = $this->adminUrlGenerator
-              ->setRoute('admin')
-              ->setController(QrCrudController::class)
-              ->setAction('index')
-              ->generateUrl();
+                ->setRoute('admin')
+                ->setController(QrCrudController::class)
+                ->setAction('index')
+                ->generateUrl();
 
             return $this->redirect($redirectUrl);
         }
 
         return $this->render('form/setUrl.html.twig', [
             'form' => $form,
+            'count' => count($request->query->all())
         ]);
     }
 }

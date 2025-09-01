@@ -97,6 +97,7 @@ visual:
   edit: 'Rediger design'
   label_singular: 'design'
 
+
 download:
   batch:
     advancedsettings: 'Avancerede indstillinger'
