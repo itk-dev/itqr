@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,6 +23,13 @@ class SetUrlType extends AbstractType
         ]);
         $builder->add('Continue', SubmitType::class, [
             'label' => new TranslatableMessage('seturl.do'),
+        ]);
+        $builder->add('Cancel', ButtonType::class, [
+            'label' => new TranslatableMessage('seturl.cancel'),
+            'attr' => [
+                'class' => 'btn btn-default',
+                'onclick' => 'window.location.href="/"'
+            ]
         ]);
     }
 

@@ -180,8 +180,8 @@ class QrCrudController extends AbstractTenantAwareCrudController
             ->update(Crud::PAGE_INDEX, Action::DELETE, fn (Action $action) => $action->setIcon('fa fa-trash')->setLabel('qr.delete'))
             ->addBatchAction($batchDownloadAction)
             ->addBatchAction($setUrlAction)
-            ->add(Crud::PAGE_INDEX, $singleDownloadActionNoConfig)
-            ->add(Crud::PAGE_INDEX, $singleDownloadActionConfig);
+            ->add(Crud::PAGE_DETAIL, $singleDownloadActionNoConfig)
+            ->add(Crud::PAGE_DETAIL, $singleDownloadActionConfig);
     }
 
     public function setUrl(BatchActionDto $batchActionDto): RedirectResponse

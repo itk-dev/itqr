@@ -102,6 +102,8 @@ seturl:
   title: 'Overskriv destination'
   description: 'Du er ved at overskrive destinationen på %count% QR kode(r).<br>Bemærk at denne handling ikke kan fortrydes.'
   do: 'Overskriv destinationer'
+  cancel: 'Fortryd'
+  confirm: 'Er du sikker på at du vil fortsætte?'
 
 download:
   batch:
