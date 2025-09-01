@@ -18,9 +18,10 @@ class SetUrlType extends AbstractType
     {
         $builder->add('url', UrlType::class, [
             'default_protocol' => 'https',
+            'label' => new TranslatableMessage('seturl.url'),
         ]);
         $builder->add('Continue', SubmitType::class, [
-            'label' => new TranslatableMessage('batch.seturl.do'),
+            'label' => new TranslatableMessage('seturl.do'),
         ]);
     }
 

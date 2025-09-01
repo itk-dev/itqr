@@ -171,7 +171,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
         // Define batch url change action
         $setUrlAction = Action::new('setUrl', new TranslatableMessage('qr.set_url'))
             ->linkToCrudAction('setUrl')
-            ->addCssClass('btn btn-primary')
+            ->addCssClass('btn btn-primary  disable-confirm')
             ->displayIf(fn () => $this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_SUPER_ADMIN'))
             ->setIcon('fa fa-link');
 

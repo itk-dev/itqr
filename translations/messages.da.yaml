@@ -34,7 +34,7 @@ qr:
   configure_download: 'Design og download markerede'
   quick_download_without_config: 'Download uden design'
   quick_download_with_config: 'Design og download'
-  set_url: 'Ret destination på markerede'
+  set_url: 'Overskriv destination på markerede'
   edit: 'Ret QR-kode'
   delete: 'Slet QR-kode'
   text:
@@ -97,6 +97,11 @@ visual:
   edit: 'Rediger design'
   label_singular: 'design'
 
+seturl:
+  url: 'Ny URL'
+  title: 'Overskriv destination'
+  description: 'Du er ved at overskrive destinationen på %count% QR kode(r).<br>Bemærk at denne handling ikke kan fortrydes.'
+  do: 'Overskriv destinationer'
 
 download:
   batch:

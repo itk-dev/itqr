@@ -3,13 +3,13 @@
 
 {% block content_header %}
     <div class="content-header-title">
-        <h1 class="title">Batch change URL</h1>
+        <h1 class="title">{{ 'seturl.title'|trans }}</h1>
     </div>
 {% endblock %}
 
 {% block main %}
     <div>
-        <p>Du er ved at ændre destinations URL'en på {{ count }} QR koder.<br>Bemærk at denne handling ikke kan fortrydes. </p>
+        <p>{{ 'seturl.description'|trans({'%count%': count})|raw }}</p>
     </div>
     <br>
     <div id="batch-action-container">
