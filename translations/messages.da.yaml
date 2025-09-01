@@ -112,6 +112,9 @@ download:
 logo:
   label: 'Logo'
 
+menu:
+  qr: 'QR koder'
+  designs: 'Designs'
 error_correction:
   label: 'Fejlkorrektionsniveau'
   Low: 'Lav'
