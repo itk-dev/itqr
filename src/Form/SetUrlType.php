@@ -28,8 +28,8 @@ class SetUrlType extends AbstractType
             'label' => new TranslatableMessage('seturl.cancel'),
             'attr' => [
                 'class' => 'btn btn-default',
-                'onclick' => 'window.location.href="/"'
-            ]
+                'onclick' => 'window.location.href="/"',
+            ],
         ]);
     }
 

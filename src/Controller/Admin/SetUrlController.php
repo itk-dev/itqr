@@ -64,7 +64,7 @@ final class SetUrlController extends DashboardController
 
         return $this->render('form/setUrl.html.twig', [
             'form' => $form,
-            'count' => count($request->query->all())
+            'count' => count($request->query->all()),
         ]);
     }
 }
