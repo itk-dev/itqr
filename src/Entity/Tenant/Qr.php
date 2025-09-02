@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\QrHitTracker;
 use App\Enum\QrModeEnum;
+use App\Enum\QrStatusEnum;
 use App\Repository\QrRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,6 +25,7 @@ class Qr extends AbstractTenantScopedEntity
     #[Assert\NotNull(message: 'The UUID field cannot be empty.')]
     private ?UuidV7 $uuid;
 
+
     #[ORM\Column(length: 255)]
     #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private string $title = '';
@@ -38,6 +40,10 @@ class Qr extends AbstractTenantScopedEntity
     #[ORM\Column(type: 'string', enumType: QrModeEnum::class)]
     #[ApiFilter(BackedEnumFilter::class)]
     private QrModeEnum $mode;
+
+    #[ORM\Column(type: 'string', enumType: QrStatusEnum::class)]
+    #[ApiFilter(BackedEnumFilter::class)]
+    private QrStatusEnum $status;
 
     /**
      * @var Collection<int, Url>
@@ -59,6 +65,7 @@ class Qr extends AbstractTenantScopedEntity
         $this->urls = new ArrayCollection();
         $this->hitTrackers = new ArrayCollection();
         $this->uuid = Uuid::v7();
+        $this->status = QrStatusEnum::ACTIVE;
     }
 
     public function getTitle(): ?string
@@ -164,4 +171,17 @@ class Qr extends AbstractTenantScopedEntity
     {
         return $this->hitTrackers;
     }
+
+    public function getStatus(): QrStatusEnum
+    {
+        return $this->status;
+    }
+
+    public function setStatus(QrStatusEnum $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
 }
