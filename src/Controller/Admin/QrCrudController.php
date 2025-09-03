@@ -233,19 +233,9 @@ class QrCrudController extends AbstractTenantAwareCrudController
      */
     public function archive(AdminContext $context): RedirectResponse
     {
-        try {
-            $qrEntity = $context->getEntity()->getInstance();
-            if (null === $qrEntity) {
-                throw new \InvalidArgumentException('QR entity not found');
-            }
-            $this->qrHelper->archive($qrEntity);
+        $qrEntity = $context->getEntity()->getInstance();
 
-            $this->addFlash('success', 'QR code has been archived successfully.');
-        } catch (\Exception $e) {
-            $this->addFlash('danger', 'Could not archive QR code: ' . $e->getMessage());
-        }
-
-        return $this->redirectToRoute('qr_index');
+        return $this->redirectToRoute('admin_qr_archive', ['id' => $qrEntity->getId()]);
     }
 
 
