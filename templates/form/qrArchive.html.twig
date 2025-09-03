@@ -1,0 +1,31 @@
+{% extends '@EasyAdmin/content.html.twig' %}
+{% form_theme form '@EasyAdmin/crud/form_theme.html.twig' %}
+
+{% block content_header %}
+    <div class="content-header-title">
+        <h1 class="title">{{ 'qr.archive.title'|trans }}</h1>
+        <br />
+        <p>{{ 'qr.archive.description'|trans }}</p>
+    </div>
+{% endblock %}
+
+{% block main %}
+    <div>
+
+        <div id="batch-action-container">
+            <input type="hidden" id="selectedQrCodes" value="{{ selectedQrCodes }}"/>
+            <div class="form-wrapper">
+                <a class="text-right d-block text-black" href="{{ ea_url()
+                    .setController('App\\Controller\\Admin\\QrCrudController')
+                    .setAction('index') }}">
+                </a>
+
+                {{ form_start(form) }}
+
+            
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
