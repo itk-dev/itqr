@@ -37,6 +37,9 @@ class Qr extends AbstractTenantScopedEntity
     #[ORM\Column(length: 2500, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $alternativeUrl = null;
+
     #[ORM\Column(type: 'string', enumType: QrModeEnum::class)]
     #[ApiFilter(BackedEnumFilter::class)]
     private QrModeEnum $mode;
@@ -100,6 +103,18 @@ class Qr extends AbstractTenantScopedEntity
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getAlternativeUrl(): ?string
+    {
+        return $this->alternativeUrl;
+    }
+
+    public function setAlternativeUrl(?string $alternativeUrl): self
+    {
+        $this->alternativeUrl = $alternativeUrl;
 
         return $this;
     }
