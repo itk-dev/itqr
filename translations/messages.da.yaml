@@ -1,6 +1,7 @@
 frontpage:
   hello_world: 'Hej Verden!'
-
+ARCHIVED: 'Arkiveret'
+ACTIVE: 'Aktiv'
 qr:
   index:
     label: 'QR koder'
@@ -36,6 +37,8 @@ qr:
   quick_download_with_config: 'Design og download'
   set_url: 'Overskriv destination på markerede'
   edit: 'Ret QR-kode'
+  status:
+    label: 'Status'
   alternativeUrl:
     label: 'Alternativ URL'
     help: 'Angiv en valgfri URL som brugerne vil blive præsenteret for, når de scanner denne arkiverede QR-kode. <br>Dette kan være nyttigt til at omdirigere brugere til relevant indhold.'
