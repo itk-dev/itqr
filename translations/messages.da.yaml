@@ -36,7 +36,9 @@ qr:
   quick_download_with_config: 'Design og download'
   set_url: 'Overskriv destination på markerede'
   edit: 'Ret QR-kode'
-  archive: 'Arkiver QR-kode'
+  archive:
+    label: 'Arkiver QR-kode'
+    success: "QR-koden '%title%' blev arkiveret med succes %url%."
   text:
     label: 'Tekst'
     size: 'Tekststørrelse'
