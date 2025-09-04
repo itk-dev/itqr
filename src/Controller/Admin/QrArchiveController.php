@@ -6,28 +6,32 @@ use App\Form\Type\QrArchiveType;
 use App\Helper\QrHelper;
 use App\Repository\QrRepository;
 use GuzzleHttp\Utils;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-final class QrArchiveController extends DashboardController
+#[IsGranted('ROLE_ADMIN')]
+
+final class QrArchiveController extends AbstractController
 {
     public function __construct(
         private readonly RequestStack $requestStack,
         private readonly QrRepository $qrRepository,
-        private readonly QrHelper $qrHelper,
-    ) {
+        private readonly QrHelper     $qrHelper,
+    )
+    {
     }
 
     /**
      * @throws \Exception
      */
-    #[Route('/admin/archive', name: 'admin_qr_archive', methods: ['GET', 'POST'])]
-    public function index(): Response
+    #[Route('/admin/archive', name: 'admin_qr_archive')]
+    public function index(int $id): Response
     {
         $form = $this->createForm(QrArchiveType::class);
         $request = $this->requestStack->getCurrentRequest();
-        $id = (int) $request->query->get('id');
 
         // Get the QR entity first
         $qrEntity = $this->qrRepository->find($id);
@@ -44,15 +48,18 @@ final class QrArchiveController extends DashboardController
             $message = json_decode($response->getContent(), true)['message'];
             $this->addFlash('success', $message);
 
-            return $this->redirectToRoute('qr_index');
+            return $this->redirectToRoute('qr_index', [
+                'filters' => [
+                    'status' => [
+                        'comparison' => '=',
+                        'value' => 'ACTIVE'
+                    ]
+                ]
+            ]);
         }
 
         return $this->render('form/qrArchive.html.twig', [
             'form' => $form,
-            'qr' => $qrEntity, // Pass the entity
-            'id' => $id, // Pass the ID explicitly
-            'selectedQrCodes' => Utils::jsonEncode([$id]),
-            'count' => 1,
         ]);
     }
 }
