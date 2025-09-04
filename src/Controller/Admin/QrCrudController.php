@@ -5,7 +5,6 @@ namespace App\Controller\Admin;
 use App\Controller\Admin\Embed\UrlCrudController;
 use App\Entity\Tenant\Qr;
 use App\Entity\Tenant\Url;
-use App\Enum\QrStatusEnum;
 use App\Helper\DownloadHelper;
 use App\Helper\QrHelper;
 use App\Repository\QrHitTrackerRepository;
@@ -175,17 +174,17 @@ class QrCrudController extends AbstractTenantAwareCrudController
         $setUrlAction = Action::new('setUrl', new TranslatableMessage('qr.set_url'))
             ->linkToCrudAction('setUrl')
             ->addCssClass('btn btn-primary disable-confirm')
-            ->displayIf(fn() => $this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_SUPER_ADMIN'))
+            ->displayIf(fn () => $this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_SUPER_ADMIN'))
             ->setIcon('fa fa-link');
 
         // Define archive action
-        $archiveAction = Action::new('archive', new TranslatableMessage('qr.archive'))
+        $archiveAction = Action::new('archive', new TranslatableMessage('qr.archive.label'))
             ->linkToCrudAction('archive')
             ->setIcon('fa fa-archive')
             ->addCssClass('text-danger');
 
         return $actions
-            ->update(Crud::PAGE_INDEX, Action::EDIT, fn(Action $action) => $action->setIcon('fa fa-pencil')->setLabel('qr.edit'))
+            ->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action) => $action->setIcon('fa fa-pencil')->setLabel('qr.edit'))
             ->remove(Crud::PAGE_INDEX, Action::DELETE)
             ->add(Crud::PAGE_INDEX, $archiveAction)
             ->add(Crud::PAGE_INDEX, $singleDownloadActionNoConfig)
@@ -237,7 +236,6 @@ class QrCrudController extends AbstractTenantAwareCrudController
 
         return $this->redirectToRoute('admin_qr_archive', ['id' => $qrEntity->getId()]);
     }
-
 
     /**
      * Handles batch download action, redirecting to the batch download route

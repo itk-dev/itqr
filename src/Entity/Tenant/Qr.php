@@ -25,7 +25,6 @@ class Qr extends AbstractTenantScopedEntity
     #[Assert\NotNull(message: 'The UUID field cannot be empty.')]
     private ?UuidV7 $uuid;
 
-
     #[ORM\Column(length: 255)]
     #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private string $title = '';
@@ -198,5 +197,4 @@ class Qr extends AbstractTenantScopedEntity
 
         return $this;
     }
-
 }

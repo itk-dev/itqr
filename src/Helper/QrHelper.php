@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Helper;
 
 use App\Entity\Tenant\Qr;
@@ -16,12 +15,12 @@ class QrHelper
     public function __construct(
         private EntityManagerInterface $entityManager,
         private TranslatorInterface $translator,
-    )
-    {
+    ) {
     }
 
     /**
      * Change the status of a QR entity.
+     *
      * @throws \Exception
      */
     public function archive(Qr $qrEntity, ?string $alternativeUrl): Response
@@ -45,8 +44,5 @@ class QrHelper
         return new JsonResponse([
             'message' => $message->trans($this->translator),
         ]);
-
-
-
     }
 }

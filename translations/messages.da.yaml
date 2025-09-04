@@ -36,9 +36,15 @@ qr:
   quick_download_with_config: 'Design og download'
   set_url: 'Overskriv destination på markerede'
   edit: 'Ret QR-kode'
+  alternativeUrl:
+    label: 'Alternativ URL'
+    help: 'Angiv en valgfri URL som brugerne vil blive præsenteret for, når de scanner denne arkiverede QR-kode. <br>Dette kan være nyttigt til at omdirigere brugere til relevant indhold.'
   archive:
-    label: 'Arkiver QR-kode'
-    success: "QR-koden '%title%' blev arkiveret med succes %url%."
+    label: 'Arkiver QR kode'
+    title: 'Arkivering af QR kode'
+    description: 'Du er ved at arkivere denne QR kode. Når en QR kode arkiveres, vil den ikke længere lede videre til sin destination men i stedet en samlet "denne QR kode er arkiveret"-side..'
+    success: "QR-koden '%title%' blev arkiveret succesfuldt %url%."
+    do: "Arkiver"
   text:
     label: 'Tekst'
     size: 'Tekststørrelse'

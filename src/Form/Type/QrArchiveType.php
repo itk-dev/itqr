@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -18,7 +17,7 @@ class QrArchiveType extends AbstractType
             ->add('alternativeUrl', UrlType::class, [
                 'label' => new TranslatableMessage('qr.alternativeUrl.label'),
                 'attr' => ['data-controller' => 'advanced-settings'],
-                'help' => new TranslatableMessage('design.alternativeUrl.help'),
+                'help' => new TranslatableMessage('qr.alternativeUrl.help'),
                 'required' => false,
             ])
             ->add('archive', SubmitType::class, [

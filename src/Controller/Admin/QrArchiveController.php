@@ -6,7 +6,6 @@ use App\Form\Type\QrArchiveType;
 use App\Helper\QrHelper;
 use App\Repository\QrRepository;
 use GuzzleHttp\Utils;
-use JetBrains\PhpStorm\NoReturn;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,11 +15,9 @@ final class QrArchiveController extends DashboardController
     public function __construct(
         private readonly RequestStack $requestStack,
         private readonly QrRepository $qrRepository,
-        private readonly QrHelper     $qrHelper,
-    )
-    {
+        private readonly QrHelper $qrHelper,
+    ) {
     }
-
 
     /**
      * @throws \Exception
@@ -30,7 +27,7 @@ final class QrArchiveController extends DashboardController
     {
         $form = $this->createForm(QrArchiveType::class);
         $request = $this->requestStack->getCurrentRequest();
-        $id = (int)$request->query->get('id');
+        $id = (int) $request->query->get('id');
 
         // Get the QR entity first
         $qrEntity = $this->qrRepository->find($id);

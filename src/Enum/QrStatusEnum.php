@@ -14,7 +14,7 @@ enum QrStatusEnum: string
     {
         return array_reduce(
             self::cases(),
-            static fn(array $choices, QrStatusEnum $type) => $choices + [$type->name => $type->value],
+            static fn (array $choices, QrStatusEnum $type) => $choices + [$type->name => $type->value],
             [],
         );
     }
