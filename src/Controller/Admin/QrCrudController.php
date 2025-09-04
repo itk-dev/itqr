@@ -4,9 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\Embed\UrlCrudController;
 use App\Entity\Tenant\Qr;
-use App\Entity\Tenant\Url;
 use App\Helper\DownloadHelper;
-use App\Helper\QrHelper;
 use App\Repository\QrHitTrackerRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -27,7 +25,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use Endroid\QrCode\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatableMessage;
 
 /**
@@ -39,7 +36,6 @@ class QrCrudController extends AbstractTenantAwareCrudController
     public function __construct(
         private readonly DownloadHelper $downloadHelper,
         private readonly QrHitTrackerRepository $hitTrackerRepository,
-        private readonly QrHelper $qrHelper,
     ) {
     }
 
