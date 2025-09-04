@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\Admin\Embed\UrlCrudController;
 use App\Entity\Tenant\Qr;
+use App\Enum\QrStatusEnum;
 use App\Helper\DownloadHelper;
 use App\Repository\QrHitTrackerRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -25,6 +26,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use Endroid\QrCode\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Translation\TranslatableMessage;
 
 /**
@@ -74,6 +76,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
                     ->useEntryCrudForm(UrlCrudController::class),
                 ChoiceField::new('mode', new TranslatableMessage('qr.mode.label'))
                     ->renderAsNativeWidget(),
+                ChoiceField::new('status', new TranslatableMessage('qr.status.label')),
                 Field::new('customUrlButton', new TranslatableMessage('qr.preview'))
                     ->setTemplatePath('fields/link/link.html.twig')
                     ->hideOnForm(),
@@ -145,6 +148,12 @@ class QrCrudController extends AbstractTenantAwareCrudController
             ->add(ChoiceFilter::new('department')
                 ->setChoices(['a', 'b'])
             )
+            ->add(ChoiceFilter::new('status')
+                ->setChoices([
+                    'ACTIVE' => QrStatusEnum::ACTIVE->value,
+                    'ARCHIVED' => QrStatusEnum::ARCHIVED->value,
+                ])
+            )
             ->add('title')
             ->add('description');
     }
@@ -175,7 +184,9 @@ class QrCrudController extends AbstractTenantAwareCrudController
 
         // Define archive action
         $archiveAction = Action::new('archive', new TranslatableMessage('qr.archive.label'))
-            ->linkToCrudAction('archive')
+            ->linkToRoute('admin_qr_archive', function ($entity) {
+                return ['id' => $entity->getId()];
+            })
             ->setIcon('fa fa-archive')
             ->addCssClass('text-danger');
 
@@ -191,7 +202,6 @@ class QrCrudController extends AbstractTenantAwareCrudController
                 'downloadWithConfig',
                 'downloadWithoutConfig',
                 'edit',
-                'archive',
             ]);
     }
 
@@ -221,16 +231,6 @@ class QrCrudController extends AbstractTenantAwareCrudController
         $entityId = ['id' => $context->getEntity()->getInstance()->getId()];
 
         return $this->redirectToRoute('admin_batch_download', $entityId);
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function archive(AdminContext $context): RedirectResponse
-    {
-        $qrEntity = $context->getEntity()->getInstance();
-
-        return $this->redirectToRoute('admin_qr_archive', ['id' => $qrEntity->getId()]);
     }
 
     /**
