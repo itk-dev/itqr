@@ -42,9 +42,9 @@ qr:
   archive:
     label: 'Arkiver QR kode'
     title: 'Arkivering af QR kode'
-    description: 'Du er ved at arkivere denne QR kode. Når en QR kode arkiveres, vil den ikke længere lede videre til sin destination men i stedet en samlet "denne QR kode er arkiveret"-side..'
+    description: 'Du er ved at arkivere denne QR kode. Når en QR kode arkiveres, vil den ikke længere lede videre til sin destination men i stedet en samlet "denne QR kode er arkiveret"-side.'
     success: "QR-koden '%title%' blev arkiveret succesfuldt %url%."
-    do: "Arkiver"
+    do: "Udfør arkivering"
   text:
     label: 'Tekst'
     size: 'Tekststørrelse'
