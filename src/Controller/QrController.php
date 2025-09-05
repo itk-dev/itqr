@@ -30,9 +30,9 @@ final class QrController extends AbstractController
         }
 
         // Check if QR is archived
-        if ($qr->getStatus() === QrStatusEnum::ARCHIVED) {
+        if (QrStatusEnum::ARCHIVED === $qr->getStatus()) {
             return $this->render('archived.html.twig', [
-                'alternativeUrl' => $qr->getAlternativeUrl()
+                'alternativeUrl' => $qr->getAlternativeUrl(),
             ]);
         }
 

@@ -12,15 +12,13 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_ADMIN')]
-
 final class QrArchiveController extends AbstractController
 {
     public function __construct(
         private readonly RequestStack $requestStack,
         private readonly QrRepository $qrRepository,
-        private readonly QrHelper     $qrHelper,
-    )
-    {
+        private readonly QrHelper $qrHelper,
+    ) {
     }
 
     /**
@@ -51,9 +49,9 @@ final class QrArchiveController extends AbstractController
                 'filters' => [
                     'status' => [
                         'comparison' => '=',
-                        'value' => 'ACTIVE'
-                    ]
-                ]
+                        'value' => 'ACTIVE',
+                    ],
+                ],
             ]);
         }
 
@@ -73,13 +71,14 @@ final class QrArchiveController extends AbstractController
 
         $message = json_decode($response->getContent(), true)['message'];
         $this->addFlash('success', $message);
+
         return $this->redirectToRoute('qr_index', [
             'filters' => [
                 'status' => [
                     'comparison' => '=',
-                    'value' => 'ACTIVE'
-                ]
-            ]
+                    'value' => 'ACTIVE',
+                ],
+            ],
         ]);
     }
 }

@@ -21,9 +21,9 @@ class DashboardController extends AbstractDashboardController
             'filters' => [
                 'status' => [
                     'comparison' => '=',
-                    'value' => 'ACTIVE'
-                ]
-            ]
+                    'value' => 'ACTIVE',
+                ],
+            ],
         ]);
     }
 
@@ -47,5 +47,4 @@ class DashboardController extends AbstractDashboardController
             ->setQueryParameter('filters[status][value]', 'ACTIVE');
         yield MenuItem::linkToCrud(new TranslatableMessage('menu.designs'), 'fa fa-palette', QrVisualConfig::class);
     }
-
 }

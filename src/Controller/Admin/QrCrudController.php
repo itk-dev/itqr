@@ -35,7 +35,7 @@ use Symfony\Component\Translation\TranslatableMessage;
  */
 class QrCrudController extends AbstractTenantAwareCrudController
 {
-    #[\Symfony\Component\Routing\Attribute\Route('/admin/qr', name: 'qr_index')]
+    #[Route('/admin/qr', name: 'qr_index')]
     public function __construct(
         private readonly DownloadHelper $downloadHelper,
         private readonly QrHitTrackerRepository $hitTrackerRepository,
@@ -193,13 +193,13 @@ class QrCrudController extends AbstractTenantAwareCrudController
             })
             ->setIcon('fa fa-archive')
             ->addCssClass('text-danger')
-            ->displayIf(fn($entity) => $entity->getStatus() === QrStatusEnum::ACTIVE);
+            ->displayIf(fn ($entity) => QrStatusEnum::ACTIVE === $entity->getStatus());
 
         $unArchiveAction = Action::new('unArchive', new TranslatableMessage('qr.unarchive.label'))
             ->linkToRoute('admin_qr_unarchive', function ($entity) {
                 return ['id' => $entity->getId()];
             })
-            ->displayIf(fn($entity) => $entity->getStatus() === QrStatusEnum::ARCHIVED);
+            ->displayIf(fn ($entity) => QrStatusEnum::ARCHIVED === $entity->getStatus());
 
         return $actions
             ->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action) => $action->setIcon('fa fa-pencil')->setLabel('qr.edit'))
