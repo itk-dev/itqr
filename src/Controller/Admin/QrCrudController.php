@@ -24,6 +24,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Endroid\QrCode\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -39,6 +40,8 @@ class QrCrudController extends AbstractTenantAwareCrudController
     public function __construct(
         private readonly DownloadHelper $downloadHelper,
         private readonly QrHitTrackerRepository $hitTrackerRepository,
+        private readonly AdminUrlGenerator $adminUrlGenerator,
+
     ) {
     }
 
@@ -114,9 +117,10 @@ class QrCrudController extends AbstractTenantAwareCrudController
                     ->setHelp(new TranslatableMessage('qr.url.help')),
                 UrlField::new('alternativeUrl', new TranslatableMessage('qr.alternativeUrl.label'))
                     ->setRequired(false)
-                    ->setHelp(new TranslatableMessage('qr.alternativeUrl.help')),
+                    ->setHelp(new TranslatableMessage('qr.alternativeUrl.help'))
             ];
         }
+
 
         if (Crud::PAGE_NEW === $pageName) {
             return [
@@ -176,12 +180,14 @@ class QrCrudController extends AbstractTenantAwareCrudController
             ->linkToCrudAction('downloadWithoutConfig')
             ->setIcon('fa fa-download');
         $singleDownloadActionConfig = Action::new('downloadWithConfig', new TranslatableMessage('qr.quick_download_with_config'))
-            ->linkToCrudAction('downloadWithConfig')
+            ->linkToRoute('admin_batch_download', function ($entity) {
+                return ['id' => $entity->getId()];
+            })
             ->setIcon('fa fa-download');
 
         // Define batch url change action
         $setUrlAction = Action::new('setUrl', new TranslatableMessage('qr.set_url'))
-            ->linkToCrudAction('setUrl')
+            ->linkToCrudAction('batchSetUrl')
             ->addCssClass('btn btn-primary disable-confirm')
             ->displayIf(fn () => $this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_SUPER_ADMIN'))
             ->setIcon('fa fa-link');
@@ -217,9 +223,12 @@ class QrCrudController extends AbstractTenantAwareCrudController
             ]);
     }
 
-    public function setUrl(BatchActionDto $batchActionDto): RedirectResponse
+    public function batchSetUrl(BatchActionDto $batchActionDto)
     {
-        return $this->redirectToRoute('admin_set_url', $batchActionDto->getEntityIds());
+        return $this->redirect($this->adminUrlGenerator
+            ->setRoute('admin_set_url', ['selectedEntityIds' => $batchActionDto->getEntityIds()])
+            ->generateUrl()
+        );
     }
 
     /**
@@ -236,13 +245,6 @@ class QrCrudController extends AbstractTenantAwareCrudController
         $qrEntity = $context->getEntity()->getInstance();
 
         return $this->downloadHelper->generateQrCodes([$qrEntity], []);
-    }
-
-    public function downloadWithConfig(AdminContext $context): RedirectResponse
-    {
-        $entityId = ['id' => $context->getEntity()->getInstance()->getId()];
-
-        return $this->redirectToRoute('admin_batch_download', $entityId);
     }
 
     /**
