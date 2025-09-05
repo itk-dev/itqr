@@ -37,8 +37,25 @@ class QrHelper
             [
                 '%title%' => $qrTitle,
                 '%url%' => $alternativeUrl ? sprintf(' med alternativ URL: %s', $alternativeUrl) : '',
-            ],
-            'messages'
+            ]
+        );
+
+        return new JsonResponse([
+            'message' => $message->trans($this->translator),
+        ]);
+    }
+
+    public function unarchive(Qr $qrEntity): Response
+    {
+        $qrTitle = $qrEntity->getTitle();
+        $qrEntity->setStatus(QrStatusEnum::ACTIVE);
+        $this->entityManager->flush();
+
+        $message = new TranslatableMessage(
+            'qr.unarchive.success',
+            [
+                '%title%' => $qrTitle,
+            ]
         );
 
         return new JsonResponse([
