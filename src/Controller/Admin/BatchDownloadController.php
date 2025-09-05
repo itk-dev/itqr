@@ -26,7 +26,7 @@ final class BatchDownloadController extends AbstractController
     #[Route('/admin/batch/download', name: 'admin_batch_download')]
     public function batchDownload(string|array $selectedEntityIds): Response
     {
-        /* 
+        /*
             If this method is called from the crud context menu and only regards a single item,
             selectedEntityIds is a string. Convert to array to compatibilize.
         */

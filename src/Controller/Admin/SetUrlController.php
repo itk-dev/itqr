@@ -15,7 +15,7 @@ final class SetUrlController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly RequestStack           $requestStack,
+        private readonly RequestStack $requestStack,
     ) {
     }
 

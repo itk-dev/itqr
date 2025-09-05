@@ -41,7 +41,6 @@ class QrCrudController extends AbstractTenantAwareCrudController
         private readonly DownloadHelper $downloadHelper,
         private readonly QrHitTrackerRepository $hitTrackerRepository,
         private readonly AdminUrlGenerator $adminUrlGenerator,
-
     ) {
     }
 
@@ -117,10 +116,9 @@ class QrCrudController extends AbstractTenantAwareCrudController
                     ->setHelp(new TranslatableMessage('qr.url.help')),
                 UrlField::new('alternativeUrl', new TranslatableMessage('qr.alternativeUrl.label'))
                     ->setRequired(false)
-                    ->setHelp(new TranslatableMessage('qr.alternativeUrl.help'))
+                    ->setHelp(new TranslatableMessage('qr.alternativeUrl.help')),
             ];
         }
-
 
         if (Crud::PAGE_NEW === $pageName) {
             return [
@@ -223,7 +221,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
             ]);
     }
 
-    public function batchSetUrl(BatchActionDto $batchActionDto)
+    public function batchSetUrl(BatchActionDto $batchActionDto): RedirectResponse
     {
         return $this->redirect($this->adminUrlGenerator
             ->setRoute('admin_set_url', ['selectedEntityIds' => $batchActionDto->getEntityIds()])
