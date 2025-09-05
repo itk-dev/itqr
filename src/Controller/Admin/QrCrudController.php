@@ -181,7 +181,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
             ->setIcon('fa fa-download');
         $singleDownloadActionConfig = Action::new('downloadWithConfig', new TranslatableMessage('qr.quick_download_with_config'))
             ->linkToRoute('admin_batch_download', function ($entity) {
-                return ['id' => $entity->getId()];
+                return ['selectedEntityIds' => [$entity->getId()]];
             })
             ->setIcon('fa fa-download');
 
@@ -257,7 +257,10 @@ class QrCrudController extends AbstractTenantAwareCrudController
      */
     public function batchDownload(BatchActionDto $batchActionDto): RedirectResponse
     {
-        return $this->redirectToRoute('admin_batch_download', $batchActionDto->getEntityIds());
+        return $this->redirect($this->adminUrlGenerator
+            ->setRoute('admin_batch_download', ['selectedEntityIds' => $batchActionDto->getEntityIds()])
+            ->generateUrl()
+        );
     }
 
     public function configureAssets(Assets $assets): Assets
