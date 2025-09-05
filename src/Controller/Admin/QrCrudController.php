@@ -188,12 +188,20 @@ class QrCrudController extends AbstractTenantAwareCrudController
                 return ['id' => $entity->getId()];
             })
             ->setIcon('fa fa-archive')
-            ->addCssClass('text-danger');
+            ->addCssClass('text-danger')
+            ->displayIf(fn($entity) => $entity->getStatus() === QrStatusEnum::ACTIVE);
+
+        $unArchiveAction = Action::new('unArchive', new TranslatableMessage('qr.unarchive.label'))
+            ->linkToRoute('admin_qr_unarchive', function ($entity) {
+                return ['id' => $entity->getId()];
+            })
+            ->displayIf(fn($entity) => $entity->getStatus() === QrStatusEnum::ARCHIVED);
 
         return $actions
             ->update(Crud::PAGE_INDEX, Action::EDIT, fn (Action $action) => $action->setIcon('fa fa-pencil')->setLabel('qr.edit'))
             ->remove(Crud::PAGE_INDEX, Action::DELETE)
             ->add(Crud::PAGE_INDEX, $archiveAction)
+            ->add(Crud::PAGE_INDEX, $unArchiveAction)
             ->add(Crud::PAGE_INDEX, $singleDownloadActionNoConfig)
             ->add(Crud::PAGE_INDEX, $singleDownloadActionConfig)
             ->addBatchAction($batchDownloadAction)
