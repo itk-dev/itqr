@@ -22,6 +22,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use Endroid\QrCode\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -111,6 +112,9 @@ class QrCrudController extends AbstractTenantAwareCrudController
                     ->useEntryCrudForm(UrlCrudController::class)
                     ->addCssClass('qr-urls-collection')
                     ->setHelp(new TranslatableMessage('qr.url.help')),
+                UrlField::new('alternativeUrl', new TranslatableMessage('qr.alternativeUrl.label'))
+                    ->setRequired(false)
+                    ->setHelp(new TranslatableMessage('qr.alternativeUrl.help')),
             ];
         }
 
