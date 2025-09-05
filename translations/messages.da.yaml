@@ -41,13 +41,14 @@ qr:
     label: 'Status'
   alternativeUrl:
     label: 'Alternativ URL'
-    help: 'Angiv en valgfri URL som brugerne vil blive præsenteret for, når de scanner denne arkiverede QR-kode. <br>Dette kan være nyttigt til at omdirigere brugere til relevant indhold.'
+    help: 'Angiv en valgfri URL som brugerne vil blive præsenteret for, når de scanner denne arkiverede QR-kode (f.eks. https://aarhus.dk). <br>Dette kan være nyttigt til at omdirigere brugere til relevant indhold.'
   archive:
     label: 'Arkiver QR kode'
     title: 'Arkivering af QR kode'
     description: 'Du er ved at arkivere denne QR kode. Når en QR kode arkiveres, vil den ikke længere lede videre til sin destination men i stedet en samlet "denne QR kode er arkiveret"-side.'
     success: "QR-koden '%title%' blev arkiveret succesfuldt %url%."
     do: "Udfør arkivering"
+    cancel: "Fortryd"
   unarchive:
     label: 'Genaktiver QR kode'
     success: "QR-koden '%title%' er blevet genaktiveret."
