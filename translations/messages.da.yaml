@@ -41,7 +41,7 @@ qr:
     label: 'Status'
   alternativeUrl:
     label: 'Alternativ URL'
-    help: 'Angiv en valgfri URL som brugerne vil blive præsenteret for, når de scanner denne arkiverede QR-kode (f.eks. https://aarhus.dk). <br>Dette kan være nyttigt til at omdirigere brugere til relevant indhold.'
+    help: 'Her kan der angives en URL som brugeren vil blive præsenteret for, når de scanner en arkiveret QR-kode (f.eks. https://aarhus.dk). <br>Dette kan være nyttigt til at omdirigere brugere til relevant indhold.'
   archive:
     label: 'Arkiver QR kode'
     title: 'Arkivering af QR kode'
