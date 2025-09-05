@@ -48,6 +48,9 @@ qr:
     description: 'Du er ved at arkivere denne QR kode. Når en QR kode arkiveres, vil den ikke længere lede videre til sin destination men i stedet en samlet "denne QR kode er arkiveret"-side.'
     success: "QR-koden '%title%' blev arkiveret succesfuldt %url%."
     do: "Udfør arkivering"
+  unarchive:
+    label: 'Genaktiver QR kode'
+    success: "QR-koden '%title%' er blevet genaktiveret."
   text:
     label: 'Tekst'
     size: 'Tekststørrelse'
