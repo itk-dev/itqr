@@ -3,6 +3,7 @@
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,6 +23,13 @@ class QrArchiveType extends AbstractType
             ])
             ->add('archive', SubmitType::class, [
                 'label' => new TranslatableMessage('qr.archive.do'),
+            ])
+            ->add('Cancel', ButtonType::class, [
+                'label' => new TranslatableMessage('qr.archive.cancel'),
+                'attr' => [
+                    'class' => 'btn btn-default',
+                    'onclick' => 'window.location.href="/"',
+                ],
             ]);
     }
 
