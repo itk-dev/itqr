@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Entity\Tenant;
 
-use App\Entity\Interfaces\GlobalScopedEntityInterface;
+use App\Entity\Interfaces\SharedScopedEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\MappedSuperclass]
 #[ORM\HasLifecycleCallbacks]
-abstract class AbstractGlobalScopedEntity extends AbstractTenantScopedEntity implements GlobalScopedEntityInterface
+abstract class AbstractSharedScopedEntity extends AbstractTenantScopedEntity implements SharedScopedEntityInterface
 {
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $isShared = false;

@@ -67,23 +67,17 @@ class QrVisualConfigCrudController extends AbstractTenantAwareCrudController
         }
 
         if (Crud::PAGE_EDIT === $pageName || Crud::PAGE_NEW === $pageName) {
-            $isGlobalField = [];
-
-            // Only super admins can set isGlobal to true
-            if (in_array(Roles::ROLE_SUPER_ADMIN, $this->getUser()->getRoles())) {
-                $isGlobalField[] = BooleanField::new('isGlobal')
-                    ->setLabel(new TranslatableMessage('design.is_global.label'))
-                    ->setHelp(new TranslatableMessage('design.is_global.help'));
-            }
             return [
                 // Id should not be mapped, but we still need the id for the preview generation
                 HiddenField::new('id')
                     ->setFormTypeOption('mapped', false)
                     ->setFormTypeOption('data', $this->getContext()->getEntity()->getInstance()->getId()),
+                BooleanField::new('isShared')
+                    ->setLabel(new TranslatableMessage('design.is_shared.label'))
+                ->setHelp(new TranslatableMessage('design.is_shared.help')),
                 TextField::new('name')
                     ->setLabel(new TranslatableMessage('design.name.label'))
                     ->setHelp(new TranslatableMessage('design.name.help')),
-                ...$isGlobalField,
                 IntegerField::new('size')
                     ->setLabel(new TranslatableMessage('design.size.label'))
                     ->setHelp(new TranslatableMessage('design.size.help')),
