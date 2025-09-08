@@ -6,7 +6,7 @@ namespace App\Entity\Interfaces;
 
 use App\Entity\Tenant;
 
-interface GlobalScopedEntityInterface
+interface SharedScopedEntityInterface
 {
     public function getIsShared(): bool;
 
