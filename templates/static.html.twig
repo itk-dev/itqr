@@ -1,4 +1,12 @@
-<div class="container py-4">
-    <h1>{{ title }}</h1>
-    <p>{{ description|raw }}</p>
+{% block stylesheets %}
+    {{ encore_entry_link_tags('static') }}
+{% endblock %}
+
+<div class="container">
+        <h1>{{ title }}</h1>
+        <p>{{ description|raw }}</p>
 </div>
+
+<style>
+
+</style>
