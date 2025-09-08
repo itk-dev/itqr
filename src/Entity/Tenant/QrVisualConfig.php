@@ -48,10 +48,8 @@ class QrVisualConfig extends AbstractTenantScopedEntity
     #[ORM\Column(type: 'string', enumType: ErrorCorrectionLevel::class, nullable: false)]
     private ErrorCorrectionLevel $errorCorrectionLevel = ErrorCorrectionLevel::Low;
 
-    public function getSize(): int
-    {
-        return $this->size;
-    }
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $isGlobal = false;
 
     public function getName(): string
     {
@@ -63,6 +61,11 @@ class QrVisualConfig extends AbstractTenantScopedEntity
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getSize(): int
+    {
+        return $this->size;
     }
 
     public function setSize(int $size): static
@@ -192,6 +195,18 @@ class QrVisualConfig extends AbstractTenantScopedEntity
     public function setErrorCorrectionLevel(ErrorCorrectionLevel $errorCorrectionLevel): static
     {
         $this->errorCorrectionLevel = $errorCorrectionLevel;
+
+        return $this;
+    }
+
+    public function isGlobal(): bool
+    {
+        return $this->isGlobal;
+    }
+
+    public function setIsGlobal(bool $isGlobal): static
+    {
+        $this->isGlobal = $isGlobal;
 
         return $this;
     }
