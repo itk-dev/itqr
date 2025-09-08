@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity(repositoryClass: QrVisualConfigRepository::class)]
 #[ApiResource]
-class QrVisualConfig extends AbstractTenantScopedEntity
+class QrVisualConfig extends AbstractSharedScopedEntity
 {
     #[ORM\Column(length: 50, nullable: false)]
     private string $name;
@@ -45,11 +45,8 @@ class QrVisualConfig extends AbstractTenantScopedEntity
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $logo = null;
 
-    #[ORM\Column(type: 'string', enumType: ErrorCorrectionLevel::class, nullable: false)]
+    #[ORM\Column(type: 'string', nullable: false, enumType: ErrorCorrectionLevel::class)]
     private ErrorCorrectionLevel $errorCorrectionLevel = ErrorCorrectionLevel::Low;
-
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private bool $isGlobal = false;
 
     public function getName(): string
     {
@@ -199,15 +196,8 @@ class QrVisualConfig extends AbstractTenantScopedEntity
         return $this;
     }
 
-    public function isGlobal(): bool
+    public function getIsShared(): bool
     {
-        return $this->isGlobal;
-    }
-
-    public function setIsGlobal(bool $isGlobal): static
-    {
-        $this->isGlobal = $isGlobal;
-
-        return $this;
+        return $this->isShared();
     }
 }
