@@ -5,6 +5,8 @@
 <div class="container">
     <img class="qr-code-image" src="/img/qrcode-archived.png" alt="QR Code" />
     <h1>Denne QR kode er arkiveret</h1>
-    <p>Du kan finde mere information på</p>
-    <p><a class="btn" href="{{ alternativeUrl }}">{{ alternativeUrl }}</a></p>
+    {% if alternativeUrl %}
+        <p>Du kan finde mere information på</p>
+        <p><a class="btn" href="{{ alternativeUrl }}">{{ alternativeUrl }}</a></p>
+    {% endif %}
 </div>

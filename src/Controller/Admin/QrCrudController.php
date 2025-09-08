@@ -203,6 +203,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
             ->linkToRoute('admin_qr_unarchive', function ($entity) {
                 return ['id' => $entity->getId()];
             })
+            ->setIcon('fa fa-seedling')
             ->displayIf(fn ($entity) => QrStatusEnum::ARCHIVED === $entity->getStatus());
 
         return $actions
