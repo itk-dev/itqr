@@ -101,3 +101,8 @@ form[name="batch_download"] .accordion-button {
     background-color: #fff;
     border-bottom: 1px solid #e9e9e9;
 }
+
+
+.qr-urls-collection .accordion-button {
+    display: none;
+}

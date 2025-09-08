@@ -16,7 +16,15 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        return $this->render('@EasyAdmin/page/content.html.twig');
+        // Redirect to the qr crud page until dashboad functionality is implemented
+        return $this->redirectToRoute('qr_index', [
+            'filters' => [
+                'status' => [
+                    'comparison' => '=',
+                    'value' => 'ACTIVE',
+                ],
+            ],
+        ]);
     }
 
     public function configureDashboard(): Dashboard
@@ -26,7 +34,6 @@ class DashboardController extends AbstractDashboardController
             ->setFaviconPath('favicon.svg')
             ->renderContentMaximized()
             ->disableDarkMode()
-            ->generateRelativeUrls()
             ->setLocales([
                 'da' => 'Dansk',
                 'en' => 'English',
@@ -35,7 +42,9 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToCrud(new TranslatableMessage('QR Codes'), 'fa fa-qrcode', Qr::class);
-        yield MenuItem::linkToCrud(new TranslatableMessage('QR Designs'), 'fa fa-palette', QrVisualConfig::class);
+        yield MenuItem::linkToCrud(new TranslatableMessage('menu.qr'), 'fa fa-qrcode', Qr::class)
+            ->setQueryParameter('filters[status][comparison]', '=')
+            ->setQueryParameter('filters[status][value]', 'ACTIVE');
+        yield MenuItem::linkToCrud(new TranslatableMessage('menu.designs'), 'fa fa-palette', QrVisualConfig::class);
     }
 }
