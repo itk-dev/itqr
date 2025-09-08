@@ -6,16 +6,15 @@ use App\Entity\Tenant\Qr;
 use App\Entity\Tenant\Url;
 use App\Form\SetUrlType;
 use Doctrine\ORM\EntityManagerInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class SetUrlController extends DashboardController
+final class SetUrlController extends AbstractController
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private readonly AdminUrlGenerator $adminUrlGenerator,
+        private readonly EntityManagerInterface $entityManager,
         private readonly RequestStack $requestStack,
     ) {
     }
@@ -24,7 +23,7 @@ final class SetUrlController extends DashboardController
      * @todo add permission check here.
      */
     #[Route('/admin/batch/set_url', name: 'admin_set_url')]
-    public function index(): Response
+    public function batchSetUrl(array $selectedEntityIds): Response
     {
         $form = $this->createForm(SetUrlType::class);
 
@@ -35,7 +34,7 @@ final class SetUrlController extends DashboardController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            foreach ($request->query->all() as $id) {
+            foreach ($selectedEntityIds as $id) {
                 $qr = $this->entityManager->find(Qr::class, $id);
 
                 // Remove all existing urls from the Qr code.
@@ -52,19 +51,19 @@ final class SetUrlController extends DashboardController
 
             $this->entityManager->flush();
 
-            // Create redirect url.
-            $redirectUrl = $this->adminUrlGenerator
-                ->setRoute('admin')
-                ->setController(QrCrudController::class)
-                ->setAction('index')
-                ->generateUrl();
-
-            return $this->redirect($redirectUrl);
+            return $this->redirectToRoute('qr_index', [
+                'filters' => [
+                    'status' => [
+                        'comparison' => '=',
+                        'value' => 'ACTIVE',
+                    ],
+                ],
+            ]);
         }
 
         return $this->render('form/setUrl.html.twig', [
             'form' => $form,
-            'count' => count($request->query->all()),
+            'count' => count($selectedEntityIds),
         ]);
     }
 }

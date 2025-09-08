@@ -1,6 +1,7 @@
 frontpage:
   hello_world: 'Hej Verden!'
-
+ARCHIVED: 'Arkiveret'
+ACTIVE: 'Aktiv'
 qr:
   index:
     label: 'QR koder'
@@ -36,7 +37,21 @@ qr:
   quick_download_with_config: 'Design og download'
   set_url: 'Overskriv destination på markerede'
   edit: 'Ret QR-kode'
-  delete: 'Slet QR-kode'
+  status:
+    label: 'Status'
+  alternativeUrl:
+    label: 'Alternativ URL'
+    help: 'Her kan der angives en URL som brugeren vil blive præsenteret for, når de scanner en arkiveret QR-kode (f.eks. https://aarhus.dk). <br>Dette kan være nyttigt til at omdirigere brugere til relevant indhold.'
+  archive:
+    label: 'Arkiver QR kode'
+    title: 'Arkivering af QR kode'
+    description: 'Du er ved at arkivere denne QR kode. Når en QR kode arkiveres, vil den ikke længere lede videre til sin destination men i stedet en samlet "denne QR kode er arkiveret"-side.'
+    success: "QR-koden '%title%' blev arkiveret succesfuldt %url%."
+    do: "Udfør arkivering"
+    cancel: "Fortryd"
+  unarchive:
+    label: 'Genaktiver QR kode'
+    success: "QR-koden '%title%' er blevet genaktiveret."
   text:
     label: 'Tekst'
     size: 'Tekststørrelse'

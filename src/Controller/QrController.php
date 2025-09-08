@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Enum\QrStatusEnum;
 use App\Repository\QrRepository;
 use App\Service\QrService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,6 +27,13 @@ final class QrController extends AbstractController
 
         if (!$qr) {
             throw $this->createNotFoundException('QR code not found');
+        }
+
+        // Check if QR is archived
+        if (QrStatusEnum::ARCHIVED === $qr->getStatus()) {
+            return $this->render('archived.html.twig', [
+                'alternativeUrl' => $qr->getAlternativeUrl(),
+            ]);
         }
 
         try {
