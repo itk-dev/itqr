@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -10,27 +10,27 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatableMessage;
 
-/**
- * @extends AbstractType<SetUrlType>
- */
-class SetUrlType extends AbstractType
+class QrArchiveType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('url', UrlType::class, [
-            'default_protocol' => 'https',
-            'label' => new TranslatableMessage('seturl.url'),
-        ]);
-        $builder->add('Continue', SubmitType::class, [
-            'label' => new TranslatableMessage('seturl.do'),
-        ]);
-        $builder->add('Cancel', ButtonType::class, [
-            'label' => new TranslatableMessage('seturl.cancel'),
-            'attr' => [
-                'class' => 'btn btn-default',
-                'onclick' => 'window.location.href="/"',
-            ],
-        ]);
+        $builder
+            ->add('alternativeUrl', UrlType::class, [
+                'label' => new TranslatableMessage('qr.alternativeUrl.label'),
+                'attr' => ['data-controller' => 'advanced-settings'],
+                'help' => new TranslatableMessage('qr.alternativeUrl.help'),
+                'required' => false,
+            ])
+            ->add('archive', SubmitType::class, [
+                'label' => new TranslatableMessage('qr.archive.do'),
+            ])
+            ->add('Cancel', ButtonType::class, [
+                'label' => new TranslatableMessage('qr.archive.cancel'),
+                'attr' => [
+                    'class' => 'btn btn-default',
+                    'onclick' => 'window.location.href="/"',
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

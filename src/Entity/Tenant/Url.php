@@ -13,7 +13,7 @@ class Url extends AbstractTenantScopedEntity
 {
     #[Assert\NotBlank(message: new TranslatableMessage('The URL field cannot be empty.'))]
     #[Assert\Url(message: new TranslatableMessage('The value "{{ value }}" is not a valid URL.'))]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'text', length: 65535)]
     private string $url = '';
 
     #[ORM\ManyToOne(targetEntity: Qr::class, inversedBy: 'urls')]
