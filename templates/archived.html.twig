@@ -1,0 +1,12 @@
+{% block stylesheets %}
+    {{ encore_entry_link_tags('archived') }}
+{% endblock %}
+
+<div class="container">
+    <img class="qr-code-image" src="/img/qrcode-archived.png" alt="QR Code" />
+    <h1>Denne QR kode er arkiveret</h1>
+    {% if alternativeUrl %}
+        <p>Du kan finde mere information på</p>
+        <p><a class="btn" href="{{ alternativeUrl }}">{{ alternativeUrl }}</a></p>
+    {% endif %}
+</div>
