@@ -1,7 +1,18 @@
 {% extends '@EasyAdmin/content.html.twig' %}
 {% form_theme form '@EasyAdmin/crud/form_theme.html.twig' %}
+{% block content_header %}
+        <div class="content-header-title">
+            <h1 class="title">{{ 'download.batch.title.label'|trans }}</h1>
+
+        </div>
+
+{% endblock %}
 
 {% block main %}
+    <div>
+        {{ 'download.batch.title.description'|trans|raw }}
+    </div>
+    <br>
     <div id="batch-action-container">
         <input type="hidden" id="selectedQrCodes" value="{{ selectedQrCodes }}" />
         <div class="form-wrapper">
@@ -23,7 +34,7 @@
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#advancedSettings" aria-expanded="false"
                                 aria-controls="advancedSettings">
-                            Advanced Settings
+                            {{ 'download.batch.advancedsettings'|trans }}
                         </button>
                     </h4>
                     <div id="advancedSettings" class="accordion-collapse collapse"

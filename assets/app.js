@@ -1,17 +1,21 @@
 import './styles/app.css';
 
 const uploadBasePath = 'uploads/qr_codes/';
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Enforce only one URL per QR code.
+    handleQrUrlCollection();
+
     const qrCodeContainer = document.getElementById('qrCodeContainer');
     const tabsContainer = document.getElementById('qrCodeTabs'); // Navigation tabs
     const tabContentContainer = document.getElementById('qrCodeTabContent'); // Tab content
     const form = document.querySelector('.form-wrapper form');
-    const formName = form.getAttribute('name');
+    const formName = form ? form.getAttribute('name') : '';
     const selectedQrCodes = document.getElementById('selectedQrCodes');
 
     // Ensure all containers and elements exist
     if (!qrCodeContainer || !tabsContainer || !tabContentContainer || !form) {
-        console.error('Required elements not found!');
+        console.log('Required elements not found');
         return;
     }
 
@@ -198,6 +202,37 @@ function handleBatchDisableConfirm() {
             modal.querySelector('#modal-batch-action-button').click();
         });
     });
+}
+
+function handleQrUrlCollection() {
+    const qrUrlCollectionParent = document.querySelector('.qr-urls-collection');
+    const qrUrlCollectionAddButton = document.querySelector('.qr-urls-collection .field-collection-add-button');
+    const urlCollectionCount = qrUrlCollectionParent ? parseInt(qrUrlCollectionParent.getAttribute('data-num-items')) : null;
+
+    // If the button exists, and no URL is added - add it!
+    if (qrUrlCollectionAddButton) {
+        setTimeout(() => {
+            if (urlCollectionCount !== null && urlCollectionCount === 0) {
+                qrUrlCollectionAddButton.click();
+            }
+        }, 1)
+
+        // Hide the add-button if there is already an URL added.
+        if (parseInt(urlCollectionCount) === 1) {
+            qrUrlCollectionAddButton.classList.add('d-none');
+        }
+
+        // Handle the click event and hide add-button if an URL was added and the number of URLs is 1.
+        qrUrlCollectionAddButton.addEventListener('click', () => {
+            setTimeout(() => {
+                const urlCollectionCount = qrUrlCollectionParent.getAttribute('data-num-items');
+
+                if (parseInt(urlCollectionCount) === 1) {
+                    qrUrlCollectionAddButton.classList.add('d-none');
+                }
+            }, 1)
+        });
+    }
 }
 
 document.addEventListener('readystatechange', function(event) {
