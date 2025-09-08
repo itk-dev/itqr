@@ -12,7 +12,6 @@ abstract class AbstractSharedCrudController extends AbstractCrudController
     {
         $entity = parent::createEntity($entityFqcn);
 
-
         $this->setTenant($entity);
 
         return $entity;

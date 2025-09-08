@@ -46,7 +46,7 @@ class TenantFilter extends SQLFilter
         try {
             return sprintf('%s.tenant_id = %s', $targetTableAlias, $this->getParameter('tenant_id'));
         } catch (\Exception $e) {
-            throw new TenantScopeException('Error applying tenant filter constraint: ' . $e->getMessage(), $e->getCode(), $e);
+            throw new TenantScopeException('Error applying tenant filter constraint: '.$e->getMessage(), $e->getCode(), $e);
         }
     }
 }

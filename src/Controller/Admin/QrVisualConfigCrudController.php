@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Tenant\QrVisualConfig;
-use App\Utils\Roles;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -74,7 +73,7 @@ class QrVisualConfigCrudController extends AbstractTenantAwareCrudController
                     ->setFormTypeOption('data', $this->getContext()->getEntity()->getInstance()->getId()),
                 BooleanField::new('isShared')
                     ->setLabel(new TranslatableMessage('design.is_shared.label'))
-                ->setHelp(new TranslatableMessage('design.is_shared.help')),
+                    ->setHelp(new TranslatableMessage('design.is_shared.help')),
                 TextField::new('name')
                     ->setLabel(new TranslatableMessage('design.name.label'))
                     ->setHelp(new TranslatableMessage('design.name.help')),
