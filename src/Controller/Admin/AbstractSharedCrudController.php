@@ -6,11 +6,12 @@ use App\Entity\Interfaces\TenantScopedEntityInterface;
 use App\Entity\Interfaces\TenantScopedUserInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
-abstract class AbstractGlobalCrudController extends AbstractCrudController
+abstract class AbstractSharedCrudController extends AbstractCrudController
 {
     public function createEntity(string $entityFqcn): TenantScopedEntityInterface
     {
         $entity = parent::createEntity($entityFqcn);
+
 
         $this->setTenant($entity);
 
