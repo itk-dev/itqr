@@ -23,23 +23,21 @@ class TenantFilter extends SQLFilter
      */
     public function addFilterConstraint(ClassMetadata $targetEntity, string $targetTableAlias): string
     {
-        if ($targetEntity->getReflectionClass()->implementsInterface(SharedScopedEntityInterface::class)) {
-            if (!$this->hasParameter('tenant_id')) {
-                return '';
-            }
+        if (!$this->hasParameter('tenant_id')) {
+            return '';
+        }
 
+        // Check if the entity implements the shared interface
+        if ($targetEntity->getReflectionClass()->implementsInterface(SharedScopedEntityInterface::class)) {
             return sprintf('(%s.tenant_id = %s OR %s.is_shared = true)',
                 $targetTableAlias,
                 $this->getParameter('tenant_id'),
                 $targetTableAlias
             );
         }
+
         // Check if the entity implements the required interfaces
         if (!$targetEntity->getReflectionClass()->implementsInterface(TenantScopedEntityInterface::class)) {
-            return '';
-        }
-
-        if (!$this->hasParameter('tenant_id')) {
             return '';
         }
 
