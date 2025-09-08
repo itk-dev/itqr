@@ -3,11 +3,13 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Tenant\QrVisualConfig;
+use App\Utils\Roles;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
@@ -63,7 +65,16 @@ class QrVisualConfigCrudController extends AbstractTenantAwareCrudController
                     ->hideOnForm(),
             ];
         }
+
         if (Crud::PAGE_EDIT === $pageName || Crud::PAGE_NEW === $pageName) {
+            $isGlobalField = [];
+
+            // Only super admins can set isGlobal to true
+            if (in_array(Roles::ROLE_SUPER_ADMIN, $this->getUser()->getRoles())) {
+                $isGlobalField[] = BooleanField::new('isGlobal')
+                    ->setLabel(new TranslatableMessage('design.is_global.label'))
+                    ->setHelp(new TranslatableMessage('design.is_global.help'));
+            }
             return [
                 // Id should not be mapped, but we still need the id for the preview generation
                 HiddenField::new('id')
@@ -72,6 +83,7 @@ class QrVisualConfigCrudController extends AbstractTenantAwareCrudController
                 TextField::new('name')
                     ->setLabel(new TranslatableMessage('design.name.label'))
                     ->setHelp(new TranslatableMessage('design.name.help')),
+                ...$isGlobalField,
                 IntegerField::new('size')
                     ->setLabel(new TranslatableMessage('design.size.label'))
                     ->setHelp(new TranslatableMessage('design.size.help')),
