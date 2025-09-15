@@ -5,7 +5,7 @@ ACTIVE: 'Aktiv'
 qr:
   index:
     label: 'QR koder'
-    description: 'Her kan du se en oversigt over alle QR-koder i dit magistrat. <br>Du kan tilføje en ny, redigere eller arkivere eksisterende samt downloade en eller flere QR koder, både med og uden design.'
+    description: 'Her kan du se en oversigt over alle QR-koder i din magistratsafdeling. <br>Du kan tilføje en ny, redigere eller arkivere eksisterende samt downloade en eller flere QR koder, både med og uden design.'
   new: 'Opret QR kode'
   label_singular: 'QR kode'
   title:
@@ -66,7 +66,7 @@ qr:
 design:
   index:
     label: 'Designs'
-    description: 'Her kan du se en oversigt over alle designs i dit magistrat. <br>Du kan tilføje et nyt design, redigere eller slette eksisterende.'
+    description: 'Her kan du se en oversigt over alle designs i din magistratsafdeling. <br>Du kan tilføje et nyt design, redigere eller slette eksisterende.'
   name:
     label: 'Navn'
     help: 'Giv designet et beskrivende navn, så andre brugere nemt kan forstå formålet med det.'
