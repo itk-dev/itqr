@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Security\TenantScope;
+namespace App\Security\TenantScope\Doctrine;
 
 use App\Entity\Interfaces\TenantScopedEntityInterface;
 use App\Entity\User;
@@ -21,7 +21,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 readonly class PrePersistListener
 {
     public function __construct(
-        // private Security $security,
+        private Security $security,
         private TenantRepository $tenantRepository,
     ) {
     }
@@ -45,11 +45,10 @@ readonly class PrePersistListener
             $object->setTenant($all[0]);
         }
 
-        //        @TODO Enable when OIDC setup complete
-        //        $user = $this->security->getUser();
-        //
-        //        if ($user instanceof User) {
-        //            $object->setTenant($user->getActiveTenant());
-        //        }
+        $user = $this->security->getUser();
+
+        if ($user instanceof User) {
+            $object->setTenant($user->getTenant());
+        }
     }
 }

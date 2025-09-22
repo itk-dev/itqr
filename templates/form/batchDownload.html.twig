@@ -1,8 +1,18 @@
-{% extends 'EasyAdminBundle/content.html.twig' %}
+{% extends '@EasyAdmin/content.html.twig' %}
 {% form_theme form '@EasyAdmin/crud/form_theme.html.twig' %}
+{% block content_header %}
+        <div class="content-header-title">
+            <h1 class="title">{{ 'download.batch.title.label'|trans }}</h1>
+
+        </div>
+
+{% endblock %}
 
 {% block main %}
-
+    <div>
+        {{ 'download.batch.title.description'|trans|raw }}
+    </div>
+    <br>
     <div id="batch-action-container">
         <input type="hidden" id="selectedQrCodes" value="{{ selectedQrCodes }}" />
         <div class="form-wrapper">
@@ -11,7 +21,40 @@
                 .setAction('index')
             }}">
             </a>
-            {{ form(form) }}
+
+            {{ form_start(form) }}
+
+            {# Design dropdown outside accordion #}
+            {{ form_row(form.design) }}
+
+            {# Advanced Settings Accordion #}
+            <div class="accordion mb-2" id="settingsAccordion">
+                <div class="accordion-item">
+                    <h4 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#advancedSettings" aria-expanded="false"
+                                aria-controls="advancedSettings">
+                            {{ 'download.batch.advancedsettings'|trans }}
+                        </button>
+                    </h4>
+                    <div id="advancedSettings" class="accordion-collapse collapse"
+                         data-bs-parent="#settingsAccordion">
+                        <div class="accordion-body">
+                            {# Render all remaining form fields except design and download #}
+                            {% for field in form %}
+                                {% if field.vars.name != 'design' and field.vars.name != 'download' %}
+                                    {{ form_row(field) }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Download button outside accordion #}
+            {{ form_row(form.download) }}
+
+            {{ form_end(form) }}
 
             <div class="qr-preview">
                 <div id="qrCodeContainer" data-generate-qr-path="{{ path('admin_generate_qr_codes') }}">

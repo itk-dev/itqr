@@ -54,9 +54,9 @@ abstract class AbstractBaseEntity implements BlameableInterface, TimestampableIn
         return $this;
     }
 
-    public function getModifiedAt(): ?\DateTimeImmutable
+    public function getModifiedAt(): \DateTimeImmutable
     {
-        return $this->modifiedAt ?? null;
+        return $this->modifiedAt;
     }
 
     public function setModifiedAt(?\DateTimeInterface $modifiedAt = null): self

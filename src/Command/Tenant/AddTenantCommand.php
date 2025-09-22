@@ -56,7 +56,7 @@ use function Symfony\Component\String\u;
 class AddTenantCommand extends Command
 {
     private const string TENANT_KEY_ARGUMENT = 'tenantKey';
-    private const string TITLE_ARGUMENT = 'title';
+    private const string NAME_ARGUMENT = 'name';
     private const string DESCRIPTION_ARGUMENT = 'description';
 
     public function __construct(
@@ -74,7 +74,7 @@ class AddTenantCommand extends Command
             // commands can optionally define arguments and/or options (mandatory and optional)
             // see https://symfony.com/doc/current/components/console/console_arguments.html
             ->addArgument(self::TENANT_KEY_ARGUMENT, InputArgument::OPTIONAL, 'The unique key of the new tenant')
-            ->addArgument(self::TITLE_ARGUMENT, InputArgument::OPTIONAL, 'The title of the new tenant')
+            ->addArgument(self::NAME_ARGUMENT, InputArgument::OPTIONAL, 'The name of the new tenant')
             ->addArgument(self::DESCRIPTION_ARGUMENT, InputArgument::OPTIONAL, 'The description of the new tenant')
         ;
     }
@@ -91,7 +91,7 @@ class AddTenantCommand extends Command
      */
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
-        if (null !== $input->getArgument(self::TENANT_KEY_ARGUMENT) && null !== $input->getArgument(self::TITLE_ARGUMENT) && null !== $input->getArgument(self::DESCRIPTION_ARGUMENT)) {
+        if (null !== $input->getArgument(self::TENANT_KEY_ARGUMENT) && null !== $input->getArgument(self::NAME_ARGUMENT) && null !== $input->getArgument(self::DESCRIPTION_ARGUMENT)) {
             return;
         }
 
@@ -117,12 +117,12 @@ class AddTenantCommand extends Command
         }
 
         // Ask for the password if it's not defined
-        $title = $input->getArgument(self::TITLE_ARGUMENT);
-        if (null !== $title) {
-            $io->text(' > <info>Title</info>: '.u('*')->repeat(u($title)->length()));
+        $name = $input->getArgument(self::NAME_ARGUMENT);
+        if (null !== $name) {
+            $io->text(' > <info>Name</info>: '.u('*')->repeat(u($name)->length()));
         } else {
-            $title = $io->ask('Title');
-            $input->setArgument(self::TITLE_ARGUMENT, $title);
+            $name = $io->ask('Name');
+            $input->setArgument(self::NAME_ARGUMENT, $name);
         }
 
         // Ask for the full name if it's not defined
@@ -145,21 +145,17 @@ class AddTenantCommand extends Command
         $stopwatch = new Stopwatch();
         $stopwatch->start('add-tenant-command');
 
-        $tenantKey = $input->getArgument(self::TENANT_KEY_ARGUMENT);
-        $title = $input->getArgument(self::TITLE_ARGUMENT) ?? '';
+        $name = $input->getArgument(self::NAME_ARGUMENT) ?? '';
         $description = $input->getArgument(self::DESCRIPTION_ARGUMENT) ?? '';
 
         // Make sure to validate the user data is correct.
-        if (null == $tenantKey) {
-            throw new RuntimeException('Tenant key should not be null');
+        if (null == $name) {
+            throw new RuntimeException('Tenant name should not be null');
         }
-        $this->validateTenantData($tenantKey);
+        $this->validateTenantData($name);
 
         // Create the user and hash its password.
-        $tenant = new Tenant();
-        $tenant->setTenantKey($tenantKey);
-        $tenant->setTitle($title);
-        $tenant->setDescription($description);
+        $tenant = new Tenant($name, $description);
         $tenant->setCreatedBy('CLI');
 
         $this->entityManager->persist($tenant);
@@ -167,7 +163,7 @@ class AddTenantCommand extends Command
 
         $io = new SymfonyStyle($input, $output);
 
-        $io->success(sprintf('Tenant was successfully created: %s', $tenant->getTenantKey()));
+        $io->success(sprintf('Tenant was successfully created: %s', $tenant->getName()));
 
         $event = $stopwatch->stop('add-tenant-command');
         if ($output->isVerbose()) {
@@ -183,17 +179,17 @@ class AddTenantCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function validateTenantData(string $tenantKey): void
+    private function validateTenantData(string $name): void
     {
         // First check if a user with the same username already exists.
-        $existingTenant = $this->tenants->findOneBy([self::TENANT_KEY_ARGUMENT => $tenantKey]);
+        $existingTenant = $this->tenants->findOneBy([self::NAME_ARGUMENT => $name]);
 
         if (null !== $existingTenant) {
-            throw new RuntimeException(sprintf('There is already a tenant registered with the "%s" key.', $tenantKey));
+            throw new RuntimeException(sprintf('There is already a tenant registered with the "%s" name.', $name));
         }
 
         // Validate tenant key if is not this input means interactive.
-        $this->validator->validateTenantKey($tenantKey);
+        $this->validator->validateTenantKey($name);
     }
 
     /**

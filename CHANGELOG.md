@@ -8,6 +8,45 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-41](https://github.com/itk-dev/itqr/pull/41)
+    - Added archived concept
+[PR-40](https://github.com/itk-dev/itqr/pull/40)
+    - Added styling to static page.
+[PR-39](https://github.com/itk-dev/itqr/pull/39)
+    - Added various help texts and in-platform-documentation.
+[PR-38](https://github.com/itk-dev/itqr/pull/38)
+    - Limit number of URLs to 1
+    - Increase URL data type from varchar to text
+[PR-37](https://github.com/itk-dev/itqr/pull/37)
+    - Rename "theme" to "design" in general
+    - Rename "delete" to "archive" in general
+[PR-36](https://github.com/itk-dev/itqr/pull/36)
+    - Fixed issue with set url
+    - Batch set url only for admins
+[PR-35](https://github.com/itk-dev/itqr/pull/35)
+    - Removed redirect popup for batch download
+[PR-33](https://github.com/itk-dev/itqr/pull/33)
+    - Fixes and Tidy feedback
+[PR-30](https://github.com/itk-dev/itqr/pull/30)
+    - Apply tenant concept to visualConfig
+    - Configure tenant enforcement across solution
+[PR-27](https://github.com/itk-dev/itqr/pull/27)
+    - Minor corrections and additions
+[PR-26](https://github.com/itk-dev/itqr/pull/26)
+    - Add static-page mode to qr entity
+[PR-25](https://github.com/itk-dev/itqr/pull/25)
+    - Qr hit counter
+[PR-24](https://github.com/itk-dev/itqr/pull/24)
+    - Removed temporary form based login
+    - Added OIDC authentication
+    - Removed unneeded multi-tenant functionality
+    - Added doctrine filters to add tenant scope to all doctrine queries
+[PR-23](https://github.com/itk-dev/itqr/pull/23)
+    - Seperate visual representation of QR into own config
+    - Live preview of design and download
+[PR-22](https://github.com/itk-dev/itqr/pull/22)
+    - Add temporary form login
+    - Fix for "tenant null" error on URLs in embedded forms
 [PR-20](https://github.com/itk-dev/itqr/pull/20)
     - Implement and document npm setup
 [PR-19](https://github.com/itk-dev/itqr/pull/19)

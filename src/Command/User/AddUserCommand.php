@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Command\User;
 
 use App\Entity\User;
-use App\Entity\UserRoleTenant;
 use App\Enum\UserCreatorEnum;
 use App\Enum\UserTypeEnum;
 use App\Exceptions\AddUserCommandException;
@@ -32,10 +31,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
-
-use function Symfony\Component\String\u;
 
 /**
  * A console command that creates users and stores them in the database.
@@ -64,14 +60,12 @@ use function Symfony\Component\String\u;
 class AddUserCommand extends Command
 {
     private const string EMAIL_ARGUMENT = 'email';
-    private const string PASSWORD_ARGUMENT = 'password';
     private const string FULL_NAME_ARGUMENT = 'full-name';
     private const string ROLE_ARGUMENT = 'role';
-    private const string TENANT_KEYS_ARGUMENT = 'tenant-keys';
+    private const string TENANT_NAME_ARGUMENT = 'tenant-name';
 
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly UserPasswordHasherInterface $passwordHasher,
         private readonly CommandInputValidator $validator,
         private readonly UserRepository $users,
         private readonly TenantRepository $tenantRepository,
@@ -86,10 +80,9 @@ class AddUserCommand extends Command
             // commands can optionally define arguments and/or options (mandatory and optional)
             // see https://symfony.com/doc/current/components/console/console_arguments.html
             ->addArgument(self::EMAIL_ARGUMENT, InputArgument::OPTIONAL, 'The email of the new user')
-            ->addArgument(self::PASSWORD_ARGUMENT, InputArgument::OPTIONAL, 'The plain password of the new user')
             ->addArgument(self::FULL_NAME_ARGUMENT, InputArgument::OPTIONAL, 'The full name of the new user')
             ->addArgument(self::ROLE_ARGUMENT, InputArgument::OPTIONAL, 'The role of the user [editor|admin]')
-            ->addArgument(self::TENANT_KEYS_ARGUMENT, InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'The keys of the tenants the user should belong to (separate multiple keys with a space)')
+            ->addArgument(self::TENANT_NAME_ARGUMENT, InputArgument::OPTIONAL, 'The name of the tenant the user should belong to')
         ;
     }
 
@@ -106,10 +99,9 @@ class AddUserCommand extends Command
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
         if (null !== $input->getArgument(self::EMAIL_ARGUMENT)
-            && null !== $input->getArgument(self::PASSWORD_ARGUMENT)
             && null !== $input->getArgument(self::FULL_NAME_ARGUMENT)
             && null !== $input->getArgument(self::ROLE_ARGUMENT)
-            && !empty($input->getArgument(self::TENANT_KEYS_ARGUMENT))
+            && !empty($input->getArgument(self::TENANT_NAME_ARGUMENT))
         ) {
             return;
         }
@@ -133,15 +125,6 @@ class AddUserCommand extends Command
         } else {
             $email = $io->ask('Email', null, $this->validator->validateEmail(...));
             $input->setArgument(self::EMAIL_ARGUMENT, $email);
-        }
-
-        // Ask for the password if it's not defined
-        $password = $input->getArgument(self::PASSWORD_ARGUMENT);
-        if (null !== $password) {
-            $io->text(' > <info>Password</info>: '.u('*')->repeat(u($password)->length()));
-        } else {
-            $password = $io->askHidden('Password (your type will be hidden)', $this->validator->validatePassword(...));
-            $input->setArgument(self::PASSWORD_ARGUMENT, $password);
         }
 
         // Ask for the full name if it's not defined
@@ -174,7 +157,7 @@ class AddUserCommand extends Command
         }
 
         // Ask for the tenant keys if it's not defined
-        $tenantKeys = $input->getArgument(self::TENANT_KEYS_ARGUMENT);
+        $tenantKeys = $input->getArgument(self::TENANT_NAME_ARGUMENT);
         if (0 < count($tenantKeys)) {
             $io->text(' > <info>Tenant Keys</info>: '.implode(', ', $tenantKeys));
         } else {
@@ -186,7 +169,7 @@ class AddUserCommand extends Command
 
             $tenantKeys = $helper->ask($input, $output, $question);
             $output->writeln('You have just selected: '.implode(', ', $tenantKeys));
-            $input->setArgument(self::TENANT_KEYS_ARGUMENT, $tenantKeys);
+            $input->setArgument(self::TENANT_NAME_ARGUMENT, $tenantKeys);
         }
     }
 
@@ -205,33 +188,23 @@ class AddUserCommand extends Command
 
         // All arguments should now be set
         $email = $this->getArgumentFromInput($input, self::EMAIL_ARGUMENT);
-        $plainPassword = $this->getArgumentFromInput($input, self::PASSWORD_ARGUMENT);
         $fullName = $this->getArgumentFromInput($input, self::FULL_NAME_ARGUMENT);
         $role = $this->getArgumentFromInput($input, self::ROLE_ARGUMENT);
-        $tenantKeys = $this->getArgumentFromInput($input, self::TENANT_KEYS_ARGUMENT);
+        $tenantName = $this->getArgumentFromInput($input, self::TENANT_NAME_ARGUMENT);
 
         // make sure to validate the user data is correct
-        $this->validateUserData($email, $plainPassword, $fullName, $role, $tenantKeys);
+        $this->validateUserData($email, $fullName, $role, $tenantName);
+
+        $tenant = $this->tenantRepository->findOneBy(['name' => $tenantName]);
 
         // create the user and hash its password
-        $user = new User();
+        $user = new User($email, $tenant);
         $user->setEmail($email);
         $user->setProviderId($email);
         $user->setFullName($fullName);
         $user->setProvider(self::class);
         $user->setCreatedBy(UserCreatorEnum::CLI->value);
-        $user->setUserType(UserTypeEnum::USERNAME_PASSWORD);
-
-        // See https://symfony.com/doc/5.4/security.html#registering-the-user-hashing-passwords
-        $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
-        $user->setPassword($hashedPassword);
-
-        foreach ($tenantKeys as $tenantKey) {
-            $tenant = $this->tenantRepository->findOneBy(['tenantKey' => $tenantKey]);
-            $userRoleTenant = new UserRoleTenant($user, $tenant);
-            $userRoleTenant->setRoles(['ROLE_'.strtoupper((string) $role)]);
-            $user->addUserRoleTenant($userRoleTenant);
-        }
+        $user->setUserType(UserTypeEnum::OIDC_INTERNAL);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -252,7 +225,7 @@ class AddUserCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function validateUserData(string $email, string $plainPassword, string $fullName, string $role, array $tenantKeys): void
+    private function validateUserData(string $email, string $fullName, string $role, string $tenantName): void
     {
         // first check if a user with the same username already exists.
         $existingUser = $this->users->findOneBy([self::EMAIL_ARGUMENT => $email]);
@@ -262,18 +235,17 @@ class AddUserCommand extends Command
         }
 
         // validate password and email if is not this input means interactive.
-        $this->validator->validatePassword($plainPassword);
         $this->validator->validateEmail($email);
         $this->validator->validateFullName($fullName);
         $this->validator->validateRole($role);
-        $this->validator->validateTenantKeys($tenantKeys);
+        $this->validator->validateTenantName($tenantName);
     }
 
     private function getTenantsChoiceList(): array
     {
         $tenants = [];
-        foreach ($this->tenantRepository->findBy([], ['tenantKey' => 'ASC']) as $tenant) {
-            $tenants[$tenant->getTenantKey()] = $tenant->getDescription();
+        foreach ($this->tenantRepository->findBy([], ['name' => 'ASC']) as $tenant) {
+            $tenants[$tenant->getName()] = $tenant->getDescription();
         }
 
         return $tenants;

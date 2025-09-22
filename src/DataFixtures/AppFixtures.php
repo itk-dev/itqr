@@ -7,7 +7,6 @@ use App\Entity\Tenant;
 use App\Entity\Tenant\Qr;
 use App\Entity\Tenant\Url;
 use App\Entity\User;
-use App\Entity\UserRoleTenant;
 use App\Enum\QrModeEnum;
 use App\Enum\UserTypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -19,9 +18,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         // Create Tenants and Users
-        $tenantAbc = new Tenant();
-        $tenantAbc->setTenantKey('ABC');
-        $tenantAbc->setTitle('Tenant ABC');
+        $tenantAbc = new Tenant('Tenant ABC');
         $this->setCreatedModified($tenantAbc);
         $manager->persist($tenantAbc);
 
@@ -34,9 +31,7 @@ class AppFixtures extends Fixture
         $userC = $this->createUser('User C', $tenantAbc);
         $manager->persist($userC);
 
-        $tenantDef = new Tenant();
-        $tenantDef->setTenantKey('DEF');
-        $tenantDef->setTitle('Tenant DEF');
+        $tenantDef = new Tenant('Tenant DEF');
         $this->setCreatedModified($tenantDef);
         $manager->persist($tenantDef);
 
@@ -57,14 +52,15 @@ class AppFixtures extends Fixture
             $qr->setTitle('qr '.$i);
             $qr->setTenant(0 == $i % 2 ? $tenants['0'] : $tenants['1']);
             $qr->setMode(QrModeEnum::DEFAULT);
+            $qr->setDepartment($tenants[array_rand($tenants)]);
             $this->setCreatedModified($qr);
 
             $manager->persist($qr);
 
             $url = new Url();
-            $url->setTenant(0 == $i % 2 ? $tenants['0'] : $tenants['1']);
             $url->setUrl('http://localhost/loremipsum/long_url/'.$i);
             $url->setQr($qr);
+            $url->setTenant($qr->getTenant());
             $this->setCreatedModified($url);
 
             $manager->persist($url);
@@ -78,15 +74,11 @@ class AppFixtures extends Fixture
         $slugger = new AsciiSlugger();
         $email = $slugger->slug($name)->lower()->toString().'@example.com';
 
-        $user = new User();
+        $user = new User($email, $tenant);
         $user->setFullName($name);
-        $user->setEmail($email);
         $user->setProviderId($email);
-        $user->setUserType(UserTypeEnum::USERNAME_PASSWORD);
-
-        $userRoleTenant = new UserRoleTenant($user, $tenant);
-        $this->setCreatedModified($userRoleTenant);
-        $user->addUserRoleTenant($userRoleTenant);
+        $user->setUserType(UserTypeEnum::OIDC_INTERNAL);
+        $user->setRoles(['ROLE_ADMIN']);
 
         $this->setCreatedModified($user);
 

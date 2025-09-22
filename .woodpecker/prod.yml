@@ -1,0 +1,29 @@
+when:
+  - event: release
+
+skip_clone: true
+
+labels:
+  zone: DMZ
+
+steps:
+  - name: Ansible playbook
+    image: itkdev/ansible-plugin:1
+    pull: true
+    settings:
+      id:
+        from_secret: id
+      secret:
+        from_secret: secret
+      host:
+        from_secret: prod_host
+      path:
+        from_secret: prod_path
+      user:
+        from_secret: user
+      playbook: 'release'
+      pre_up:
+        - itkdev-docker-compose-server run --rm phpfpm bin/console doctrine:migrations:migrate --no-interaction
+        - itkdev-docker-compose-server run --rm phpfpm bin/console cache:clear
+        # https://github.com/itk-dev/tidy-feedback/tree/main?tab=readme-ov-file#create-tidy-feedback-database
+        - itkdev-docker-compose-server run --rm phpfpm bin/console tidy-feedback:doctrine:schema-update || true
