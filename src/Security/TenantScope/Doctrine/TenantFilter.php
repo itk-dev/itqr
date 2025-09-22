@@ -23,28 +23,33 @@ class TenantFilter extends SQLFilter
      */
     public function addFilterConstraint(ClassMetadata $targetEntity, string $targetTableAlias): string
     {
+        // Check if the tenant filter parameter is set
         if (!$this->hasParameter('tenant_id')) {
             return '';
         }
 
-        // Check if the entity implements the shared interface
-        if ($targetEntity->getReflectionClass()->implementsInterface(SharedScopedEntityInterface::class)) {
-            return sprintf('(%s.tenant_id = %s OR %s.is_shared = true)',
-                $targetTableAlias,
-                $this->getParameter('tenant_id'),
-                $targetTableAlias
-            );
-        }
-
-        // Check if the entity implements the required interfaces
-        if (!$targetEntity->getReflectionClass()->implementsInterface(TenantScopedEntityInterface::class)) {
-            return '';
-        }
-
         try {
-            return sprintf('%s.tenant_id = %s', $targetTableAlias, $this->getParameter('tenant_id'));
+            // Check if the entity implements the shared interface
+            if ($targetEntity->getReflectionClass()->implementsInterface(SharedScopedEntityInterface::class)) {
+                return sprintf('(%s.tenant_id = %s OR %s.is_shared = true)',
+                    $targetTableAlias,
+                    $this->getParameter('tenant_id'),
+                    $targetTableAlias
+                );
+            }
+
+            // Check if the entity implements the tenant interface
+            if ($targetEntity->getReflectionClass()->implementsInterface(TenantScopedEntityInterface::class)) {
+                return sprintf('%s.tenant_id = %s',
+                    $targetTableAlias,
+                    $this->getParameter('tenant_id'));
+            }
+
+            // If the entity does not implement either of the tenant interfaces, return an empty string
+            return '';
+
         } catch (\Exception $e) {
-            throw new TenantScopeException('Error applying tenant filter constraint: '.$e->getMessage(), $e->getCode(), $e);
+            throw new TenantScopeException('Error applying tenant filter constraint: ' . $e->getMessage(), $e->getCode(), $e);
         }
     }
 }
