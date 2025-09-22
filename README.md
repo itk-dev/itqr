@@ -51,6 +51,7 @@ Below are directions to set up, run, and maintain the project effectively.
 
 The standard Symfony test pack is installed along with the panther package. Please the relevant Symfomny
 docs for more info:
+
 * [Application Tests](https://symfony.com/doc/current/testing.html#application-tests)
 * [End to End Tests (E2E)](https://symfony.com/doc/current/testing/end_to_end.html)
 
@@ -122,18 +123,18 @@ task check-code
 
 The core structure of this Symfony project follows standard conventions:
 
-- **`src/`**: Contains the application code.
-- **`public/`**: Publicly accessible files, such as the entry point (`index.php`).
-- **`translations/`**: Holds translation files for multilingual support.
-- **`templates/`**: Contains Twig templates for front-end rendering.
-- **`migrations/`**: Database migration files.
-- **`tests/`**: Unit and functional tests.
+* **`src/`**: Contains the application code.
+* **`public/`**: Publicly accessible files, such as the entry point (`index.php`).
+* **`translations/`**: Holds translation files for multilingual support.
+* **`templates/`**: Contains Twig templates for front-end rendering.
+* **`migrations/`**: Database migration files.
+* **`tests/`**: Unit and functional tests.
 
 ---
 
 ## Extra
 
-- Always clear the cache after making any environment or configuration changes:
+* Always clear the cache after making any environment or configuration changes:
 
   ```bash
   task console -- cache:clear
