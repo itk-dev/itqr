@@ -47,9 +47,8 @@ class TenantFilter extends SQLFilter
 
             // If the entity does not implement either of the tenant interfaces, return an empty string
             return '';
-
         } catch (\Exception $e) {
-            throw new TenantScopeException('Error applying tenant filter constraint: ' . $e->getMessage(), $e->getCode(), $e);
+            throw new TenantScopeException('Error applying tenant filter constraint: '.$e->getMessage(), $e->getCode(), $e);
         }
     }
 }
