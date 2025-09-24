@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+## [1.0.0] - 2025-09-24
+
 [PR-42](https://github.com/itk-dev/itqr/pull/42)
     - Added shared scope
 [PR-41](https://github.com/itk-dev/itqr/pull/41)
@@ -86,4 +88,5 @@ See [keep a changelog] for information about writing changes to this log.
     - Added project baseline with easy admin 4.x
 
 [keep a changelog]: https://keepachangelog.com/en/1.1.0/
-[unreleased]: https://github.com/itk-dev/event-database-api/compare/main...develop
+[Unreleased]: https://github.com/itk-dev/event-database-api/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/itk-dev/event-database-api/releases/tag/1.0.0
