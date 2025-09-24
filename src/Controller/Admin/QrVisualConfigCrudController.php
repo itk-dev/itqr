@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
@@ -63,12 +64,16 @@ class QrVisualConfigCrudController extends AbstractTenantAwareCrudController
                     ->hideOnForm(),
             ];
         }
+
         if (Crud::PAGE_EDIT === $pageName || Crud::PAGE_NEW === $pageName) {
             return [
                 // Id should not be mapped, but we still need the id for the preview generation
                 HiddenField::new('id')
                     ->setFormTypeOption('mapped', false)
                     ->setFormTypeOption('data', $this->getContext()->getEntity()->getInstance()->getId()),
+                BooleanField::new('isShared')
+                    ->setLabel(new TranslatableMessage('design.is_shared.label'))
+                    ->setHelp(new TranslatableMessage('design.is_shared.help')),
                 TextField::new('name')
                     ->setLabel(new TranslatableMessage('design.name.label'))
                     ->setHelp(new TranslatableMessage('design.name.help')),

@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-42](https://github.com/itk-dev/itqr/pull/42)
+    - Added shared scope
 [PR-41](https://github.com/itk-dev/itqr/pull/41)
     - Added archived concept
 [PR-40](https://github.com/itk-dev/itqr/pull/40)

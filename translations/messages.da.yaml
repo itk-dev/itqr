@@ -103,6 +103,9 @@ design:
   error_correction_level:
     label: 'Fejlkorrektionsniveau'
     help: 'Højere niveau giver bedre fejlkorrektion men større QR-kode.'
+  is_shared:
+    label: 'Delt design'
+    help: 'Et delt design vil fremgå på listen over designs på tværs af magistratsafdelinger.'
 
 
 visual:
