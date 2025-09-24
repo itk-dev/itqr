@@ -40,6 +40,7 @@ tasks:
       - task compose -- up --detach --remove-orphans --wait
       - task composer -- install
       - task console -- doctrine:migrations:migrate --no-interaction
+      - task console -- tidy-feedback:doctrine:schema-update
       - mkdir -p {{.APP_BASE_UPLOAD_PATH}}
     silent: true
 
@@ -65,6 +66,7 @@ tasks:
   coding-standards-apply:
     desc: "Apply coding standards"
     cmds:
+      - docker run --rm --volume "$PWD:/md" itkdev/markdownlint markdownlint '**/*.md' --fix
       - task composer -- normalize
       - task composer -- coding-standards-apply
 

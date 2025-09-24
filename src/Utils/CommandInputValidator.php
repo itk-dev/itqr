@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Utils;
 
+use App\Entity\Tenant;
 use App\Repository\TenantRepository;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 
@@ -59,17 +60,17 @@ class CommandInputValidator
         return $plainPassword;
     }
 
-    public function validateTenantKey(string $plainPassword): string
+    public function validateTenantKey(string $name): string
     {
-        if (empty($plainPassword)) {
-            throw new InvalidArgumentException('The tenant key can not be empty.');
+        if (empty($name)) {
+            throw new InvalidArgumentException('The tenant name can not be empty.');
         }
 
-        if (u($plainPassword)->trim()->length() < 3) {
-            throw new InvalidArgumentException('The tenant key must be at least 3 characters long.');
+        if (u($name)->trim()->length() < 3) {
+            throw new InvalidArgumentException('The tenant name must be at least 3 characters long.');
         }
 
-        return $plainPassword;
+        return $name;
     }
 
     public function validateEmail(string $email): string
@@ -108,30 +109,15 @@ class CommandInputValidator
     }
 
     /**
-     * Validate array of tenant keys.
-     *
-     * @param string[] $tenantKeys
-     *
-     * @return string[]
+     * Validate tenant name.
      */
-    public function validateTenantKeys(array $tenantKeys): array
+    public function validateTenantName(string $tenantName): Tenant
     {
-        if (empty($tenantKeys)) {
-            throw new InvalidArgumentException('The user must belong to at least one tenant.');
+        $tenant = $this->tenantRepository->findOneBy(['name' => $tenantName]);
+        if (null === $tenant) {
+            throw new InvalidArgumentException(sprintf('Unknown tenant name: %s.', $tenantName));
         }
 
-        $unknownKeys = [];
-        foreach ($tenantKeys as $tenantKey) {
-            $tenant = $this->tenantRepository->findOneBy(['tenantKey' => $tenantKey]);
-            if (null === $tenant) {
-                $unknownKeys[] = $tenantKey;
-            }
-        }
-
-        if (0 !== count($unknownKeys)) {
-            throw new InvalidArgumentException(sprintf('Unknown tenant keys: %s.', implode(', ', $unknownKeys)));
-        }
-
-        return $tenantKeys;
+        return $tenant;
     }
 }

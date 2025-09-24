@@ -1,0 +1,9 @@
+{% extends '@EasyAdmin/crud/index.html.twig' %}
+
+{% block content_header_wrapper %}
+{{ parent() }}
+<div>
+    {{ 'design.index.description'|trans|raw }}
+</div>
+<br>
+{% endblock %}

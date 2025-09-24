@@ -13,20 +13,17 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        api:
+          pattern: ^/api
+          stateless: true
         main:
-            # @TODO change/remove form_login when OIDC/Tenant setup ready
-            form_login:
-                login_path: app_admin_login
-                check_path: app_admin_login
-                enable_csrf: true
+            custom_authenticators:
+                - App\Security\AzureOIDCAuthenticator
+                - ItkDev\OpenIdConnectBundle\Security\CliLoginTokenAuthenticator
+            entry_point: App\Security\AzureOIDCAuthenticator
+            provider: app_user_provider
             logout:
-                path: app_admin_logout
-                target: app_admin_login
-
-            # @TODO activate when OIDC/Tenant setup ready
-            #custom_authenticators:
-            #    - App\Security\AzureOIDCAuthenticator
-            #    - ItkDev\OpenIdConnectBundle\Security\CliLoginTokenAuthenticator
+                path: /logout
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -34,11 +31,18 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
+    role_hierarchy:
+        ROLE_EDITOR: ROLE_USER
+        ROLE_ADMIN: ROLE_EDITOR
+        ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH ]
+
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/openidconnect/login(/.+)?$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, roles: ROLE_EDITOR }
+
+    access_decision_manager:
+        strategy: unanimous
 
 when@test:
     security:

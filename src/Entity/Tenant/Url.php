@@ -2,7 +2,6 @@
 
 namespace App\Entity\Tenant;
 
-use App\Entity\AbstractBaseEntity;
 use App\Repository\UrlRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Translation\TranslatableMessage;
@@ -10,11 +9,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UrlRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Url extends AbstractBaseEntity
+class Url extends AbstractTenantScopedEntity
 {
     #[Assert\NotBlank(message: new TranslatableMessage('The URL field cannot be empty.'))]
     #[Assert\Url(message: new TranslatableMessage('The value "{{ value }}" is not a valid URL.'))]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'text', length: 65535)]
     private string $url = '';
 
     #[ORM\ManyToOne(targetEntity: Qr::class, inversedBy: 'urls')]

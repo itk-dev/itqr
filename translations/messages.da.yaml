@@ -1,13 +1,25 @@
 frontpage:
   hello_world: 'Hej Verden!'
-
+ARCHIVED: 'Arkiveret'
+ACTIVE: 'Aktiv'
 qr:
-  title: 'Titel'
-  description: 'Beskrivelse'
+  index:
+    label: 'QR koder'
+    description: 'Her kan du se en oversigt over alle QR-koder i din magistratsafdeling. <br>Du kan tilføje en ny, redigere eller arkivere eksisterende samt downloade en eller flere QR koder, både med og uden design.'
+  new: 'Opret QR kode'
+  label_singular: 'QR kode'
+  title:
+    label: 'Titel'
+    help: 'Giv QR-koden en beskrivende titel, så andre brugere nemt kan forstå formålet med den. <br> Hvis QR-koden har typen "Statisk sidevisning", er dette felt overskriften.'
+  description:
+    label: 'Beskrivelse'
+    help: 'Beskrivelsen kan hjælpe med yderligere at beskrive QR-kodens formål. <br> Hvis QR-koden har typen "Statisk sidevisning", er dette felt brødteksten.'
   mode:
-    title: 'Type'
-    help: '<b>Standard</b>: Qr-koden leder videre til destinationen.<br><b>Statisk sidevisning</b>: En dedikeret side vises med titlen og beskrivelsen.' # @TODO Find a way to exclude html from translation.
-  urls: 'Destination'
+    label: 'Type'
+    help: '<b>Standard</b>: Qr-koden leder videre til destinationen.<br><b>Statisk sidevisning</b>: En dedikeret statisk side vises med titlen og beskrivelsen.' # @TODO Find a way to exclude html from translation.
+  url:
+    label: 'Destination'
+    help: 'Dette felt definerer hvilken URL QR-koden skal lede videre til (f.eks. https://aarhus.dk). <br> Hvis QR-koden har typen "Statisk sidevisning", ignoreres dette felt.'
   preview: 'Forhåndsvisning'
   view: 'Vis'
   size:
@@ -20,11 +32,26 @@ qr:
   code_color: 'QR-kode farve'
   select_design: '-- Vælg et design --'
   download: 'Download'
-  configure_download: 'Konfigurer download af markerede'
-  quick_download: 'Download uden konfiguration'
-  set_url: 'Ret destination på markerede'
+  configure_download: 'Design og download markerede'
+  quick_download_without_config: 'Download uden design'
+  quick_download_with_config: 'Design og download'
+  set_url: 'Overskriv destination på markerede'
   edit: 'Ret QR-kode'
-  delete: 'Slet QR-kode'
+  status:
+    label: 'Status'
+  alternativeUrl:
+    label: 'Alternativ URL'
+    help: 'Her kan der angives en URL som brugeren vil blive præsenteret for, når de scanner en arkiveret QR-kode (f.eks. https://aarhus.dk). <br>Dette kan være nyttigt til at omdirigere brugere til relevant indhold.'
+  archive:
+    label: 'Arkiver QR kode'
+    title: 'Arkivering af QR kode'
+    description: 'Du er ved at arkivere denne QR kode. Når en QR kode arkiveres, vil den ikke længere lede videre til sin destination men i stedet en samlet "denne QR kode er arkiveret"-side.'
+    success: "QR-koden '%title%' blev arkiveret succesfuldt %url%."
+    do: "Udfør arkivering"
+    cancel: "Fortryd"
+  unarchive:
+    label: 'Genaktiver QR kode'
+    success: "QR-koden '%title%' er blevet genaktiveret."
   text:
     label: 'Tekst'
     size: 'Tekststørrelse'
@@ -36,17 +63,78 @@ qr:
       bottom:
         label: 'Nedre tekstmargin'
         help: 'Margin under tekst defineret i pixels'
+design:
+  index:
+    label: 'Designs'
+    description: 'Her kan du se en oversigt over alle designs i din magistratsafdeling. <br>Du kan tilføje et nyt design, redigere eller slette eksisterende.'
+  name:
+    label: 'Navn'
+    help: 'Giv designet et beskrivende navn, så andre brugere nemt kan forstå formålet med det.'
+  size:
+    label: 'Størrelse'
+    help: 'QR-kodens størrelse defineret i pixels.'
+  margin:
+    label: 'Margin'
+    help: 'QR-kodens margin defineret i pixels.'
+  background_color:
+    label: 'Baggrundsfarve'
+    help: 'Farven på baggrunden omkring QR-koden.'
+  foreground_color:
+    label: 'QR-kode farve'
+    help: 'Farven på selve QR-koden.'
+  label_text:
+    label: 'Tekst'
+    help: 'Tekst der vises under QR-koden.'
+  label_size:
+    label: 'Tekststørrelse'
+    help: 'Størrelsen på teksten i pixels.'
+  label_text_color:
+    label: 'Tekstfarve'
+    help: 'Farven på teksten under QR-koden.'
+  label_margin_top:
+    label: 'Øvre tekstmargin'
+    help: 'Margin over teksten defineret i pixels.'
+  label_margin_bottom:
+    label: 'Nedre tekstmargin'
+    help: 'Margin under teksten defineret i pixels.'
+  logo:
+    label: 'Logo'
+    help: 'Upload et logo der skal vises på QR-koden.'
+  error_correction_level:
+    label: 'Fejlkorrektionsniveau'
+    help: 'Højere niveau giver bedre fejlkorrektion men større QR-kode.'
+  is_shared:
+    label: 'Delt design'
+    help: 'Et delt design vil fremgå på listen over designs på tværs af magistratsafdelinger.'
+
 
 visual:
-  index: 'QR designs'
-  new: 'Opret QR design'
-  delete: 'Slet QR design'
-  edit: 'Rediger QR design'
-  label_singular: 'QR design'
+  index: 'Designs'
+  new: 'Opret design'
+  delete: 'Slet design'
+  edit: 'Rediger design'
+  label_singular: 'design'
 
+seturl:
+  url: 'Ny URL'
+  title: 'Overskriv destination'
+  description: 'Du er ved at overskrive destinationen på %count% QR kode(r).<br>Bemærk at denne handling ikke kan fortrydes.'
+  do: 'Overskriv destinationer'
+  cancel: 'Fortryd'
+  confirm: 'Er du sikker på at du vil fortsætte?'
+
+download:
+  batch:
+    advancedsettings: 'Avancerede indstillinger'
+    title:
+      label: 'Design og download'
+      description: 'Vælg et eksisterende design eller opret et nyt design til dine QR-koder. <br>Se en forhåndsvisning af hver QR-kode i fanerne til højre og download dine QR-koder med det valgte design.'
 logo:
   label: 'Logo'
 
+menu:
+  qr: 'QR koder'
+  designs: 'Designs'
 error_correction:
   label: 'Fejlkorrektionsniveau'
   Low: 'Lav'

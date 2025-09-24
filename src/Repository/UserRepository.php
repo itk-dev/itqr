@@ -5,14 +5,9 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\User;
-use App\Entity\UserRoleTenant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Uid\Ulid;
 
 /**
@@ -21,90 +16,11 @@ use Symfony\Component\Uid\Ulid;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UserRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
-    }
-
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
-    {
-        if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
-        }
-
-        $user->setPassword($newHashedPassword);
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush();
-    }
-
-    public function getUsersByTenantQueryBuilder(Ulid $tenantUlid): QueryBuilder
-    {
-        $subQuery = $this->getEntityManager()->createQueryBuilder();
-        $subQuery->select('utr')
-            ->from(UserRoleTenant::class, 'utr')
-            ->andWhere('utr.user = u')
-            ->andWhere('utr.tenant = :tenant');
-
-        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder->select('u')
-            ->from(User::class, 'u')
-            ->setParameter('tenant', $tenantUlid, 'ulid')
-            ->andWhere($queryBuilder->expr()->exists($subQuery));
-
-        return $queryBuilder;
-    }
-
-    public function getUsersByIdAndTenantQueryBuilder(Ulid $ulid, Ulid $tenantUlid): QueryBuilder
-    {
-        $subQuery = $this->getEntityManager()->createQueryBuilder();
-        $subQuery->select('utr')
-            ->from(UserRoleTenant::class, 'utr')
-            ->andWhere('utr.user = u')
-            ->andWhere('utr.tenant = :tenant');
-
-        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder->select('u')
-            ->from(User::class, 'u')
-            ->where('u.id = :uid')
-            ->setParameter('uid', $ulid, 'ulid')
-            ->setParameter('tenant', $tenantUlid, 'ulid')
-            ->andWhere($queryBuilder->expr()->exists($subQuery));
-
-        return $queryBuilder;
-    }
-
-    /**
-     * @throws NonUniqueResultException
-     */
-    public function getUserByIdAndTenant(Ulid $ulid, Ulid $tenant): ?User
-    {
-        // TODO: Use this as a subquery to main query.
-        $subQuery = $this->getEntityManager()->createQueryBuilder();
-        $subQuery->select('utr')
-            ->from(UserRoleTenant::class, 'utr')
-            ->andWhere('utr.user = :user')
-            ->setParameter('user', $ulid, 'ulid')
-            ->andWhere('utr.tenant = :tenant')
-            ->setParameter('tenant', $tenant, 'ulid');
-
-        $userInTenant = $subQuery->getQuery()->getOneOrNullResult();
-
-        if (null == $userInTenant) {
-            return null;
-        }
-
-        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder->select('u')
-            ->from(User::class, 'u')
-            ->where('u.id = :user')
-            ->setParameter('user', $ulid, 'ulid');
-
-        return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 
     public function loadUserByIdentifier(string $identifier): ?User

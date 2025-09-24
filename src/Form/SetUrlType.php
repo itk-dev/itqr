@@ -3,10 +3,12 @@
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatableMessage;
 
 /**
  * @extends AbstractType<SetUrlType>
@@ -17,8 +19,18 @@ class SetUrlType extends AbstractType
     {
         $builder->add('url', UrlType::class, [
             'default_protocol' => 'https',
+            'label' => new TranslatableMessage('seturl.url'),
         ]);
-        $builder->add('Continue', SubmitType::class);
+        $builder->add('Continue', SubmitType::class, [
+            'label' => new TranslatableMessage('seturl.do'),
+        ]);
+        $builder->add('Cancel', ButtonType::class, [
+            'label' => new TranslatableMessage('seturl.cancel'),
+            'attr' => [
+                'class' => 'btn btn-default',
+                'onclick' => 'window.location.href="/"',
+            ],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

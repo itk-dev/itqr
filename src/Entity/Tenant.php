@@ -7,49 +7,48 @@ namespace App\Entity;
 use App\Repository\TenantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types as DoctrineTypes;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TenantRepository::class)]
+#[ORM\UniqueConstraint(name: 'name_unique', columns: ['name'])]
 class Tenant extends AbstractBaseEntity implements \JsonSerializable
 {
-    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: false, options: ['default' => ''])]
-    private string $title = '';
+    #[ORM\Column(type: DoctrineTypes::STRING, length: 255, nullable: false, options: ['default' => ''])]
+    private string $name;
 
-    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: false, options: ['default' => ''])]
-    private string $description = '';
-
-    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 25, unique: true)]
-    private string $tenantKey = '';
+    #[ORM\Column(type: DoctrineTypes::STRING, length: 255, nullable: false, options: ['default' => ''])]
+    private string $description;
 
     /**
-     * @var Collection<int, UserRoleTenant>
+     * @var Collection<int, User>
      */
-    #[ORM\OneToMany(targetEntity: UserRoleTenant::class, mappedBy: 'tenant', orphanRemoval: true)]
-    private Collection $userRoleTenants;
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'tenant', fetch: 'LAZY')]
+    private Collection $users;
 
-    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, nullable: true)]
-    private ?string $fallbackImageUrl = null;
-
-    public function __construct()
+    public function __construct(string $name, ?string $description = '')
     {
         parent::__construct();
 
-        $this->userRoleTenants = new ArrayCollection();
+        $this->name = $name;
+        $this->description = $description;
+
+        $this->users = new ArrayCollection();
     }
 
     public function __toString(): string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function getTitle(): string
+    public function getName(): string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(string $title): self
+    public function setName(string $name): self
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }
@@ -66,52 +65,20 @@ class Tenant extends AbstractBaseEntity implements \JsonSerializable
         return $this;
     }
 
-    public function getUserRoleTenants(): Collection
-    {
-        return $this->userRoleTenants;
-    }
-
-    public function addUserRoleTenant(UserRoleTenant $userRoleTenant): self
-    {
-        if (!$this->userRoleTenants->contains($userRoleTenant)) {
-            $this->userRoleTenants[] = $userRoleTenant;
-            $userRoleTenant->setTenant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUserRoleTenant(UserRoleTenant $userRoleTenant): self
-    {
-        if ($this->userRoleTenants->removeElement($userRoleTenant)) {
-            // set the owning side to null (unless already changed)
-            if ($userRoleTenant->getTenant() === $this) {
-                $userRoleTenant->setTenant(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getTenantKey(): string
-    {
-        return $this->tenantKey;
-    }
-
-    public function setTenantKey(string $tenantKey): self
-    {
-        $this->tenantKey = $tenantKey;
-
-        return $this;
-    }
-
     public function jsonSerialize(): array
     {
         return [
             'id' => $this->getId(),
-            'tenantKey' => $this->getTenantKey(),
-            'title' => $this->getTitle(),
+            'name' => $this->getName(),
             'description' => $this->getDescription(),
         ];
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
     }
 }

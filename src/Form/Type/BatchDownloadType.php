@@ -29,57 +29,63 @@ class BatchDownloadType extends AbstractType
                 'required' => false,
             ])
             ->add('size', IntegerType::class, [
-                'label' => new TranslatableMessage('qr.size.label'),
+                'label' => new TranslatableMessage('design.size.label'),
                 'data' => 400,
                 'attr' => ['data-controller' => 'advanced-settings'],
-                'help' => new TranslatableMessage('qr.size.help'),
+                'help' => new TranslatableMessage('design.size.help'),
             ])
             ->add('margin', IntegerType::class, [
-                'label' => new TranslatableMessage('qr.margin.label'),
+                'label' => new TranslatableMessage('design.margin.label'),
                 'data' => '0',
                 'attr' => ['data-controller' => 'advanced-settings'],
-                'help' => new TranslatableMessage('qr.margin.help'),
+                'help' => new TranslatableMessage('design.margin.help'),
             ])
             ->add('backgroundColor', ColorType::class, [
-                'label' => new TranslatableMessage('qr.code_background'),
+                'label' => new TranslatableMessage('design.background_color.label'),
                 'data' => '#ffffff',
                 'attr' => ['data-controller' => 'advanced-settings'],
+                'help' => new TranslatableMessage('design.background_color.help'),
             ])
             ->add('foregroundColor', ColorType::class, [
-                'label' => new TranslatableMessage('qr.code_color'),
+                'label' => new TranslatableMessage('design.foreground_color.label'),
                 'data' => '#000000',
                 'attr' => ['data-controller' => 'advanced-settings'],
+                'help' => new TranslatableMessage('design.foreground_color.help'),
             ])
             ->add('labelText', TextType::class, [
-                'label' => new TranslatableMessage('text.label'),
+                'label' => new TranslatableMessage('design.label_text.label'),
                 'required' => false,
                 'attr' => ['data-controller' => 'advanced-settings'],
+                'help' => new TranslatableMessage('design.label_text.help'),
             ])
             ->add('labelSize', IntegerType::class, [
-                'label' => new TranslatableMessage('text.size'),
+                'label' => new TranslatableMessage('design.label_size.label'),
                 'data' => 15,
                 'attr' => ['data-controller' => 'advanced-settings'],
+                'help' => new TranslatableMessage('design.label_size.help'),
             ])
             ->add('labelTextColor', ColorType::class, [
-                'label' => new TranslatableMessage('text.color'),
+                'label' => new TranslatableMessage('design.label_text_color.label'),
                 'attr' => ['data-controller' => 'advanced-settings'],
+                'help' => new TranslatableMessage('design.label_text_color.help'),
             ])
             ->add('labelMarginTop', IntegerType::class, [
-                'label' => new TranslatableMessage('text.margin.top.label'),
+                'label' => new TranslatableMessage('design.label_margin_top.label'),
                 'data' => 15,
                 'attr' => ['data-controller' => 'advanced-settings'],
-                'help' => new TranslatableMessage('text.margin.top.help'),
+                'help' => new TranslatableMessage('design.label_margin_top.help'),
             ])
             ->add('labelMarginBottom', IntegerType::class, [
-                'label' => new TranslatableMessage('text.margin.bottom.label'),
+                'label' => new TranslatableMessage('design.label_margin_bottom.label'),
                 'data' => 15,
                 'attr' => ['data-controller' => 'advanced-settings'],
-                'help' => new TranslatableMessage('text.margin.bottom.help'),
+                'help' => new TranslatableMessage('design.label_margin_bottom.help'),
             ])
             ->add('logo', FileType::class, [
-                'label' => new TranslatableMessage('logo.label'),
+                'label' => new TranslatableMessage('design.logo.label'),
                 'required' => false,
                 'attr' => ['data-controller' => 'advanced-settings'],
+                'help' => new TranslatableMessage('design.logo.help'),
             ])
             ->add('logoPath', HiddenType::class, [
                 'label' => false,
@@ -87,7 +93,7 @@ class BatchDownloadType extends AbstractType
                 'attr' => ['data-controller' => 'advanced-settings'],
             ])
             ->add('errorCorrectionLevel', ChoiceType::class, [
-                'label' => new TranslatableMessage('error_correction.label'),
+                'label' => new TranslatableMessage('design.error_correction_level.label'),
                 'choices' => [
                     'error_correction.Low' => ErrorCorrectionLevel::Low->value,
                     'error_correction.Medium' => ErrorCorrectionLevel::Medium->value,
@@ -96,7 +102,7 @@ class BatchDownloadType extends AbstractType
                 ],
                 'choice_translation_domain' => true,
                 'attr' => ['data-controller' => 'advanced-settings'],
-                'help' => new TranslatableMessage('error_correction.help'),
+                'help' => new TranslatableMessage('design.error_correction_level.help'),
             ])
             ->add('download', SubmitType::class, [
                 'label' => new TranslatableMessage('qr.download'),
