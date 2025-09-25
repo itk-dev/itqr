@@ -18,8 +18,6 @@ See [keep a changelog] for information about writing changes to this log.
     - Ensure logo uploads dir exists and is mapped between releases
     - Fix unsafe default value for `ADMIN_OIDC_ALLOW_HTTP`
 
-## [1.0.0] - 2025-09-24
-
 [PR-42](https://github.com/itk-dev/itqr/pull/42)
     - Added shared scope
 [PR-41](https://github.com/itk-dev/itqr/pull/41)
