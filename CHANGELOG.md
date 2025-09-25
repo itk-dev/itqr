@@ -8,6 +8,10 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-46](https://github.com/itk-dev/itqr/pull/46)
+    - Added logo
+    - Added redirect to WAS
+
 ## [1.0.0] - 2025-09-24
 
 [PR-42](https://github.com/itk-dev/itqr/pull/42)
