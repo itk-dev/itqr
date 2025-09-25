@@ -30,7 +30,9 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('ITQR')
+            ->setTitle($this->render('dashboardTitle.html.twig', [
+                'logoPath' => $_ENV['APP_LOGO_PATH'],
+            ])->getContent())
             ->setFaviconPath('favicon.svg')
             ->renderContentMaximized()
             ->disableDarkMode()
