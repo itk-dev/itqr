@@ -2,3 +2,8 @@ services:
   phpfpm:
     volumes:
       - ../../shared/.env.local:/app/.env.local
+      - ../../shared/uploads:/app/public/uploads/
+
+  nginx:
+    volumes:
+      - ../../shared/uploads:/app/public/uploads/

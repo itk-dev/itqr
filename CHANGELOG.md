@@ -12,6 +12,12 @@ See [keep a changelog] for information about writing changes to this log.
     - Added logo
     - Added redirect to WAS
 
+## [1.0.0] - 2025-09-25
+
+[PR-45](https://github.com/itk-dev/itqr/pull/45)
+    - Ensure logo uploads dir exists and is mapped between releases
+    - Fix unsafe default value for `ADMIN_OIDC_ALLOW_HTTP`
+
 ## [1.0.0] - 2025-09-24
 
 [PR-42](https://github.com/itk-dev/itqr/pull/42)
