@@ -8,6 +8,9 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-48](https://github.com/itk-dev/itqr/pull/48)
+    - Corrected link to WAS
+
 ## [1.0.2] - 2025-09-26
 
 [PR-46](https://github.com/itk-dev/itqr/pull/46)
