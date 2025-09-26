@@ -1,4 +1,7 @@
-
+.logo-custom > img {
+    width: 65px;
+    height: auto;
+}
 .qr-preview h3 {
     margin-bottom: 10px;
 }

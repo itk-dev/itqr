@@ -41,7 +41,6 @@ tasks:
       - task composer -- install
       - task console -- doctrine:migrations:migrate --no-interaction
       - task console -- tidy-feedback:doctrine:schema-update
-      - mkdir -p {{.APP_BASE_UPLOAD_PATH}}
     silent: true
 
   site-url:
