@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+## [1.0.3] - 2025-09-26
+
 [PR-48](https://github.com/itk-dev/itqr/pull/48)
     - Corrected link to WAS
 
@@ -103,7 +105,8 @@ See [keep a changelog] for information about writing changes to this log.
     - Added project baseline with easy admin 4.x
 
 [keep a changelog]: https://keepachangelog.com/en/1.1.0/
-[Unreleased]: https://github.com/itk-dev/event-database-api/compare/1.0.2...HEAD
+[Unreleased]: https://github.com/itk-dev/event-database-api/compare/1.0.3...HEAD
+[1.0.3]: https://github.com/itk-dev/event-database-api/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/itk-dev/event-database-api/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/itk-dev/itqr/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/itk-dev/itqr/releases/tag/1.0.0
