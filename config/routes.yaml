@@ -13,5 +13,5 @@ was_redirect:
   path: /was
   controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
   defaults:
-    path: 'https://edit.was.digst.dk/da-DK'
+    path: 'https://was.digst.dk/qr-aarhuskommune-dk'
     permanent: true
