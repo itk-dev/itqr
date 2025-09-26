@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Ensure all containers and elements exist
     if (!qrCodeContainer || !tabsContainer || !tabContentContainer || !form) {
-        console.log('Required elements not found');
         return;
     }
 

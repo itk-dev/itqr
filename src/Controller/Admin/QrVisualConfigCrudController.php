@@ -111,7 +111,7 @@ class QrVisualConfigCrudController extends AbstractTenantAwareCrudController
                 ImageField::new('logo')
                     ->setLabel(new TranslatableMessage('design.logo.label'))
                     ->setHelp(new TranslatableMessage('design.logo.help'))
-                    ->setBasePath('uploads/qr-logos')
+                    ->setBasePath($_ENV['APP_BASE_UPLOAD_PATH'])
                     ->setUploadedFileNamePattern('[ulid]-[slug].[extension]')
                     ->setUploadDir('public/uploads/qr-logos')
                     ->setFormTypeOptions([
