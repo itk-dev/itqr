@@ -42,7 +42,7 @@
         "phpstan/phpstan-symfony": "^2.0.2",
         "symfony/stopwatch": "^7.4.8",
         "symfony/web-profiler-bundle": "^7.4.12",
-        "vincentlanglet/twig-cs-fixer": "^3.5.1"
+        "vincentlanglet/twig-cs-fixer": "^3.14.0"
     },
     "replace": {
         "symfony/polyfill-ctype": "*",

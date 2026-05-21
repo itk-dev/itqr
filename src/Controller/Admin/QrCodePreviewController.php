@@ -7,7 +7,7 @@ use App\Service\QrCodePreviewService;
 use Endroid\QrCode\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 readonly class QrCodePreviewController
 {
