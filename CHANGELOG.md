@@ -8,6 +8,9 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-50](https://github.com/itk-dev/itqr/pull/50)
+    - Security updates.
+
 ## [1.0.3] - 2025-09-26
 
 [PR-48](https://github.com/itk-dev/itqr/pull/48)
