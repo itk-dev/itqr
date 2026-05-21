@@ -6,6 +6,8 @@ parameters:
         - public/
         - src/
 #        - tests/
+    excludePaths:
+        - config/reference.php
     ignoreErrors:
         - identifier: missingType.iterableValue
         - identifier: missingType.generics
