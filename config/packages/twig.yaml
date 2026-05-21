@@ -1,6 +1,7 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
     paths:
+        '%kernel.project_dir%/templates/bundles/EasyAdminBundle': 'EasyAdmin'
         '%kernel.project_dir%/vendor/easycorp/easyadmin-bundle/templates': 'EasyAdmin'
     globals:
 
