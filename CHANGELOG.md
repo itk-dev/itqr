@@ -8,6 +8,11 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+## [1.0.5] - 2026-10-26
+
+[PR-53](https://github.com/itk-dev/itqr/pull/53)
+    - Use maintained `nginx/nginx-unprivileged` image.
+
 ## [1.0.4] - 2026-05-21
 
 [PR-50](https://github.com/itk-dev/itqr/pull/50)
@@ -110,7 +115,8 @@ See [keep a changelog] for information about writing changes to this log.
     - Added project baseline with easy admin 4.x
 
 [keep a changelog]: https://keepachangelog.com/en/1.1.0/
-[Unreleased]: https://github.com/itk-dev/event-database-api/compare/1.0.3...HEAD
+[Unreleased]: https://github.com/itk-dev/itqr/compare/1.0.5...HEAD
+[1.0.5]: https://github.com/itk-dev/itqr/compare/1.0.4...1.0.5
 [1.0.4]: https://github.com/itk-dev/event-database-api/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/itk-dev/event-database-api/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/itk-dev/event-database-api/compare/1.0.1...1.0.2
