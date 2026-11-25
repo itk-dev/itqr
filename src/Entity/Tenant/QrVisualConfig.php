@@ -42,6 +42,9 @@ class QrVisualConfig extends AbstractSharedScopedEntity
     #[ORM\Column(type: 'integer')]
     private int $labelMarginBottom = 0;
 
+    // The PNG writer of the QR code library can only read these logo types. SVG logos cause an exception.
+    public const array LOGO_MIME_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $logo = null;
 

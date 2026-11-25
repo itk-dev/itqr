@@ -19,6 +19,7 @@ use Endroid\QrCode\ErrorCorrectionLevel;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Translation\TranslatableMessage;
+use Symfony\Component\Validator\Constraints\File;
 
 class QrVisualConfigCrudController extends AbstractTenantAwareCrudController
 {
@@ -114,8 +115,11 @@ class QrVisualConfigCrudController extends AbstractTenantAwareCrudController
                     ->setBasePath($_ENV['APP_BASE_UPLOAD_PATH'])
                     ->setUploadedFileNamePattern('[ulid]-[slug].[extension]')
                     ->setUploadDir('public/uploads/qr-logos')
+                    ->setFileConstraints(new File(mimeTypes: QrVisualConfig::LOGO_MIME_TYPES))
                     ->setFormTypeOptions([
                         'required' => false,
+                        // The file dialog of the browser shows only the permitted types.
+                        'attr' => ['accept' => implode(',', QrVisualConfig::LOGO_MIME_TYPES)],
                     ]),
                 ChoiceField::new('errorCorrectionLevel')
                     ->setLabel(new TranslatableMessage('design.error_correction_level.label'))
@@ -126,7 +130,13 @@ class QrVisualConfigCrudController extends AbstractTenantAwareCrudController
                         'choice_label' => function (ErrorCorrectionLevel $choice) {
                             return new TranslatableMessage('error_correction.'.$choice->name);
                         },
-                        'choices' => ErrorCorrectionLevel::cases(),
+                        // The enum declares the cases in alphabetical sequence. Show them from low to high.
+                        'choices' => [
+                            ErrorCorrectionLevel::Low,
+                            ErrorCorrectionLevel::Medium,
+                            ErrorCorrectionLevel::Quartile,
+                            ErrorCorrectionLevel::High,
+                        ],
                     ]),
             ];
         }
