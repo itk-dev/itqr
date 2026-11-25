@@ -5,7 +5,6 @@ namespace App\Controller\Admin;
 use App\Form\Type\BatchDownloadType;
 use App\Helper\DownloadHelper;
 use App\Repository\QrRepository;
-use GuzzleHttp\Utils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,7 +51,7 @@ final class BatchDownloadController extends AbstractController
 
         return $this->render('form/batchDownload.html.twig', [
             'form' => $form,
-            'selectedQrCodes' => Utils::jsonEncode($selectedEntityIds),
+            'selectedQrCodes' => json_encode($selectedEntityIds, \JSON_THROW_ON_ERROR),
             'count' => count($selectedEntityIds),
         ]);
     }

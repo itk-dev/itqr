@@ -8,6 +8,12 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-54](https://github.com/itk-dev/itqr/pull/54)
+    - Synced docker templates and GitHub workflows.
+    - Updated to PHP 8.5.
+    - Updated composer packages (security updates).
+    - Applied coding standards.
+
 ## [1.0.5] - 2026-10-26
 
 [PR-53](https://github.com/itk-dev/itqr/pull/53)
