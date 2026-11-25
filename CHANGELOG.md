@@ -12,6 +12,7 @@ See [keep a changelog] for information about writing changes to this log.
     - Synced docker templates and GitHub workflows.
     - Updated to PHP 8.5.
     - Updated composer packages (security updates).
+    - Updated Symfony Flex recipes and Webpack Encore to version 7.
     - Applied coding standards.
 
 ## [1.0.5] - 2026-10-26
