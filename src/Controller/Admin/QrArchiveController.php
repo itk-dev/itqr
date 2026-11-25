@@ -43,7 +43,7 @@ final class QrArchiveController extends AbstractController
             $message = json_decode($response->getContent(), true)['message'];
             $this->addFlash('success', $message);
 
-            return $this->redirectToRoute('qr_index', [
+            return $this->redirectToRoute('admin_qr_index', [
                 'filters' => [
                     'status' => [
                         'comparison' => '=',
@@ -70,7 +70,7 @@ final class QrArchiveController extends AbstractController
         $message = json_decode($response->getContent(), true)['message'];
         $this->addFlash('success', $message);
 
-        return $this->redirectToRoute('qr_index', [
+        return $this->redirectToRoute('admin_qr_index', [
             'filters' => [
                 'status' => [
                     'comparison' => '=',

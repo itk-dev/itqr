@@ -28,7 +28,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Endroid\QrCode\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Translation\TranslatableMessage;
 
 /**
@@ -36,7 +35,6 @@ use Symfony\Component\Translation\TranslatableMessage;
  */
 class QrCrudController extends AbstractTenantAwareCrudController
 {
-    #[Route('/admin/qr', name: 'qr_index')]
     public function __construct(
         private readonly DownloadHelper $downloadHelper,
         private readonly QrHitTrackerRepository $hitTrackerRepository,

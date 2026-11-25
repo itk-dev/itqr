@@ -51,7 +51,7 @@ final class SetUrlController extends AbstractController
 
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('qr_index', [
+            return $this->redirectToRoute('admin_qr_index', [
                 'filters' => [
                     'status' => [
                         'comparison' => '=',

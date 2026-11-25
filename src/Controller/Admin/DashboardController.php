@@ -15,7 +15,7 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
         // Redirect to the qr crud page until dashboad functionality is implemented
-        return $this->redirectToRoute('qr_index', [
+        return $this->redirectToRoute('admin_qr_index', [
             'filters' => [
                 'status' => [
                     'comparison' => '=',
