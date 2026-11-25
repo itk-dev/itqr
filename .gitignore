@@ -33,9 +33,6 @@ phpstan.neon
 # Ignore node_modules
 /node_modules/
 
-# Ignore package-lock.json
-package-lock.json
-
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 /public/build/
