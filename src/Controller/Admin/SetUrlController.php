@@ -6,6 +6,7 @@ use App\Entity\Tenant\Qr;
 use App\Entity\Tenant\Url;
 use App\Form\SetUrlType;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,11 +24,13 @@ final class SetUrlController extends AbstractController
      * @todo add permission check here.
      */
     #[Route('/admin/batch/set_url', name: 'admin_set_url')]
-    public function batchSetUrl(array $selectedEntityIds): Response
+    public function batchSetUrl(): Response
     {
         $form = $this->createForm(SetUrlType::class);
 
         $request = $this->requestStack->getCurrentRequest();
+        // EasyAdmin does not copy 'routeParams' from the query string to the controller arguments.
+        $selectedEntityIds = (array) ($request->query->all(EA::ROUTE_PARAMS)['selectedEntityIds'] ?? []);
 
         $form->handleRequest($request);
 

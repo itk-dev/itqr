@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Form\Type\BatchDownloadType;
 use App\Helper\DownloadHelper;
 use App\Repository\QrRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,17 +24,13 @@ final class BatchDownloadController extends AbstractController
      * @throws \Endroid\QrCode\Exception\ValidationException
      */
     #[Route('/admin/batch/download', name: 'admin_batch_download')]
-    public function batchDownload(string|array $selectedEntityIds): Response
+    public function batchDownload(): Response
     {
-        /*
-            If this method is called from the crud context menu and only regards a single item,
-            selectedEntityIds is a string. Convert to array to compatibilize.
-        */
-        if (!is_array($selectedEntityIds)) {
-            $selectedEntityIds = [$selectedEntityIds];
-        }
-        $form = $this->createForm(BatchDownloadType::class);
         $request = $this->requestStack->getCurrentRequest();
+        // EasyAdmin does not copy 'routeParams' from the query string to the controller arguments.
+        // A single item from the crud context menu can be a string, thus the array cast.
+        $selectedEntityIds = (array) ($request->query->all(EA::ROUTE_PARAMS)['selectedEntityIds'] ?? []);
+        $form = $this->createForm(BatchDownloadType::class);
 
         $form->handleRequest($request);
 
