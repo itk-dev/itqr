@@ -22,7 +22,8 @@ final class QrArchiveController extends AbstractController
     /**
      * @throws \Exception
      */
-    #[Route('/admin/archive', name: 'admin_qr_archive')]
+    // The id is in the path, because EasyAdmin gives only path parameters to the controller arguments.
+    #[Route('/admin/archive/{id}', name: 'admin_qr_archive')]
     public function archive(int $id): Response
     {
         $form = $this->createForm(QrArchiveType::class);
@@ -58,7 +59,7 @@ final class QrArchiveController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/unarchive', name: 'admin_qr_unarchive')]
+    #[Route('/admin/unarchive/{id}', name: 'admin_qr_unarchive')]
     public function unarchive(int $id): Response
     {
         $qrEntity = $this->qrRepository->find($id);
