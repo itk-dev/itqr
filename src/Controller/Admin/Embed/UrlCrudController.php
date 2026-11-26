@@ -22,7 +22,8 @@ class UrlCrudController extends AbstractTenantAwareCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            UrlField::new('url'),
+            // Qr::validateUrls() makes the URL mandatory when the mode is not static.
+            UrlField::new('url')->setRequired(false),
         ];
     }
 }

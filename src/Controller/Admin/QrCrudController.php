@@ -28,7 +28,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Endroid\QrCode\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Translation\TranslatableMessage;
 
 /**
@@ -36,7 +35,6 @@ use Symfony\Component\Translation\TranslatableMessage;
  */
 class QrCrudController extends AbstractTenantAwareCrudController
 {
-    #[Route('/admin/qr', name: 'qr_index')]
     public function __construct(
         private readonly DownloadHelper $downloadHelper,
         private readonly QrHitTrackerRepository $hitTrackerRepository,
@@ -104,6 +102,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
                 ->setHelp(new TranslatableMessage('qr.title.help')),
                 ChoiceField::new('mode', new TranslatableMessage('qr.mode.label'))
                     ->setHelp(new TranslatableMessage('qr.mode.help'))
+                    ->setFormTypeOption('placeholder', false)
                     ->renderAsNativeWidget(),
                 TextEditorField::new('description', new TranslatableMessage('qr.description.label'))
                     ->setHelp(new TranslatableMessage('qr.description.help')),
@@ -129,6 +128,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
                     ->setHelp(new TranslatableMessage('qr.title.help')),
                 ChoiceField::new('mode', new TranslatableMessage('qr.mode.label'))
                     ->setHelp(new TranslatableMessage('qr.mode.help'))
+                    ->setFormTypeOption('placeholder', false)
                     ->renderAsNativeWidget(),
                 TextEditorField::new('description', new TranslatableMessage('qr.description.label'))
                     ->setHelp(new TranslatableMessage('qr.description.help')),

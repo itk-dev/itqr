@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 class Url extends AbstractTenantScopedEntity
 {
-    #[Assert\NotBlank(message: new TranslatableMessage('The URL field cannot be empty.'))]
     #[Assert\Url(message: new TranslatableMessage('The value "{{ value }}" is not a valid URL.'))]
     #[ORM\Column(type: 'text', length: 65535)]
     private string $url = '';
@@ -25,9 +24,10 @@ class Url extends AbstractTenantScopedEntity
         return $this->url;
     }
 
-    public function setUrl(string $url): self
+    public function setUrl(?string $url): self
     {
-        $this->url = $url;
+        // The form submits null for an empty field.
+        $this->url = $url ?? '';
 
         return $this;
     }

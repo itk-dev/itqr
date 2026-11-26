@@ -8,6 +8,14 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+[PR-54](https://github.com/itk-dev/itqr/pull/54)
+    - Synced docker templates and GitHub workflows.
+    - Updated to PHP 8.5.
+    - Updated composer packages (security updates).
+    - Updated Symfony Flex recipes and Webpack Encore to version 7.
+    - Applied coding standards.
+    - Fixed error on empty URL. The URL is now optional for a QR code in static mode.
+
 ## [1.0.5] - 2026-10-26
 
 [PR-53](https://github.com/itk-dev/itqr/pull/53)

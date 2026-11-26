@@ -1,6 +1,6 @@
 version: '3'
 
-dotenv: [".task.env", ".env"]
+dotenv: ['.task.env', '.env']
 
 vars:
   DOCKER_COMPOSE: '{{ .TASK_DOCKER_COMPOSE | default "docker compose" }}'
@@ -9,12 +9,12 @@ vars:
 
 tasks:
   compose:
-    desc: "Run `docker compose` command. Example: task compose -- up --detach"
+    desc: 'Run `docker compose` command. Example: task compose -- up --detach'
     cmds:
       - '{{ .DOCKER_COMPOSE }} {{ .CLI_ARGS }}'
 
   compose-exec:
-    desc: "Run `docker compose exec` command handling content on stdin. Example: task compose-exec -- phpfpm php -v"
+    desc: 'Run `docker compose exec` command handling content on stdin. Example: task compose-exec -- phpfpm php -v'
     cmds:
       # Check if we have content on stdin (cf.
       # https://unix.stackexchange.com/questions/762992/bash-check-if-the-standard-input-contains-anything)
@@ -22,18 +22,18 @@ tasks:
     silent: true
 
   composer:
-    desc: "Run composer command. Example: task composer -- install"
+    desc: 'Run composer command. Example: task composer -- install'
     cmds:
       - task compose-exec -- phpfpm composer {{ .CLI_ARGS }}
     silent: true
 
   console:
-    desc: "Run console command"
+    desc: 'Run console command'
     cmds:
       - task compose-exec -- phpfpm bin/console {{ .CLI_ARGS }}
 
   start:
-    desc: "Start docker compose stuff and install composer stuff"
+    desc: 'Start docker compose stuff and install composer stuff'
     cmds:
       - task compose -- pull
       - task compose -- run --rm node npm install
@@ -44,7 +44,7 @@ tasks:
     silent: true
 
   site-url:
-    desc: "Show site URL"
+    desc: 'Show site URL'
     cmds:
       - echo {{.URL}}
     vars:
@@ -54,7 +54,7 @@ tasks:
     silent: true
 
   coding-standards:check:
-    desc: "Check coding standards"
+    desc: 'Check coding standards'
     cmds:
       - docker run --rm --volume "$PWD:/md" itkdev/markdownlint markdownlint '**/*.md'
       - task composer -- validate composer.json --strict
@@ -63,28 +63,29 @@ tasks:
       - task composer -- coding-standards-check
 
   coding-standards:apply:
-    desc: "Apply coding standards"
+    desc: 'Apply coding standards'
     cmds:
       - docker run --rm --volume "$PWD:/md" itkdev/markdownlint markdownlint '**/*.md' --fix
       - task composer -- normalize
       - task composer -- coding-standards-apply
 
   apply-fixtures:
-    desc: "Apply fixtures"
+    desc: 'Apply fixtures'
     cmds:
       - task console -- doctrine:fixtures:load
 
   run-dev:
-    desc: "Build assets"
+    desc: 'Build assets'
     cmds:
       - task compose -- run --rm node npm run dev
 
   run-watch:
-    desc: "Build and watch assets"
+    desc: 'Build and watch assets'
     cmds:
       - task compose -- run --rm node npm run watch
 
   run-build:
-    desc: "Build assets for production"
+    desc: 'Build assets for production'
     cmds:
+      - task compose -- run --rm node npm clean-install
       - task compose -- run --rm node npm run build

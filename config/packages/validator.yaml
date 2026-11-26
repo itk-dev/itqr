@@ -1,7 +1,7 @@
 framework:
     validation:
         auto_mapping:
-            App\Entity\: []  # Enables validator auto-mapping for all entities in the App\Entity namespace.
+            App\Entity\: [] # Enables validator auto-mapping for all entities in the App\Entity namespace.
 
 when@test:
     framework:

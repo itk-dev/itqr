@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatableMessage;
+use Symfony\Component\Validator\Constraints\File;
 
 class BatchDownloadType extends AbstractType
 {
@@ -84,7 +85,8 @@ class BatchDownloadType extends AbstractType
             ->add('logo', FileType::class, [
                 'label' => new TranslatableMessage('design.logo.label'),
                 'required' => false,
-                'attr' => ['data-controller' => 'advanced-settings'],
+                'constraints' => [new File(mimeTypes: QrVisualConfig::LOGO_MIME_TYPES)],
+                'attr' => ['data-controller' => 'advanced-settings', 'accept' => implode(',', QrVisualConfig::LOGO_MIME_TYPES)],
                 'help' => new TranslatableMessage('design.logo.help'),
             ])
             ->add('logoPath', HiddenType::class, [

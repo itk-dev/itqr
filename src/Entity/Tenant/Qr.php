@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Uid\UuidV7;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: QrRepository::class)]
@@ -178,6 +179,17 @@ class Qr extends AbstractTenantScopedEntity
     {
         foreach ($this->urls as $url) {
             $this->removeUrl($url);
+        }
+    }
+
+    /**
+     * A URL is necessary for all modes but the static mode.
+     */
+    #[Assert\Callback]
+    public function validateUrls(ExecutionContextInterface $context): void
+    {
+        if (QrModeEnum::STATIC !== ($this->mode ?? null) && !$this->urls->exists(fn ($key, Url $url) => '' !== (string) $url)) {
+            $context->buildViolation('The URL field cannot be empty.')->atPath('urls')->addViolation();
         }
     }
 
