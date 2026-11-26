@@ -102,6 +102,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
                 ->setHelp(new TranslatableMessage('qr.title.help')),
                 ChoiceField::new('mode', new TranslatableMessage('qr.mode.label'))
                     ->setHelp(new TranslatableMessage('qr.mode.help'))
+                    ->setFormTypeOption('placeholder', false)
                     ->renderAsNativeWidget(),
                 TextEditorField::new('description', new TranslatableMessage('qr.description.label'))
                     ->setHelp(new TranslatableMessage('qr.description.help')),
@@ -127,6 +128,7 @@ class QrCrudController extends AbstractTenantAwareCrudController
                     ->setHelp(new TranslatableMessage('qr.title.help')),
                 ChoiceField::new('mode', new TranslatableMessage('qr.mode.label'))
                     ->setHelp(new TranslatableMessage('qr.mode.help'))
+                    ->setFormTypeOption('placeholder', false)
                     ->renderAsNativeWidget(),
                 TextEditorField::new('description', new TranslatableMessage('qr.description.label'))
                     ->setHelp(new TranslatableMessage('qr.description.help')),
