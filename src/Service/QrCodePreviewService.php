@@ -135,7 +135,7 @@ class QrCodePreviewService
                 labelAlignment: LabelAlignment::Center,
                 labelMargin: $downloadSettingsDTO->labelMargin,
                 labelTextColor: $downloadSettingsDTO->labelTextColor,
-                logoPath: $logo,
+                logoPath: $this->downloadHelper->readableLogoPath($logo),
                 logoPunchoutBackground: false,
             );
 

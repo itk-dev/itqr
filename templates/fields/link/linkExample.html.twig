@@ -18,6 +18,9 @@
     {% set labelFont = create_font_interface(entity.instance.labelSize) %}
 {% endif %}
 
+{# Designs from before the upload validation can have a logo type that the PNG writer cannot read. #}
+{% set logoIsReadable = (entity.instance.logo ?? '') matches '/\\.(png|jpe?g|gif|webp)$/i' %}
+
 <a href=""
    class="popover-link">
     {{ 'qr.view'|trans }}
@@ -32,7 +35,7 @@
         labelMargin: labelMargin,
         backgroundColor: backgroundColor,
         foregroundColor: foregroundColor,
-        logoPath: entity.instance.logo ? ('uploads/qr-logos/' ~ entity.instance.logo) : null,
+        logoPath: logoIsReadable ? ('uploads/qr-logos/' ~ entity.instance.logo) : null,
     }) }}" alt="Generated Image"/>
    </span>
 </a>

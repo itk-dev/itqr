@@ -3,6 +3,7 @@
 namespace App\Helper;
 
 use App\Entity\Tenant\Qr;
+use App\Entity\Tenant\QrVisualConfig;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Encoding\Encoding;
@@ -165,11 +166,21 @@ class DownloadHelper
             labelAlignment: LabelAlignment::Center,
             labelMargin: $settings['labelMargin'],
             labelTextColor: $settings['labelTextColor'],
-            logoPath: $settings['logo'] ?? $settings['logoPath'] ?? '',
+            logoPath: $this->readableLogoPath($settings['logo'] ?? $settings['logoPath'] ?? null),
             logoPunchoutBackground: false,
         );
 
         return $result->getString(); // Return QR code as binary string (PNG format)
+    }
+
+    /**
+     * Gives the logo path when the PNG writer can read the file, else null.
+     *
+     * Designs from before the upload validation can have a logo type that causes an exception.
+     */
+    public function readableLogoPath(?string $path): ?string
+    {
+        return $path && is_file($path) && in_array(mime_content_type($path), QrVisualConfig::LOGO_MIME_TYPES, true) ? $path : null;
     }
 
     /**

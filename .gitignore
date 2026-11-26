@@ -20,6 +20,7 @@ phpstan.neon
 ###< friendsofphp/php-cs-fixer ###
 
 ###> vincentlanglet/twig-cs-fixer ###
+/.twig-cs-fixer.php
 /.twig-cs-fixer.cache
 ###< vincentlanglet/twig-cs-fixer ###
 
@@ -31,9 +32,6 @@ phpstan.neon
 
 # Ignore node_modules
 /node_modules/
-
-# Ignore package-lock.json
-package-lock.json
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
