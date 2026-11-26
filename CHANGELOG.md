@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-26
+
 [PR-54](https://github.com/itk-dev/itqr/pull/54)
     - Synced docker templates and GitHub workflows.
     - Updated to PHP 8.5.
@@ -123,7 +125,8 @@ See [keep a changelog] for information about writing changes to this log.
     - Added project baseline with easy admin 4.x
 
 [keep a changelog]: https://keepachangelog.com/en/1.1.0/
-[Unreleased]: https://github.com/itk-dev/itqr/compare/1.0.5...HEAD
+[Unreleased]: https://github.com/itk-dev/itqr/compare/1.1.0...HEAD
+[1.1.0]: https://github.com/itk-dev/itqr/compare/1.0.5...1.1.0
 [1.0.5]: https://github.com/itk-dev/itqr/compare/1.0.4...1.0.5
 [1.0.4]: https://github.com/itk-dev/event-database-api/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/itk-dev/event-database-api/compare/1.0.2...1.0.3
